@@ -1,7 +1,6 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.security2;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Role;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Users.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
 import java.util.Arrays;
@@ -24,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
 
-    private UserRepository userRepository;
+    private UserRepository<User> userRepository;
 
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
