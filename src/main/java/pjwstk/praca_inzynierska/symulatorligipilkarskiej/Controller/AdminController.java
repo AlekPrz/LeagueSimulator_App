@@ -15,36 +15,39 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Service.UserRegister;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
 @Controller
-@RequestMapping("/register")
-public class UserController {
+@RequestMapping("/admin")
+
+public class AdminController  {
 
 
     @Autowired
     private UserRegister userService;
     @Autowired
-    private UserRepository<User> userUserRepository;
+    private UserRepository<Manager> userRepository;
 
-    @GetMapping
+    @GetMapping("/register")
     public String registerGet(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
         return "users/register";
     }
 
-/*
-
-    @PostMapping
+    @PostMapping("/register")
     public String registerPost(@ModelAttribute User user, Model model) {
         String password = user.getPassword();
         String repeatPassword = user.getRepeatPassword();
 
+        System.out.println(user.getRole().getDescription());
 
-        if (user.getRole().getDescription().equals("MANAGER")) {
+
+        if (user.getRole().getDescription().equals("ROLE_MANAGER")) {
+
+            System.out.println("no jestem u");
 
             Manager manager = Manager.builder().username(user.getUsername()).password(UserRegister.encodePassword(password))
                     .repeatPassword(UserRegister.encodePassword(repeatPassword)).role(user.getRole()).build();
 
-            userUserRepository.save(manager);
+            userRepository.save(manager);
 
 
             return "redirect:/login";
@@ -60,6 +63,6 @@ public class UserController {
         userService.registerNewUser(user);
         return "redirect:/login";
     }
-*/
+
 
 }

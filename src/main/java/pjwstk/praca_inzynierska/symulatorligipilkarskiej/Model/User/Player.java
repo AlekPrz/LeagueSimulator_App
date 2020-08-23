@@ -1,11 +1,12 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Users;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.PlayerTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Position;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -24,7 +25,8 @@ public class Player extends User {
 
     @Enumerated(EnumType.STRING)
     private Position position;
-    private boolean hasTeam;
+    private Integer weight;
+    private Integer growth;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "player")
     @ToString.Exclude

@@ -1,12 +1,9 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Users;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Role;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 
 import javax.persistence.*;
 
@@ -22,7 +19,6 @@ public  class User {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
     private String username;
     private String password;

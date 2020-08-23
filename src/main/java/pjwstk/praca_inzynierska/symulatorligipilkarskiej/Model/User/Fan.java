@@ -1,9 +1,8 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Users;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
 
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 
 import javax.persistence.*;
 

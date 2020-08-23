@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Role;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Users.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
 import java.util.Arrays;

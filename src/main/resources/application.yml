@@ -1,8 +1,8 @@
 spring:
-                jpa:
-                  hibernate:
-                    ddl-auto: update
-                datasource:
-                  url: jdbc:mysql://localhost:3306/projekt_inzynierski?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-                  username: root
-                  password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3306/ projekt_inzynierski?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root

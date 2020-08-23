@@ -16,8 +16,8 @@ import javax.lang.model.element.QualifiedNameable;
 public class MyWebSecurity extends WebSecurityConfigurerAdapter {
 
 
-    UserDetailsService userDetailsService;
-    PasswordEncoder passwordEncoder;
+   private UserDetailsService userDetailsService;
+   private PasswordEncoder passwordEncoder;
 
     public MyWebSecurity(@Qualifier("myUserImpl") UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;

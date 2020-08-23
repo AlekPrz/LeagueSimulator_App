@@ -1,9 +1,9 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
 
 public enum Role {
     ADMIN ("ROLE_ADMIN"),
     USER("ROLE_USER"),
-    MANAGER("MANAGER");
+    MANAGER("ROLE_MANAGER");
     private String description;
 
     Role(String description) {
