@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:insert="navigation/navigation">Navigation</div>
+
+
+<h2>Lista drużyn</h2>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th>Nazwa</th>
+        <th>Skrócona nazwa</th>
+        <th>Kolory</th>
+        <th>Akcje</th>
+
+
+    </tr>
+    </thead>
+    <tr th:each="w:${team}">
+        <td th:text="${w.name}"></td>
+        <td th:text="${w.shortName}"></td>
+        <td th:text="${w.colors}"></td>
+
+        <td>
+            <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> <span class="yellow">Edytuj</span>
+            </a>
+
+            <form action="/deleteTeam" method="post">
+                <input type="text" name="id" th:value="${w.id}" hidden="hidden">
+                <input class="button" type="submit" value="Usuń"/>
+            </form>
+
+
+        </td>
+
+
+    </tr>
+
+    <tr>
+
+        <td>
+            >
+            <a href="/addTeam" class="button"> Dodaj Nową Drużyne </a>
+
+
+        </td>
+
+
+
+    </tr>
+</table>
+
+</body>
+</html>
