@@ -1,16 +1,17 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.security2.UserDetailsServiceImpl;
 
-@RequestMapping("/teams")
 @Controller
 public class TeamController {
 
@@ -21,11 +22,32 @@ public class TeamController {
     }
 
 
-    @GetMapping()
-    public String getTeams(Model model) {
+    @GetMapping("/drużyny")
+    public String getTeamsForGuest(Model model) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof User) {
+            String username = ((User)principal).getUsername();
+            System.out.println("Name " +  username);
+        }
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails)principal).getUsername();
+            System.out.println("JESTEM INSTANCJA TEGO:" + username);
+        }
+
+
+
+            String username = principal.toString();
+            System.out.println(username);
+
+
+
+
+        System.out.println(principal);
+
 
         model.addAttribute("team", teamRepository.findAll());
-        return "/team/allTeamForGuest";
+        return "users/guest/allTeamForGuest";
     }
+
 
 }

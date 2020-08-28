@@ -47,7 +47,7 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
                 .and().formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/app-login")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/default")
                 .failureUrl("/login/error")
                 .permitAll();
 

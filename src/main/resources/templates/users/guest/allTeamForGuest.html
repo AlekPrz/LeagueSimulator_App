@@ -29,13 +29,10 @@
         <td th:text="${w.colors}"></td>
 
         <td>
-            <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> <span class="yellow">Edytuj</span>
+            <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> <span class="yellow">Gracze</span>
             </a>
 
-            <form action="/deleteTeam" method="post">
-                <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                <input class="button" type="submit" value="Usuń"/>
-            </form>
+
 
 
         </td>
@@ -43,18 +40,7 @@
 
     </tr>
 
-    <tr>
 
-        <td>
-            >
-            <a href="/addTeam" class="button"> Dodaj Nową Drużyne </a>
-
-
-        </td>
-
-
-
-    </tr>
 </table>
 
 </body>

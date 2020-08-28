@@ -29,11 +29,14 @@ public class AdminController  {
     public String registerGet(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
-        return "users/register";
+        model.addAttribute("rolesAdmin",true);
+
+        return "security/register";
     }
 
     @PostMapping("/register")
     public String registerPost(@ModelAttribute User user, Model model) {
+
         String password = user.getPassword();
         String repeatPassword = user.getRepeatPassword();
 
@@ -57,7 +60,7 @@ public class AdminController  {
 
         if (!password.equals(repeatPassword)) {
             model.addAttribute("errorPassword", true);
-            return "users/register";
+            return "security/register";
         }
 
         userService.registerNewUser(user);

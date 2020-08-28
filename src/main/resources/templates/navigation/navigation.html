@@ -16,11 +16,6 @@
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>-->
             </button>
-            <a class="navbar-brand">
-                <span th:text="${#authentication.getName()}">
-
-                </span>
-            </a>
 
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -39,18 +34,53 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/użytkownik/e">Liga kibica</a>
                     </li>
+                    <li class="nav-item">
+
+                        <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                            <a class="nav-link" href="/admin/dashboard">Panel Zarządzania</a>
+                        </div>
+
+                                <div th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                                    <a class="nav-link" href="/manager/dashboard">Panel Zarządzania</a>
+                                </div>
+
+                    </li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right px-2">
 
 
-                    <li>
-                        <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
+                    <!-- <li>
+                         <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
+                         </a>
+                     </li>
+                     <li>
+                         <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
+                         </a>
+                     </li>-->
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/login">
+                            <span class="fa fa-sign-in px-3"></span>
+                            Zaloguj
                         </a>
                     </li>
-                    <li>
-                        <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
+
+                    <li sec:authorize="isAnonymous()">
+                        <a href="/admin/register">
+                            <span class="fa fa-sign-in px-3"></span>
+                            Rejestracja
                         </a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/logout">
+                            <span class="fa fa-sign-in px-3"></span>
+                            Wyloguj
+                        </a>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()">
+                        <span class="px-3" sec:authentication="name"></span>
                     </li>
                 </ul>
             </div>

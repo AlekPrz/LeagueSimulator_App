@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.PlayerTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Position;
 
 import javax.persistence.*;
@@ -31,6 +31,6 @@ public class Player extends User {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "player")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<PlayerTeam> playerTeams = new LinkedHashSet<>();
+    private Set<Contract> contracts = new LinkedHashSet<>();
 
 }

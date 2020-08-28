@@ -1,7 +1,6 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
-import lombok.Data;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.MatchTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.SeasonTeam;
 
@@ -10,7 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Data
 public class Team {
 
 
@@ -28,7 +26,7 @@ public class Team {
 
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
-    private Set<PlayerTeam> playerTeams = new LinkedHashSet<>();
+    private Set<Contract> contracts = new LinkedHashSet<>();
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<ManagerTeam> managerTeams = new LinkedHashSet<>();

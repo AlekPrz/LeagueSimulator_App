@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 
-public class PlayerTeam {
+public class Contract {
 
     @Id
     @GeneratedValue
