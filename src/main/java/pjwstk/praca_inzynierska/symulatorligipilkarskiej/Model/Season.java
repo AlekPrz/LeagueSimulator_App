@@ -14,8 +14,6 @@ public class Season {
     @Id
     @GeneratedValue
     private Long id;
-    private final static String currentlySeason = "19/20";
-    //format "19/20"
     private String seasonName;
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.PERSIST)

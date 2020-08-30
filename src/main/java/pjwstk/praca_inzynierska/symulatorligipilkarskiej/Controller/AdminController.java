@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
@@ -65,6 +66,14 @@ public class AdminController  {
 
         userService.registerNewUser(user);
         return "redirect:/login";
+    }
+
+
+    @GetMapping("/panelDrużyn")
+    public String addTeams(Model model) {
+        model.addAttribute("team", new Team());
+
+        return "admin/addTeam";
     }
 
 

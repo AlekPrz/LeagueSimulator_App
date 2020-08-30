@@ -36,9 +36,9 @@
                     </li>
                     <li class="nav-item">
 
-                        <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                      <!--  <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="nav-link" href="/admin/dashboard">Panel Zarządzania</a>
-                        </div>
+                        </div>-->
 
                                 <div th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
                                     <a class="nav-link" href="/manager/dashboard">Panel Zarządzania</a>
@@ -66,11 +66,19 @@
                     </li>
 
                     <li sec:authorize="isAnonymous()">
-                        <a href="/admin/register">
+                        <a href="/register">
                             <span class="fa fa-sign-in px-3"></span>
                             Rejestracja
                         </a>
                     </li>
+
+                    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                        <a href="/admin/register">
+                            <span class="fa fa-sign-in px-3"></span>
+                            Dodaj nowego użytkownika
+                        </a>
+                    </li>
+
 
                     <li sec:authorize="isAuthenticated()">
                         <a href="/logout">

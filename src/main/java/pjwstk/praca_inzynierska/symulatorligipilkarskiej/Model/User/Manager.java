@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "ManagerId")
+@Data
 
 public class Manager extends User {
 

@@ -1,5 +1,6 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
+import lombok.Data;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Data
 public class ManagerTeam {
     @Id
     @GeneratedValue
@@ -22,4 +24,6 @@ public class ManagerTeam {
 
     //Jeśli data kontraktu jest późniejsza niż data to aktualny
     private LocalDate endOfContract;
+
+    private Boolean isCurrently;
 }
