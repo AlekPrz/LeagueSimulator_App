@@ -1,4 +1,4 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
 import lombok.Data;
@@ -18,6 +18,7 @@ public class SeasonTeam {
     private Integer place;
     private Integer points;
     private Integer goals;
+    private boolean isCurrently;
 
 
 
@@ -30,8 +31,7 @@ public class SeasonTeam {
      private Season season;
 
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "currentlySeason")
-    private Set<Team> currentlyTeams = new LinkedHashSet<>();
+
 
 
 

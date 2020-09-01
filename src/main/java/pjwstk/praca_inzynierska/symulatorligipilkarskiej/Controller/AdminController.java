@@ -1,6 +1,7 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,24 +14,35 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Service.UserRegister;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 
-public class AdminController  {
+public class AdminController {
 
 
-    @Autowired
-    private UserRegister userService;
-    @Autowired
-    private UserRepository<Manager> userRepository;
+    private final UserRegister userService;
+    private final UserRepository<Manager> userRepository;
+    private final TeamRepository teamRepository;
+
+
+
+    @GetMapping("/")
+    public String dash() {
+
+
+        return "admin/dash";
+
+    }
 
     @GetMapping("/register")
     public String registerGet(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
-        model.addAttribute("rolesAdmin",true);
+        model.addAttribute("rolesAdmin", true);
 
         return "security/register";
     }
@@ -59,6 +71,7 @@ public class AdminController  {
         }
 
 
+
         if (!password.equals(repeatPassword)) {
             model.addAttribute("errorPassword", true);
             return "security/register";
@@ -69,12 +82,29 @@ public class AdminController  {
     }
 
 
-    @GetMapping("/panelDrużyn")
+    @GetMapping("/panelDruzyn")
     public String addTeams(Model model) {
-        model.addAttribute("team", new Team());
 
-        return "admin/addTeam";
+
+        model.addAttribute("team", teamRepository.findAll());
+        return "admin/allTeamsForAdmin";
+
     }
 
+
+    @GetMapping("/dodajDrużyne")
+    public String addTeam(Model model) {
+        model.addAttribute("team", new Team());
+        return "admin/addTeam";
+
+    }
+
+    @PostMapping("/dodajDrużyne")
+    public String addTeamPost(Team team) {
+
+        teamRepository.save(team);
+        return "redirect:/";
+
+    }
 
 }

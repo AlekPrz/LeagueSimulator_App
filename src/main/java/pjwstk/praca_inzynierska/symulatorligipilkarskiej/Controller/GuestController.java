@@ -1,14 +1,11 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Service.UserRegister;
@@ -27,7 +24,7 @@ public class GuestController {
 
     @GetMapping("/")
     public String mainPage() {
-        return "users/guest/index";
+        return "index";
     }
 
 
@@ -59,7 +56,10 @@ public class GuestController {
         if (request.isUserInRole("ROLE_MANAGER")) {
             return "redirect:/manager/dashboard";
         } else if (request.isUserInRole("ROLE_ADMIN")) {
-            return "redirect:/admin/dashboard";
+
+            System.out.println("PANEL ADMINA SIE ZGADZA");
+
+            return "redirect:/";
         }
 
         return "redirect:/";

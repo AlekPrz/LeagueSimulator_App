@@ -5,54 +5,29 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand">PJWSTK</a>
-
+            <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>-->
+            </button>
 
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
 
-                    <li sec:authorize="isAuthenticated()">
-                        <span class="navbar-text px-2 text-primary" sec:authentication="name"></span>
-                    </li>
-
 
                     <li class="nav-item">
                         <a class="nav-link" href="/">Strona główna</a>
                     </li>
-
-
                     <li class="nav-item">
-                        <a class="nav-link" href="/drużyny">Drużyny</a>
+                        <a class="nav-link" href="/admin/panelDruzyn">Zarządzaj Drużynami</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/terminarz">Terminarz</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/użytkownik/e">Liga kibica</a>
-                    </li>
-                    <li class="nav-item">
 
-                        <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                            <a class="nav-link" href="/admin/">Panel Zarządzania</a>
-                        </div>
-
-                                <div th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-                                    <a class="nav-link" href="/manager/dashboard">Panel Zarządzania</a>
-                                </div>
-
-                    </li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right px-2">
 
 
-                    <!-- <li>
-                         <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
-                         </a>
-                     </li>
-                     <li>
-                         <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
-                         </a>
+
                      </li>-->
                     <li sec:authorize="isAnonymous()">
                         <a href="/login">
@@ -83,9 +58,9 @@
                         </a>
                     </li>
 
-              <!--      <li sec:authorize="isAuthenticated()">
+                    <li sec:authorize="isAuthenticated()">
                         <span class="px-3" sec:authentication="name"></span>
-                    </li>-->
+                    </li>
                 </ul>
             </div>
         </nav>

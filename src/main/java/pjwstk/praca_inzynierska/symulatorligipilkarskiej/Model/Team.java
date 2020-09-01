@@ -1,14 +1,15 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
+import lombok.Data;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.MatchTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.SeasonTeam;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Data
 public class Team {
 
 
@@ -20,9 +21,7 @@ public class Team {
     private String colors;
 
 
-    @ManyToOne
-    @JoinColumn(name = "currentlySeason_id")
-    private Season currentlySeason;
+
 
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")

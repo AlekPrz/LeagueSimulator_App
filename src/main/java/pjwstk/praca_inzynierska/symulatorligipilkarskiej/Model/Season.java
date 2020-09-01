@@ -2,7 +2,6 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.MatchTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.SeasonTeam;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -17,11 +16,11 @@ public class Season {
     private String seasonName;
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.PERSIST)
-    private Set<MatchTeam> match;
+    private Set<MatchTeam> match = new LinkedHashSet<>();
 
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "season")
+    private Set<SeasonTeam> seasonTeams = new LinkedHashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "currentlySeason")
-    private Set<Team> seasonTeams =  new LinkedHashSet<>();
 
 
 
