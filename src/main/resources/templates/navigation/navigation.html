@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+     <!--   <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand">PJWSTK</a>
 
 
@@ -46,14 +46,14 @@
                 <ul class="nav navbar-nav navbar-right px-2">
 
 
-                    <!-- <li>
+                    &lt;!&ndash; <li>
                          <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
                          </a>
                      </li>
                      <li>
                          <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
                          </a>
-                     </li>-->
+                     </li>&ndash;&gt;
                     <li sec:authorize="isAnonymous()">
                         <a href="/login">
                             <span class="fa fa-sign-in px-3"></span>
@@ -83,11 +83,86 @@
                         </a>
                     </li>
 
-              <!--      <li sec:authorize="isAuthenticated()">
+              &lt;!&ndash;      <li sec:authorize="isAuthenticated()">
                         <span class="px-3" sec:authentication="name"></span>
-                    </li>-->
+                    </li>&ndash;&gt;
                 </ul>
             </div>
+        </nav>-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand text-white">PJWSTK</a>
+
+
+
+            <ul class="navbar-nav mr-auto">
+
+                <li sec:authorize="isAuthenticated()">
+                    <span class="navbar-text px-2 text-white" sec:authentication="name"></span>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/">Strona główna</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/drużyny">Drużyny</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/terminarz">Terminarz</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/użytkownik/e">Liga kibica</a>
+                </li>
+
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right px-2">
+
+
+                <!-- <li>
+                     <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
+                     </a>
+                 </li>
+                 <li>
+                     <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
+                     </a>
+                 </li>-->
+                <li sec:authorize="isAnonymous()">
+                    <a href="/login">
+                        <span class="fa fa-sign-in px-3"></span>
+                        Zaloguj
+                    </a>
+                </li>
+
+                <li sec:authorize="isAnonymous()">
+                    <a href="/register">
+                        <span class="fa fa-sign-in px-3"></span>
+                        Rejestracja
+                    </a>
+                </li>
+
+                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a href="/admin/register">
+                        <span class="fa fa-sign-in px-3"></span>
+                        Dodaj nowego użytkownika
+                    </a>
+                </li>
+
+
+                <li sec:authorize="isAuthenticated()">
+                    <a href="/logout">
+                        <span class="fa fa-sign-in px-3"></span>
+                        Wyloguj
+                    </a>
+                </li>
+
+                <!--      <li sec:authorize="isAuthenticated()">
+                          <span class="px-3" sec:authentication="name"></span>
+                      </li>-->
+            </ul>
         </nav>
+
     </body>
 </html>
