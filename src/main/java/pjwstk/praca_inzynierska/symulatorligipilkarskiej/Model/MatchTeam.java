@@ -1,4 +1,4 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
@@ -13,13 +13,13 @@ public class MatchTeam {
     @GeneratedValue
     private Long id;
 
-
     @ManyToOne
     @JoinColumn(name = "hosting_team_id")
     private Team homeTeam;
     @ManyToOne
     @JoinColumn(name = "visit_team_id")
     private Team visitTeam;
+
     private String score;
 
     @ManyToOne

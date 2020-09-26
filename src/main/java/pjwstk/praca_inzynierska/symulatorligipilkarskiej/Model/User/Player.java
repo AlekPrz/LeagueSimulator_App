@@ -1,9 +1,6 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Position;
@@ -14,15 +11,16 @@ import java.util.Set;
 
 
 @Entity
-@PrimaryKeyJoinColumn(name = "ManagerId")
+@PrimaryKeyJoinColumn(name = "PlayerId")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Data
 
 public class Player extends User {
 
-
+    private String name;
+    private String surname;
     @Enumerated(EnumType.STRING)
     private Position position;
     private Integer weight;

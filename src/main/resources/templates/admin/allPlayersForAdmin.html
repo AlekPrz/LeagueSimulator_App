@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    table a{
+        color: black;
+    }
+</style>
+<body>
+<div th:insert="navigation/adminNavigation">Navigation</div>
+
+<div class="container">
+
+    <h2>Lista drużyn</h2>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Imie</th>
+            <th>Nazwisko</th>
+            <th>Waga</th>
+            <th>Wzrost</th>
+            <th>Pozycja</th>
+
+
+
+        </tr>
+        <tr th:each="w:${player}">
+            <td th:text="${w.name}"></td>
+            <td th:text="${w.surname}"></td>
+            <td th:text="${w.weight}"></td>
+            <td th:text="${w.growth}"></td>
+            <td th:text="${w.position.name()}"></td>
+
+
+
+            <td>
+                <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> Edytuj
+                </a>
+
+
+
+
+                <form action="/admin/usunPilkarza" method="post">
+
+                    <a th:href="@{/team/delete/{id}(id=${w.id})}" class="button"> Usuń Zawodnika </a>
+                    <!--    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
+                        <input class="button btn btn-link text-white" type="submit" value="Usuń"/>-->
+                </form>
+
+
+            </td>
+
+
+
+        </tr>
+
+        <tr>
+
+            <td>
+
+                <a href="/admin/dodajPiłkarza" class="button text-black"> Dodaj nowego piłkarza </a>
+
+
+            </td>
+
+
+
+        </tr>
+    </table>
+</div>
+</body>
+</html>

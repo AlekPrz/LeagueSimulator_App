@@ -33,12 +33,12 @@ public class ManagerController {
     }
 
 
-    @GetMapping("dashboard")
+    @GetMapping("/")
     public String dash() {
         return "manager/dashboard";
     }
 
-    @GetMapping("myTeam")
+    @GetMapping("mojaDruzyna")
     public String getMyTeam(Model model) {
 
 
@@ -52,6 +52,8 @@ public class ManagerController {
             manager = managerUserRepository.findManagerByUsername(usernameName);
 
         }
+
+        System.out.println(manager.get().getId());
 
         if(manager.isPresent()) {
 

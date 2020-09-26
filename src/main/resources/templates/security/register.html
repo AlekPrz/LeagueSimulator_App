@@ -16,8 +16,8 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="container">
     <div th:include="navigation/navigation">Navigation</div>
+    <div class="container">
     <div class="row">
         <div class="col-8 offset-2">
             <h1>Zarejestruj użytkownika </h1>
@@ -64,19 +64,19 @@
 
 
 
-            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/admin/register'}" th:action="@{/admin/register}" method="post" th:object="${user}" onsubmit="return validation();">
+            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/admin/dodajUzytkownika'}" th:action="@{/admin/register}" method="post" th:object="${user}" onsubmit="return validation();">
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username">Nazwa</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Hasło</label>
                     <input type="password" id="password" th:field="*{password}" class="form-control"/>
                 </div>
 
                 <div class="form-group">
-                    <label for="repeatPassword">RepeatPassword</label>
+                    <label for="repeatPassword">Powtórz Hasło</label>
                     <input type="password" id="repeatPassword" th:field="*{repeatPassword}" class="form-control"/>
                 </div>
                 <p th:if="${errorPassword}">Hasla sie nie zgadzaja</p>

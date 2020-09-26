@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body>
 
+<style>
+    table a{
+        color: black;
+    }
+</style>
+<body>
+<div th:insert="navigation/adminNavigation">Navigation</div>
+
+<div class="container">
+
+    <h2>Moja Drużyna</h2>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Nazwa</th>
+            <th>Skrócona nazwa</th>
+            <th>Kolory</th>
+            <th>Początek Kontraktu</th>
+            <th>Koniec Kontraktu</th>
+
+
+
+
+        </tr>
+        <tr>
+            <td th:text="${manager.team.name}"></td>
+            <td th:text="*{manager.team.shortName}"></td>
+            <td th:text="*{manager.team.colors}"></td>
+            <td th:text="*{manager.startOfContract}"></td>
+            <td th:text="*{manager.endOfContract}"></td>
+
+
+
+
+
+        </tr>
+
+
+    </table>
+</div>
 </body>
 </html>

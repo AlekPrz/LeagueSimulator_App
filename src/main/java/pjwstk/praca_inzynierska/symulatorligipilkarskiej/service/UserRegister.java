@@ -1,4 +1,4 @@
-package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Service;
+package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 
 import org.springframework.security.crypto.password.PasswordEncoder;

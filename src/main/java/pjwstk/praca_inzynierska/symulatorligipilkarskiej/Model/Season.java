@@ -1,9 +1,8 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.MatchTeam;
-
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -13,7 +12,8 @@ public class Season {
     @Id
     @GeneratedValue
     private Long id;
-    private String seasonName;
+    private LocalDate seasonStart;
+    private LocalDate seasonEnd;
 
     @OneToMany(mappedBy = "season", cascade = CascadeType.PERSIST)
     private Set<MatchTeam> match = new LinkedHashSet<>();

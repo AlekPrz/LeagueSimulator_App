@@ -18,7 +18,6 @@ import java.util.Set;
 
 public class Manager extends User {
 
-    private Integer yearsOfExperience;
 
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "manager")

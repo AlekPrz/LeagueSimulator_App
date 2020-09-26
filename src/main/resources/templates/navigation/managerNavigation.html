@@ -20,7 +20,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    
+
                     <li sec:authorize="isAuthenticated()">
                         <span class="navbar-text px-2 text-white" sec:authentication="name"></span>
                     </li>
@@ -29,10 +29,7 @@
                         <a class="nav-link text-white" href="/">Strona główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/admin/panelDruzyn">Zarządzaj Drużynami</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/admin/panelGraczy">Zarządzaj Graczmi</a>
+                        <a class="nav-link text-white" href="/manager/mojaDruzyna/">Zarządzaj moją drużyną</a>
                     </li>
 
 
@@ -41,26 +38,7 @@
 
 
 
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/login">
-                            <span class="fa fa-sign-in px-3 text-white"></span>
-                            Zaloguj
-                        </a>
-                    </li>
 
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/register">
-                            <span class="fa fa-sign-in px-3 text-white"></span>
-                            Rejestracja
-                        </a>
-                    </li>
-
-                    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                        <a href="/admin/dodajUzytkownika">
-                            <span class="fa fa-sign-in px-3 text-white"></span>
-                            Dodaj nowego użytkownika
-                        </a>
-                    </li>
 
 
                     <li sec:authorize="isAuthenticated()">

@@ -1,94 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<style>
 
+    .nav.navbar-nav.navbar-right li a {
+        color: white;
+    }
+
+</style>
     <body>
-     <!--   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand">PJWSTK</a>
 
-
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-
-                    <li sec:authorize="isAuthenticated()">
-                        <span class="navbar-text px-2 text-primary" sec:authentication="name"></span>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Strona główna</a>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/drużyny">Drużyny</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/terminarz">Terminarz</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/użytkownik/e">Liga kibica</a>
-                    </li>
-                    <li class="nav-item">
-
-                        <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                            <a class="nav-link" href="/admin/">Panel Zarządzania</a>
-                        </div>
-
-                                <div th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-                                    <a class="nav-link" href="/manager/dashboard">Panel Zarządzania</a>
-                                </div>
-
-                    </li>
-
-                </ul>
-                <ul class="nav navbar-nav navbar-right px-2">
-
-
-                    &lt;!&ndash; <li>
-                         <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
-                         </a>
-                     </li>
-                     <li>
-                         <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
-                         </a>
-                     </li>&ndash;&gt;
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/login">
-                            <span class="fa fa-sign-in px-3"></span>
-                            Zaloguj
-                        </a>
-                    </li>
-
-                    <li sec:authorize="isAnonymous()">
-                        <a href="/register">
-                            <span class="fa fa-sign-in px-3"></span>
-                            Rejestracja
-                        </a>
-                    </li>
-
-                    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                        <a href="/admin/register">
-                            <span class="fa fa-sign-in px-3"></span>
-                            Dodaj nowego użytkownika
-                        </a>
-                    </li>
-
-
-                    <li sec:authorize="isAuthenticated()">
-                        <a href="/logout">
-                            <span class="fa fa-sign-in px-3"></span>
-                            Wyloguj
-                        </a>
-                    </li>
-
-              &lt;!&ndash;      <li sec:authorize="isAuthenticated()">
-                        <span class="px-3" sec:authentication="name"></span>
-                    </li>&ndash;&gt;
-                </ul>
-            </div>
-        </nav>-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand text-white">PJWSTK</a>
 
@@ -96,6 +17,9 @@
 
             <ul class="navbar-nav mr-auto">
 
+                <li sec:authorize="isAuthenticated()">
+                    <span class="navbar-text text-white">Zalogowany:</span>
+                </li>
                 <li sec:authorize="isAuthenticated()">
                     <span class="navbar-text px-2 text-white" sec:authentication="name"></span>
                 </li>
@@ -115,37 +39,42 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/użytkownik/e">Liga kibica</a>
                 </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a class="nav-link" href="/admin/">
+                        <span class="fa fa-user"></span>
+                        Panel Admina
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                    <a class="nav-link" href="/manager//">
+                        <span class="fa fa-user"></span>
+                        Panel Managera
+                    </a>
+                </li>
+
 
 
             </ul>
             <ul class="nav navbar-nav navbar-right px-2">
 
 
-                <!-- <li>
-                     <a href="/admin/register"><span class="fa fa-user px-3"></span>Rejestracja
-                     </a>
-                 </li>
-                 <li>
-                     <a href="/login"><span class="fa fa-sign-in px-3"></span>Zaloguj
-                     </a>
-                 </li>-->
                 <li sec:authorize="isAnonymous()">
                     <a href="/login">
-                        <span class="fa fa-sign-in px-3"></span>
+                        <span class="fa fa-sign-in px-3 text-white"></span>
                         Zaloguj
                     </a>
                 </li>
 
                 <li sec:authorize="isAnonymous()">
                     <a href="/register">
-                        <span class="fa fa-sign-in px-3"></span>
+                        <span class="fa fa-sign-in px-3 text-white"></span>
                         Rejestracja
                     </a>
                 </li>
 
                 <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                     <a href="/admin/register">
-                        <span class="fa fa-sign-in px-3"></span>
+                        <span class="fa fa-sign-in px-3 text-white"></span>
                         Dodaj nowego użytkownika
                     </a>
                 </li>
@@ -153,7 +82,7 @@
 
                 <li sec:authorize="isAuthenticated()">
                     <a href="/logout">
-                        <span class="fa fa-sign-in px-3"></span>
+                        <span class="fa fa-sign-in px-3 text-white"></span>
                         Wyloguj
                     </a>
                 </li>

@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
+
+<style>
+    table a{
+        color: black;
+    }
+</style>
 <body>
 <div th:insert="navigation/adminNavigation">Navigation</div>
 
+<div class="container">
 
 <h2>Lista drużyn</h2>
-<table class="table">
-    <thead class="thead-dark">
+<table class="table table-bordered table-striped">
     <tr>
         <th>Nazwa</th>
         <th>Skrócona nazwa</th>
@@ -22,20 +28,25 @@
 
 
     </tr>
-    </thead>
     <tr th:each="w:${team}">
         <td th:text="${w.name}"></td>
-        <td th:text="${w.shortNameOfTeam}"></td>
-        <td th:text="${w.colours}"></td>
+        <td th:text="${w.shortName}"></td>
+        <td th:text="${w.colors}"></td>
 
 
         <td>
-            <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> <span class="yellow">Edytuj</span>
+            <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> Edytuj
+            </a>
+            <a th:href="@{/admin/druzyna/{id}(id=${w.id})}" class="button"> Dodaj zawodnika do tej drużyny
             </a>
 
+
+
             <form action="/deleteTeam" method="post">
-                <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                <input class="button" type="submit" value="Usuń"/>
+
+                <a th:href="@{/team/delete/{id}(id=${w.id})}" class="button"> Usuń Drużyne </a>
+            <!--    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
+                <input class="button btn btn-link text-white" type="submit" value="Usuń"/>-->
             </form>
 
 
@@ -47,8 +58,8 @@
     <tr>
 
         <td>
-            >
-            <a href="/admin/dodajDrużyne" class="button"> Dodaj Nową Drużyne </a>
+
+            <a href="/admin/dodajDrużyne" class="button text-black"> Dodaj Nową Drużyne </a>
 
 
         </td>
@@ -57,6 +68,6 @@
 
     </tr>
 </table>
-
+</div>
 </body>
 </html>

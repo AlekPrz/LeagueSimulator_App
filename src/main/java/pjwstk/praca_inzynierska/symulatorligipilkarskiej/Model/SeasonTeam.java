@@ -15,7 +15,6 @@ public class SeasonTeam {
     @Id
     @GeneratedValue
     private Long id;
-    private Integer place;
     private Integer points;
     private Integer goals;
     private boolean isCurrently;

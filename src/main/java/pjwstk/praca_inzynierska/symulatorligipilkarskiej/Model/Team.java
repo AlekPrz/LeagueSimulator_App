@@ -2,7 +2,8 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
 import lombok.Data;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.MatchTeam;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -27,8 +28,12 @@ public class Team {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<Contract> contracts = new LinkedHashSet<>();
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<ManagerTeam> managerTeams = new LinkedHashSet<>();
+
 
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "homeTeam")

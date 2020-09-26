@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Service.UserRegister;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.UserRegister;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,14 +53,7 @@ public class GuestController {
     }
     @GetMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {
-        if (request.isUserInRole("ROLE_MANAGER")) {
-            return "redirect:/manager/dashboard";
-        } else if (request.isUserInRole("ROLE_ADMIN")) {
 
-            System.out.println("PANEL ADMINA SIE ZGADZA");
-
-            return "redirect:/";
-        }
 
         return "redirect:/";
 
