@@ -35,10 +35,8 @@ public class AdminControllerPlayer {
     private final UserRepository<Manager> userRepository;
     private final TeamService teamService;
     private final PlayerService playerService;
-    private final ManagerTeamRepository managerTeamRepository;
     private final ContractRepository contractRepository;
     private final UserRepository<Player> playerUserRepository;
-    private final TeamRepository teamRepository;
 
 
     @GetMapping("/")
@@ -54,7 +52,6 @@ public class AdminControllerPlayer {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
         model.addAttribute("rolesAdmin", true);
-
         return "security/register";
     }
 
@@ -89,22 +86,7 @@ public class AdminControllerPlayer {
     }
 
 
- /*   @GetMapping("/panelDruzyn")
-    public String getTeams(Model model, @RequestParam(required = false) String keyword) {
 
-
-
-        if(keyword != null){
-            model.addAttribute("team",teamRepository.findByKeyword(keyword));
-        }
-        else{
-            model.addAttribute("team", teamService.getAllTeam());
-
-        }
-
-        return "admin/allTeamsForAdmin";
-
-    }*/
 
     @GetMapping("/panelGraczy")
     public String getPlayers(Model model) {
@@ -127,59 +109,31 @@ public class AdminControllerPlayer {
     @GetMapping("/dodajPiłkarza")
     public String addPlayerGet(Model model) {
 
-
         model.addAttribute("player", new Player());
         model.addAttribute("team", teamService.getAllTeam());
         model.addAttribute("contract", new Contract());
         model.addAttribute("position", Position.values());
-
-
         return "admin/addPlayer";
 
     }
 
+    @PostMapping("/dodajPiłkarza")
+    public String addPlayerPost(Player player, Contract contract) {
 
+        playerService.createPlayer(player,contract);
+        return "redirect:/admin/panelGraczy";
+
+    }
 
     @PostMapping("/usunPilkarza")
     public String deletePlayer(Long id) {
-
-        for (Contract contract : contractRepository.findAll()) {
-            if (contract.getPlayer().getId().equals(id)) {
-                contractRepository.delete(contract);
-            }
-        }
 
         playerService.deletePlayer(id);
         return "redirect:/admin/panelGraczy";
     }
 
 
-    @PostMapping("/dodajPiłkarza")
-    public String addPlayerPost(Player player, Contract contract) {
 
-        playerService.createPlayer(player);
-
-        Team team = contract.getTeam();
-
-        Contract contract1 =
-                Contract.builder()
-                        .endOfContract(contract.getEndOfContract())
-                        .startOfContract(contract.getStartOfContract())
-                        .player(player)
-                        .team(team)
-                        .goals(0L)
-                        .salary(contract.getSalary()).build();
-
-        contractRepository.save(contract1);
-
-        team.getContracts().add(contract1);
-        player.getContracts().add(contract1);
-
-
-        return "redirect:/admin/panelPilkarzy";
-
-
-    }
 
 
 }

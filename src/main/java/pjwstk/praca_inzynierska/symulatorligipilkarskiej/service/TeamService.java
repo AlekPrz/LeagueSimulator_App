@@ -28,7 +28,7 @@ public class TeamService {
 
     public Team createTeam(Team team) {
 
-        var errors = teamValidator.validate(team);
+      /*  var errors = teamValidator.validate(team);
         if (teamValidator.hasErrors()) {
             var errorsMessage = errors
                     .entrySet()
@@ -37,7 +37,7 @@ public class TeamService {
                     .collect(Collectors.joining(", "));
             throw new RuntimeException("Bład przy tworzeniu drużyny " + errorsMessage);
         }
-
+*/
         teamRepository.save(team);
         return team;
 
@@ -66,12 +66,5 @@ public class TeamService {
         return teamRepository.findByKeyword(keyword);
     }
 
-    public void addTeamView(Model model){
-        List<Manager> managers = managerService.findManagers();
-        model.addAttribute("manager", managers);
-        model.addAttribute("managerTeam", new ManagerTeam());
-        model.addAttribute("team", new Team());
-
-    }
 
 }

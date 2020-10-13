@@ -29,7 +29,7 @@
 <div class="container">
     <h2>Dodaj drużyne</h2>
 
-    <form action="/admin/dodajDrużyne" method="post">
+    <form action="/admin/dodajDruzyne" method="post">
         <table class="table table-striped table-bordered">
             <tr>
                 <td>
@@ -38,11 +38,6 @@
                 </td>
                 <td>
                     <input type="text" th:field="${team.name}"/>
-
-
-                    <!--
-                                               <p th:if="${errorss.containsKey('name')}" th:text="${errorss.get('name')}"> </p>
-                    -->
 
 
                 </td>
@@ -63,9 +58,14 @@
 
                 </td>
                 <td>
+                  <!--  <div th:if="${errors?.containsKey('shortName')}">
+                        <p class="text-danger" th:text="${errors.get('shortName')}"></p>
+                    </div>-->
                     <input type="text" th:field="${team.shortName}"/>
                 </td>
+
             </tr>
+
 
             <tr>
                 <td>
@@ -82,11 +82,9 @@
                         </li>
                     </ul>
 
+
                 </td>
             </tr>
-
-
-
 
 
             <tr>

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,20 +19,22 @@ public class Team {
     @GeneratedValue
     private Long id;
     private String name;
-    private String shortName;
-    private String colors;
+
+
+     @Pattern(regexp = "[A-Z ]+", message = "SHORT_NAME IS NOT CORRECT")
+     private String shortName;
+     private String colors;
 
 
 
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
     private Set<Contract> contracts = new LinkedHashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<ManagerTeam> managerTeams = new LinkedHashSet<>();

@@ -49,7 +49,7 @@ public class GuestController {
         model.addAttribute("registerSuccess", true);
         user.setRole(Role.USER);
         userService.registerNewUser(user);
-        return "users/guest/index";
+        return "index";
     }
     @GetMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {

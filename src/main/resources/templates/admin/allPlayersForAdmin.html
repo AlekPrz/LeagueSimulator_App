@@ -19,7 +19,16 @@
 <div class="container">
 
     <h2>Lista drużyn</h2>
+<!--
     <table class="table table-bordered table-striped">
+-->
+
+    <form th:action="@{/admin/panelGraczy}" method="get">
+        <input id="txtSearch" type="text" name="keyword">
+        <button type="submit">Go</button>
+    </form>
+
+    <table class="table table-advance table-hover table-striped">
         <tr>
             <th>Imie</th>
             <th>Nazwisko</th>

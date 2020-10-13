@@ -27,7 +27,7 @@ public class Player extends User {
     private Integer weight;
     private Integer growth;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "player")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Contract> contracts = new LinkedHashSet<>();

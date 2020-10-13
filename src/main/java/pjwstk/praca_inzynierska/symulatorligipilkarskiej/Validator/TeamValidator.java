@@ -27,6 +27,8 @@ public class TeamValidator {
         if (!isNameValid(team.getName())) {
 
             errors.put("Team", "Nazwa drużyny nie może być z małych liter");
+            throw new RuntimeException("Ten gracz ma już druyżne");
+
 
         }
         if (!teamExist(team.getName())) {

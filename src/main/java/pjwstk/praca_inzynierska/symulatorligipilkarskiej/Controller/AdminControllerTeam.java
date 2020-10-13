@@ -4,18 +4,21 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -25,6 +28,7 @@ public class AdminControllerTeam {
 
     private final TeamService teamService;
     private final ManagerTeamRepository managerTeamRepository;
+    private final ManagerService managerService;
 
 
     @GetMapping("/panelDruzyn")
@@ -43,23 +47,51 @@ public class AdminControllerTeam {
         return "redirect:/admin/panelDruzyn";
     }
 
-    @GetMapping("/dodajDrużyne")
+    @GetMapping("/dodajDruzyne")
     public String addTeam(Model model) {
-        teamService.addTeamView(model);
+        List<Manager> managers = managerService.findManagers();
+        model.addAttribute("manager", managers);
+        model.addAttribute("managerTeam", new ManagerTeam());
+        model.addAttribute("team", new Team());
         return "admin/addTeam";
     }
 
 
-    @PostMapping("/dodajDrużyne")
-    public String addTeamPost(Team team, ManagerTeam managerTeam) {
+    @PostMapping("/dodajDruzyne")
+    public String addTeamPost(
+             Team team,
+            ManagerTeam managerTeam) {
 
-
-        teamService.createTeam(team);
-
-
-
-        //Dopisac walidacje która sprawdza czy trener ma drużyne
         Manager manager = managerTeam.getManager();
+
+
+/*        Map<String, String> errors
+                = bindingResult
+                .getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                        e -> e.getField(),
+                        e -> e.getDefaultMessage(),
+                        (v1, v2) -> v1 + ", " + v2
+                ));
+
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("errors",errors);
+            return "admin/addTeam";
+        }
+
+
+
+
+        if (manager == null) {
+
+            model.addAttribute("error", true);
+
+            return "admin/addTeam";
+        }*/
+
+
 
 
         ManagerTeam managerTeam1 = ManagerTeam.builder()
@@ -70,15 +102,17 @@ public class AdminControllerTeam {
                 .manager(manager)
                 .build();
 
-
+        teamService.createTeam(team);
         managerTeamRepository.save(managerTeam1);
-
 
         manager.getManagerTeams().add(managerTeam);
         team.getManagerTeams().add(managerTeam);
 
 
-        return "redirect:/admin/panelDruzyn";
+        return "redirect:/admin/panelGraczy";
+
+
+
 
     }
 
