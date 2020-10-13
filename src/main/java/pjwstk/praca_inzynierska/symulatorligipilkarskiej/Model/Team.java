@@ -24,12 +24,14 @@ public class Team {
 
 
 
-
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<Contract> contracts = new LinkedHashSet<>();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<ManagerTeam> managerTeams = new LinkedHashSet<>();

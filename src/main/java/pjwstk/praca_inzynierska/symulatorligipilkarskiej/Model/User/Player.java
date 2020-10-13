@@ -10,11 +10,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 
-@Entity
-@PrimaryKeyJoinColumn(name = "PlayerId")
+@Getter
 @SuperBuilder
+@Entity
 @NoArgsConstructor
-@AllArgsConstructor
+@PrimaryKeyJoinColumn(name = "PlayerId")
 @Data
 
 public class Player extends User {
@@ -23,6 +23,7 @@ public class Player extends User {
     private String surname;
     @Enumerated(EnumType.STRING)
     private Position position;
+    private String shirtName;
     private Integer weight;
     private Integer growth;
 

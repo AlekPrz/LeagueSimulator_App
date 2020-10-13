@@ -4,70 +4,82 @@
 
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <style>
-    table a{
+    table a {
         color: black;
     }
+
+    .btn-group .btn-outline-danger {
+        margin: 2px;
+
+    }
+
 </style>
 <body>
 <div th:insert="navigation/adminNavigation">Navigation</div>
 
 <div class="container">
 
-<h2>Lista drużyn</h2>
-<table class="table table-bordered table-striped">
-    <tr>
-        <th>Nazwa</th>
-        <th>Skrócona nazwa</th>
-        <th>Kolory</th>
-        <th>Akcje</th>
+    <h2 class="text-center">Lista drużyn</h2>
 
 
-    </tr>
-    <tr th:each="w:${team}">
-        <td th:text="${w.name}"></td>
-        <td th:text="${w.shortName}"></td>
-        <td th:text="${w.colors}"></td>
+    <form th:action="@{/admin/panelDruzyn}" method="get">
+        <h4>Wyszukiwanie po słowie </h4>
+
+        <div class="input-group pb-2">
+            <div class="input-group-prepend">
+                <input class="form-control" id="txtSearch" type="text" name="keyword">
+            </div>
+            <button class="btn btn-primary" type="submit">Szukaj</button>
+        </div>
+    </form>
 
 
-        <td>
-            <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> Edytuj
-            </a>
-            <a th:href="@{/admin/druzyna/{id}(id=${w.id})}" class="button"> Dodaj zawodnika do tej drużyny
-            </a>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Nazwa</th>
+            <th>Skrócona nazwa</th>
+            <th>Kolory</th>
+            <th>Akcje</th>
 
 
-
-            <form action="/deleteTeam" method="post">
-
-                <a th:href="@{/team/delete/{id}(id=${w.id})}" class="button"> Usuń Drużyne </a>
-            <!--    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                <input class="button btn btn-link text-white" type="submit" value="Usuń"/>-->
-            </form>
+        </tr>
+        <tr th:each="w:${team}">
+            <td th:text="${w.name}"></td>
+            <td th:text="${w.shortName}"></td>
+            <td th:text="${w.colors}"></td>
 
 
-        </td>
+            <td>
 
 
-    </tr>
+                <div class="btn-group" role="group" aria-label="Basic example">
 
-    <tr>
+                    <a class="btn btn-primary  text-dark btn-outline-danger" th:href="@{/admin/team/{id}(id=${w.id})}"
+                       role="button"> Edytuj</a>
+                    <a class="btn btn-danger text-dark btn-outline-danger " th:href="@{/admin/druzyna/{id}(id=${w.id})}"
+                       role="button"> Dodaj zawodnika</a>
+                    <a class="btn btn-danger text-dark btn-outline-danger " th:href="@{/admin/druzyna/{id}(id=${w.id})}"
+                       role="button"> Podejrzyj zawodników</a>
 
-        <td>
-
-            <a href="/admin/dodajDrużyne" class="button text-black"> Dodaj Nową Drużyne </a>
-
-
-        </td>
-
+                    <form action="/admin/usunDruzyne" method="post">
+                        <input type="text" name="id" th:value="${w.id}" hidden="hidden">
+                        <input class="btn btn-outline-danger btn-warning text-dark" type="submit" value="Usuń"/>
+                    </form>
+                </div>
 
 
-    </tr>
-</table>
+            </td>
+        </tr>
+    </table>
+    <a href="/admin/dodajDrużyne" class="btn btn-secondary text-black float-left"> Dodaj Nową Drużyne </a>
+
+
 </div>
 </body>
 </html>

@@ -12,7 +12,6 @@ public class LoginController {
     @GetMapping("/login")
     public String getLogin(Model model) {
 
-        System.out.println("Witam");
         return "security/login";
     }
 

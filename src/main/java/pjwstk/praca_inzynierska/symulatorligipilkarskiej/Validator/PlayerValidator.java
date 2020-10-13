@@ -4,7 +4,9 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,25 +14,24 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class TeamValidator {
+public class PlayerValidator {
 
-    private final TeamRepository teamRepository;
+    private final UserRepository<Player> playerUserRepository;
     Map<String, String> errors = new HashMap<>();
 
-    public Map<String, String> validate(Team team) {
+    public Map<String, String> validate(Player player) {
 
 
         errors.clear();
 
-        System.out.println(team.getName());
 
-        if (!isNameValid(team.getName())) {
+        if (!isNameValid(player.getName()) || !isNameValid(player.getSurname())) {
 
-            errors.put("Team", "Nazwa drużyny nie może być z małych liter");
+            errors.put("Player", "Gracz nie może mieć nazw z małych liter!");
 
         }
-        if (!teamExist(team.getName())) {
-            errors.put("Team", "Drużyna znajduje się w bazie");
+        if (playerExist(player.getShirtName())) {
+            errors.put("Player", "Gracz znajduje się w bazie!");
         }
 
         return errors;
@@ -44,8 +45,8 @@ public class TeamValidator {
         return Objects.nonNull(name) && name.matches("[A-Z]+");
     }
 
-    private boolean teamExist(String name) {
-        return teamRepository.findByName(name).isEmpty();
+    private boolean playerExist(String name) {
+        return playerUserRepository.findByShirtName(name).isEmpty();
     }
 
     public boolean hasErrors(){

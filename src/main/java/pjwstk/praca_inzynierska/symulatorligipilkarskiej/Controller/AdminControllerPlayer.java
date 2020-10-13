@@ -4,10 +4,8 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Position;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
@@ -15,6 +13,10 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ContractRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.PlayerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.UserRegister;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
@@ -26,14 +28,17 @@ import java.util.List;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 
-public class AdminController {
+public class AdminControllerPlayer {
 
 
     private final UserRegister userService;
     private final UserRepository<Manager> userRepository;
     private final TeamService teamService;
+    private final PlayerService playerService;
     private final ManagerTeamRepository managerTeamRepository;
+    private final ContractRepository contractRepository;
     private final UserRepository<Player> playerUserRepository;
+    private final TeamRepository teamRepository;
 
 
     @GetMapping("/")
@@ -84,14 +89,22 @@ public class AdminController {
     }
 
 
-    @GetMapping("/panelDruzyn")
-    public String getTeams(Model model) {
+ /*   @GetMapping("/panelDruzyn")
+    public String getTeams(Model model, @RequestParam(required = false) String keyword) {
 
 
-        model.addAttribute("team", teamService.getAllTeam());
+
+        if(keyword != null){
+            model.addAttribute("team",teamRepository.findByKeyword(keyword));
+        }
+        else{
+            model.addAttribute("team", teamService.getAllTeam());
+
+        }
+
         return "admin/allTeamsForAdmin";
 
-    }
+    }*/
 
     @GetMapping("/panelGraczy")
     public String getPlayers(Model model) {
@@ -106,7 +119,6 @@ public class AdminController {
 
         model.addAttribute("player", players);
         model.addAttribute("position", Position.values());
-
         return "admin/allPlayersForAdmin";
 
     }
@@ -117,7 +129,8 @@ public class AdminController {
 
 
         model.addAttribute("player", new Player());
-
+        model.addAttribute("team", teamService.getAllTeam());
+        model.addAttribute("contract", new Contract());
         model.addAttribute("position", Position.values());
 
 
@@ -125,64 +138,48 @@ public class AdminController {
 
     }
 
-    @PostMapping("/dodajPiłkarza")
-    public String addPlayerPost(Player player1) {
-
-        System.out.println(player1);
-        playerUserRepository.save(player1);
 
 
-        return "redirect:/";
+    @PostMapping("/usunPilkarza")
+    public String deletePlayer(Long id) {
 
-
-    }
-
-
-    @GetMapping("/dodajDrużyne")
-    public String addTeam(Model model) {
-
-        List<Manager> managers = new ArrayList<>();
-
-        for (User tmp : userRepository.findAll()) {
-            if (tmp instanceof Manager) {
-                managers.add((Manager) tmp);
+        for (Contract contract : contractRepository.findAll()) {
+            if (contract.getPlayer().getId().equals(id)) {
+                contractRepository.delete(contract);
             }
         }
 
+        playerService.deletePlayer(id);
+        return "redirect:/admin/panelGraczy";
+    }
 
-        model.addAttribute("manager", managers);
-        model.addAttribute("managerTeam", new ManagerTeam());
-        model.addAttribute("team", new Team());
-        return "admin/addTeam";
+
+    @PostMapping("/dodajPiłkarza")
+    public String addPlayerPost(Player player, Contract contract) {
+
+        playerService.createPlayer(player);
+
+        Team team = contract.getTeam();
+
+        Contract contract1 =
+                Contract.builder()
+                        .endOfContract(contract.getEndOfContract())
+                        .startOfContract(contract.getStartOfContract())
+                        .player(player)
+                        .team(team)
+                        .goals(0L)
+                        .salary(contract.getSalary()).build();
+
+        contractRepository.save(contract1);
+
+        team.getContracts().add(contract1);
+        player.getContracts().add(contract1);
+
+
+        return "redirect:/admin/panelPilkarzy";
+
 
     }
 
-    @PostMapping("/dodajDrużyne")
-    public String addTeamPost(Team team, ManagerTeam managerTeam) {
-
-
-        teamService.createTeam(team);
-
-        Manager manager = managerTeam.getManager();
-
-
-        ManagerTeam managerTeam1 = ManagerTeam.builder()
-                .isCurrently(true)
-                .endOfContract(managerTeam.getEndOfContract())
-                .startOfContract(managerTeam.getStartOfContract())
-                .team(team)
-                .manager(manager)
-                .build();
-
-
-        managerTeamRepository.save(managerTeam1);
-
-        managerTeam.getManager().getManagerTeams().add(managerTeam);
-        team.getManagerTeams().add(managerTeam);
-
-
-        return "redirect:/";
-
-    }
 
 }

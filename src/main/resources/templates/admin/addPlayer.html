@@ -73,30 +73,84 @@
                 </td>
             </tr>
 
+
             <tr>
                 <td>
-                    <label>Pozycja: </label>
+                    <label>Drużyna: </label>
 
                 </td>
 
+                <td>
+              <select th:field="*{contract.team.id}" required>
+                  <option th:each="t: ${team}" th:value="${t.id}"
+                          th:text="${t.shortName}">
 
+                  </option>
+              </select>
+
+                </td>
+            </tr>
+
+
+
+
+<tr>
+    <td>
+        <label>Pozycja:</label>
+    </td>
                 <td>
                     <ul>
-                        <li th:each="p : ${position}">
-                            <input type="radio" th:va="${player.position}" required>
-                            <label th:text="${p}"></label>
+                        <li th:each="p: ${position}">
+                            <input type="radio"
+                                   th:field="${player.position}" th:value="${p}" required>
+                            <label th:text="${p}">
+
+                            </label>
 
                         </li>
                     </ul>
 
+
                 </td>
+</tr>
 
+            <tr>
+                <td>
+                    <label>Data Podpisania Kontraktu: </label>
 
-
-
-
-
+                </td>
+                <td>
+                    <input type="date" th:field="${contract.startOfContract}"/>
+                </td>
             </tr>
+
+            <tr>
+                <td>
+                    <label>Data Zakonczenia Kontraktu: </label>
+
+                </td>
+                <td>
+                    <input type="date" th:field="${contract.endOfContract}"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>Pensja</label>
+
+                </td>
+                <td>
+                    <input type="number" th:field="${contract.salary}"/>
+                </td>
+            </tr>
+
+
+
+
+
+
+
+
 
 
             <tr>

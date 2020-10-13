@@ -26,9 +26,8 @@
             <th>Waga</th>
             <th>Wzrost</th>
             <th>Pozycja</th>
-
-
-
+            <th>Klub</th>
+            <th>Akcje</th>
         </tr>
         <tr th:each="w:${player}">
             <td th:text="${w.name}"></td>
@@ -38,6 +37,19 @@
             <td th:text="${w.position.name()}"></td>
 
 
+        <td>
+                     <span th:each="team : ${w.getContracts()}">
+
+
+       <div th:if="${team.isCurrently}">
+           <div th:text="${team.team.getName()}">
+           </div>
+       </div>
+
+
+
+            </span>
+        </td>
 
             <td>
                 <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> Edytuj
@@ -48,9 +60,8 @@
 
                 <form action="/admin/usunPilkarza" method="post">
 
-                    <a th:href="@{/team/delete/{id}(id=${w.id})}" class="button"> Usuń Zawodnika </a>
-                    <!--    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                        <input class="button btn btn-link text-white" type="submit" value="Usuń"/>-->
+                    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
+                    <input class="button" type="submit" value="Usuń"/>
                 </form>
 
 
