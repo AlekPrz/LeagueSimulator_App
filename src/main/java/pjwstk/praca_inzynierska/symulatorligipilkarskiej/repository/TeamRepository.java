@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

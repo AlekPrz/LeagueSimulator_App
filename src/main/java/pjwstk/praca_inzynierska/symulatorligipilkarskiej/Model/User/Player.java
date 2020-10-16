@@ -26,7 +26,7 @@ public class Player extends User {
     private String shirtName;
     private Integer age;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "player")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "player")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Contract> contracts = new LinkedHashSet<>();
