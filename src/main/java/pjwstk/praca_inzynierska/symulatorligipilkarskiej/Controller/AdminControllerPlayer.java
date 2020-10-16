@@ -176,7 +176,7 @@ public class AdminControllerPlayer {
         player.getContracts().add(contract1);
 
 
-        return "redirect:/admin/panelPilkarzy";
+        return "redirect:/admin/panelGraczy";
 
 
     }

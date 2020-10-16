@@ -9,6 +9,9 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity

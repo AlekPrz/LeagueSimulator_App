@@ -24,8 +24,7 @@ public class Player extends User {
     @Enumerated(EnumType.STRING)
     private Position position;
     private String shirtName;
-    private Integer weight;
-    private Integer growth;
+    private Integer age;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "player")
     @ToString.Exclude

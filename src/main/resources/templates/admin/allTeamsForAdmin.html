@@ -60,16 +60,18 @@
 
                 <div class="btn-group" role="group" aria-label="Basic example">
 
+
+                    <a class="btn btn-light text-dark btn-outline-danger " th:href="@{/admin/druzyna/{id}(id=${w.id})}"
+                       role="button"> Dodaj zawodnika</a>
+                    <a class="btn btn-light text-dark btn-outline-danger " th:href="@{/admin/druzyna/gracze/{id}(id=${w.id})}"
+                       role="button"> Podejrzyj zawodników</a>
+
                     <a class="btn btn-primary  text-dark btn-outline-danger" th:href="@{/admin/team/{id}(id=${w.id})}"
                        role="button"> Edytuj</a>
-                    <a class="btn btn-danger text-dark btn-outline-danger " th:href="@{/admin/druzyna/{id}(id=${w.id})}"
-                       role="button"> Dodaj zawodnika</a>
-                    <a class="btn btn-danger text-dark btn-outline-danger " th:href="@{/admin/druzyna/{id}(id=${w.id})}"
-                       role="button"> Podejrzyj zawodników</a>
 
                     <form action="/admin/usunDruzyne" method="post">
                         <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                        <input class="btn btn-outline-danger btn-warning text-dark" type="submit" value="Usuń"/>
+                        <input class="btn btn-outline-danger btn-danger text-dark" type="submit" value="Usuń"/>
                     </form>
                 </div>
 

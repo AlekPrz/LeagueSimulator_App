@@ -25,12 +25,8 @@ public class PlayerValidator {
         errors.clear();
 
 
-        if (!isNameValid(player.getName()) || !isNameValid(player.getSurname())) {
 
-            errors.put("Player", "Gracz nie może mieć nazw z małych liter!");
-
-        }
-        if (playerExist(player.getShirtName())) {
+        if (!playerExist(player.getShirtName())) {
             errors.put("Player", "Gracz znajduje się w bazie!");
         }
 

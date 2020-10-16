@@ -4,16 +4,18 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.TeamException;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.TeamValidator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,19 +28,46 @@ public class TeamService {
 
     private final ManagerTeamRepository managerTeamRepository;
 
-    public Team createTeam(Team team) {
 
-        var errors = teamValidator.validate(team);
-        if (teamValidator.hasErrors()) {
-            var errorsMessage = errors
-                    .entrySet()
-                    .stream()
-                    .map(e -> e.getKey() + ": " + e.getValue())
-                    .collect(Collectors.joining(", "));
-            throw new RuntimeException("Bład przy tworzeniu drużyny " + errorsMessage);
-        }
+    public Map<String, String> checkErrors(Team team, ManagerTeam managerTeam, BindingResult bindingResult) {
 
+        Map<String, String> errorsFromBinding
+                = bindingResult
+                .getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                        e -> e.getField(),
+                        e -> e.getDefaultMessage(),
+                        (v1, v2) -> v1 + ", " + v2
+                ));
+
+        Map<String, String> errorsFromMyValidate = new LinkedHashMap<>();
+        errorsFromMyValidate.putAll(teamValidator.validate(team, managerTeam));
+        errorsFromBinding.forEach(errorsFromMyValidate::putIfAbsent);
+
+        return errorsFromMyValidate;
+
+    }
+
+
+    public Team createTeam(Team team, ManagerTeam managerTeam) {
+
+        Manager manager = managerTeam.getManager();
         teamRepository.save(team);
+        ManagerTeam managerTeam1 = ManagerTeam.builder()
+                .isCurrently(true)
+                .endOfContract(managerTeam.getEndOfContract())
+                .startOfContract(managerTeam.getStartOfContract())
+                .team(team)
+                .manager(manager)
+                .build();
+
+
+        managerTeamRepository.save(managerTeam1);
+
+
+        manager.getManagerTeams().add(managerTeam);
+        team.getManagerTeams().add(managerTeam);
         return team;
 
     }
@@ -66,11 +95,25 @@ public class TeamService {
         return teamRepository.findByKeyword(keyword);
     }
 
-    public void addTeamView(Model model){
-        List<Manager> managers = managerService.findManagers();
-        model.addAttribute("manager", managers);
-        model.addAttribute("managerTeam", new ManagerTeam());
-        model.addAttribute("team", new Team());
+
+    public List<Player> getAllPlayersInThatTeam(Long id) {
+
+
+        List<Player> playersInThatTeam = new ArrayList<>();
+
+        Team team = teamRepository.findById(id).orElse(null);
+        if (team == null) {
+            throw new RuntimeException("team is null");
+        }
+
+
+        for (Contract tmp : team.getContracts()) {
+            if (tmp.getIsCurrently()) {
+                playersInThatTeam.add(tmp.getPlayer());
+            }
+        }
+
+        return playersInThatTeam;
 
     }
 

@@ -17,8 +17,7 @@ public class ManagerService {
     private final UserRepository<Manager> userRepository;
 
 
-
-    public List<Manager> findManagers(){
+    public List<Manager> findManagers() {
 
         List<Manager> managers = new ArrayList<>();
 
@@ -29,6 +28,12 @@ public class ManagerService {
         }
 
         return managers;
+
+    }
+
+    public Manager findManagerById(Long id) {
+
+        return userRepository.findById(id).orElse(null);
 
     }
 

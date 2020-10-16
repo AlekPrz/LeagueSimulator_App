@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -17,11 +19,16 @@ public class Team {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Pattern(regexp = "[A-Z][a-z]{3,9} [A-Z][a-z]{3,9}", message = "2 wyrazy zacyznajace się z dużej litery, " +
+            "każdy z wyrazów 3-9 liter")
+    @NotBlank(message = "Pole nie może być puste")
     private String name;
+    @Pattern(regexp = "([A-Z+]){3,4}", message = "Od 3 do 4 liter i duże litery")
+    @NotBlank(message = "Pole nie może być puste")
     private String shortName;
+    @NotBlank(message = "Pole nie może być puste")
     private String colors;
-
-
 
 
     @EqualsAndHashCode.Exclude
@@ -37,7 +44,6 @@ public class Team {
     private Set<ManagerTeam> managerTeams = new LinkedHashSet<>();
 
 
-
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "homeTeam")
     private Set<MatchTeam> homeGames = new LinkedHashSet<>();
 
@@ -47,7 +53,6 @@ public class Team {
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
     private Set<SeasonTeam> seasonTeams = new LinkedHashSet<>();
-
 
 
 }

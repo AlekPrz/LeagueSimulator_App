@@ -40,7 +40,6 @@
                     <input type="text" th:field="${player.name}"/>
 
 
-
                 </td>
             </tr>
             <tr>
@@ -52,24 +51,23 @@
                     <input type="text" th:field="${player.surname}"/>
                 </td>
             </tr>
-
             <tr>
                 <td>
-                    <label> Wzorst </label>
+                    <label>Pseudonim: </label>
 
                 </td>
                 <td>
-                    <input type="text" th:field="${player.growth}"/>
+                    <input type="text" th:field="${player.shirtName}"/>
                 </td>
             </tr>
 
             <tr>
                 <td>
-                    <label> Waga </label>
+                    <label> Wiek </label>
 
                 </td>
                 <td>
-                    <input type="text" th:field="${player.weight}"/>
+                    <input type="number" th:field="${player.age}"/>
                 </td>
             </tr>
 
@@ -81,23 +79,21 @@
                 </td>
 
                 <td>
-              <select th:field="*{contract.team.id}" required>
-                  <option th:each="t: ${team}" th:value="${t.id}"
-                          th:text="${t.shortName}">
+                    <select th:field="*{contract.team.id}" required>
+                        <option th:each="t: ${team}" th:value="${t.id}"
+                                th:text="${t.shortName}">
 
-                  </option>
-              </select>
+                        </option>
+                    </select>
 
                 </td>
             </tr>
 
 
-
-
-<tr>
-    <td>
-        <label>Pozycja:</label>
-    </td>
+            <tr>
+                <td>
+                    <label>Pozycja:</label>
+                </td>
                 <td>
                     <ul>
                         <li th:each="p: ${position}">
@@ -112,7 +108,7 @@
 
 
                 </td>
-</tr>
+            </tr>
 
             <tr>
                 <td>
@@ -133,25 +129,6 @@
                     <input type="date" th:field="${contract.endOfContract}"/>
                 </td>
             </tr>
-
-            <tr>
-                <td>
-                    <label>Pensja</label>
-
-                </td>
-                <td>
-                    <input type="number" th:field="${contract.salary}"/>
-                </td>
-            </tr>
-
-
-
-
-
-
-
-
-
 
             <tr>
                 <td>

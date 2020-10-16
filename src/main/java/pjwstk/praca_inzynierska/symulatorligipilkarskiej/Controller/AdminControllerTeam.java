@@ -4,18 +4,24 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.PlayerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -24,6 +30,8 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 public class AdminControllerTeam {
 
     private final TeamService teamService;
+    private final PlayerService playerService;
+    private final ManagerService managerService;
     private final ManagerTeamRepository managerTeamRepository;
 
 
@@ -45,41 +53,46 @@ public class AdminControllerTeam {
 
     @GetMapping("/dodajDrużyne")
     public String addTeam(Model model) {
-        teamService.addTeamView(model);
+        List<Manager> managers = managerService.findManagers();
+        model.addAttribute("manager", managers);
+        model.addAttribute("managerTeam", new ManagerTeam());
+        model.addAttribute("team", new Team());
         return "admin/addTeam";
     }
 
 
     @PostMapping("/dodajDrużyne")
-    public String addTeamPost(Team team, ManagerTeam managerTeam) {
+    public String addTeamPost(@Valid @ModelAttribute Team team, BindingResult bindingResult, ManagerTeam managerTeam, Model model) {
 
 
-        teamService.createTeam(team);
+        Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
 
+        System.out.println(managerTeam.getEndOfContract());
 
+        allErrorsFromMyValidate.putAll(teamService.checkErrors(team, managerTeam, bindingResult));
 
-        //Dopisac walidacje która sprawdza czy trener ma drużyne
-        Manager manager = managerTeam.getManager();
+        if (!allErrorsFromMyValidate.isEmpty()) {
 
+            List<Manager> managers = managerService.findManagers();
+            model.addAttribute("error", allErrorsFromMyValidate);
+            model.addAttribute("manager", managers);
+            model.addAttribute("managerTeam", managerTeam);
+            model.addAttribute("team", team);
+            return "admin/addTeam";
+        }
 
-        ManagerTeam managerTeam1 = ManagerTeam.builder()
-                .isCurrently(true)
-                .endOfContract(managerTeam.getEndOfContract())
-                .startOfContract(managerTeam.getStartOfContract())
-                .team(team)
-                .manager(manager)
-                .build();
-
-
-        managerTeamRepository.save(managerTeam1);
-
-
-        manager.getManagerTeams().add(managerTeam);
-        team.getManagerTeams().add(managerTeam);
-
-
+        teamService.createTeam(team, managerTeam);
         return "redirect:/admin/panelDruzyn";
 
+    }
+
+    @GetMapping("/druzyna/gracze/{id}")
+    public String getEmployeesById(@PathVariable Long id, Model model) {
+
+
+        model.addAttribute("players", teamService.getAllPlayersInThatTeam(id));
+
+        return "users/guest/playersInThatTeam";
     }
 
 

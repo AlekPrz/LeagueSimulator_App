@@ -28,58 +28,17 @@
             <th>Wiek</th>
             <th>Pozycja</th>
             <th>Klub</th>
-            <th>Akcje</th>
         </tr>
-        <tr th:each="w:${player}">
+        <tr th:each="w:${players}">
             <td th:text="${w.name}"></td>
             <td th:text="${w.surname}"></td>
             <td th:text="${w.shirtName}"></td>
-            <th th:text="${w.age}"></th>
+            <td th:text="${w.age}"></td>
             <td th:text="${w.position.name()}"></td>
 
-
-            <td>
-                     <span th:each="team : ${w.getContracts()}">
-
-
-       <div th:if="${team.isCurrently}">
-           <div th:text="${team.team.getName()}">
-           </div>
-       </div>
-
-
-
-            </span>
-            </td>
-
-            <td>
-                <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> Edytuj
-                </a>
-
-
-                <form action="/admin/usunPilkarza" method="post">
-
-                    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                    <input class="button" type="submit" value="Usuń"/>
-                </form>
-
-
-            </td>
-
-
         </tr>
 
-        <tr>
 
-            <td>
-
-                <a href="/admin/dodajPiłkarza" class="button text-black"> Dodaj nowego piłkarza </a>
-
-
-            </td>
-
-
-        </tr>
     </table>
 </div>
 </body>
