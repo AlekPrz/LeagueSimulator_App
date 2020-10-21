@@ -37,8 +37,10 @@
 
                 </td>
                 <td>
-                    <input type="text" th:field="${player.name}"/>
-
+                    <input type="text" class="form-control col-lg-4" th:field="${player.name}"/>
+                    <div th:if="${errors?.containsKey('name')}">
+                        <p class="text-danger" th:text="${errors.get('name')}"></p>
+                    </div>
 
                 </td>
             </tr>
@@ -48,7 +50,10 @@
 
                 </td>
                 <td>
-                    <input type="text" th:field="${player.surname}"/>
+                    <input type="text" class="form-control col-lg-4" th:field="${player.surname}"/>
+                    <div th:if="${errors?.containsKey('surname')}">
+                        <p class="text-danger" th:text="${errors.get('surname')}"></p>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -57,7 +62,10 @@
 
                 </td>
                 <td>
-                    <input type="text" th:field="${player.shirtName}"/>
+                    <input type="text" class="form-control col-lg-4" th:field="${player.shirtName}"/>
+                    <div th:if="${errors?.containsKey('shirtName')}">
+                        <p class="text-danger" th:text="${errors.get('shirtName')}"></p>
+                    </div>
                 </td>
             </tr>
 
@@ -67,7 +75,10 @@
 
                 </td>
                 <td>
-                    <input type="number" th:field="${player.age}"/>
+                    <input type="number" class="form-control col-lg-4" th:field="${player.age}"/>
+                    <div th:if="${errors?.containsKey('age')}">
+                        <p class="text-danger" th:text="${errors.get('age')}"></p>
+                    </div>
                 </td>
             </tr>
 
@@ -79,7 +90,7 @@
                 </td>
 
                 <td>
-                    <select th:field="*{contract.team.id}" required>
+                    <select class="form-control col-lg-4" th:field="*{contract.team.id}" required>
                         <option th:each="t: ${team}" th:value="${t.id}"
                                 th:text="${t.shortName}">
 
@@ -95,17 +106,23 @@
                     <label>Pozycja:</label>
                 </td>
                 <td>
-                    <ul>
-                        <li th:each="p: ${position}">
-                            <input type="radio"
-                                   th:field="${player.position}" th:value="${p}" required>
-                            <label th:text="${p}">
+                    <!--   <ul>
+                           <li th:each="p: ${position}">
+                               <input type="radio"
+                                      th:field="${player.position}" th:value="${p}" required>
+                               <label th:text="${p}">
+                               </label>
 
-                            </label>
+                           </li>
+                       </ul>-->
+                    <div class="form-check" th:each="p:${position}">
+                        <input class="form-check-input"
+                               th:field="${player.position}"
+                               type="radio"
+                               th:value="${p}" required>
+                        <h7><span class="label label-default" th:text="${p.name()}"></span></h7>
 
-                        </li>
-                    </ul>
-
+                    </div>
 
                 </td>
             </tr>
@@ -116,7 +133,10 @@
 
                 </td>
                 <td>
-                    <input type="date" th:field="${contract.startOfContract}"/>
+                    <input class="form-control col-lg-4" type="date" th:field="${contract.startOfContract}"/>
+                    <div th:if="${errors?.containsKey('DataStart')}">
+                        <p class="text-danger" th:text="${errors.get('DataStart')}"></p>
+                    </div>
                 </td>
             </tr>
 
@@ -126,16 +146,26 @@
 
                 </td>
                 <td>
-                    <input type="date" th:field="${contract.endOfContract}"/>
+                    <input type="date" class="form-control col-lg-4" th:field="${contract.endOfContract}"/>
+                    <div th:if="${errors?.containsKey('DataEnd')}">
+                        <p class="text-danger" th:text="${errors.get('DataEnd')}"></p>
+                    </div>
+                    <div th:if="${errors?.containsKey('DataCompare')}">
+                        <p class="text-danger" th:text="${errors.get('DataCompare')}"></p>
+                    </div>
                 </td>
             </tr>
 
-            <tr>
+          <!--  <tr>
                 <td>
-                    <input type="submit" value="Potwierdź"/>
+                    <input class="btn btn-primary" type="submit" value="Potwierdź"/>
                 </td>
-            </tr>
+            </tr>-->
         </table>
+        <a href="/admin/panelGraczy" class="btn btn-secondary text-black"> Zawodnicy </a>
+
+        <input class="btn btn-primary float-left" type="submit" value="Potwierdź"/>
+
     </form>
 
 </div>

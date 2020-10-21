@@ -3,6 +3,7 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
@@ -17,36 +18,40 @@ import java.util.Objects;
 public class PlayerValidator {
 
     private final UserRepository<Player> playerUserRepository;
-    Map<String, String> errors = new HashMap<>();
+    Map<String, String> errorsPlayer = new HashMap<>();
 
-    public Map<String, String> validate(Player player) {
+    public Map<String, String> validate(Player player, Contract contract) {
 
 
-        errors.clear();
-
+        errorsPlayer.clear();
 
 
         if (!playerExist(player.getShirtName())) {
-            errors.put("Player", "Gracz znajduje się w bazie!");
+            errorsPlayer.put("shirtName", "Gracz o takiej nazwie znajduje się już w bazie!");
+        }
+        if (contract.getEndOfContract() == null) {
+            errorsPlayer.put("DataEnd", "Data nie może pozostać pusta");
+        }
+        if (contract.getStartOfContract() == null) {
+            errorsPlayer.put("DataStart", "Data nie może pozostać pusta");
+        }
+        if (contract.getStartOfContract().compareTo(contract.getEndOfContract()) >= 0) {
+            errorsPlayer.put("DataCompare", "Data rozpoczęcia kontraktu nie może być późniejsza niż zakończenia !");
         }
 
-        return errors;
+
+        return errorsPlayer;
 
 
     }
 
-
-
-    private boolean isNameValid(String name) {
-        return Objects.nonNull(name) && name.matches("[A-Z]+");
-    }
 
     private boolean playerExist(String name) {
         return playerUserRepository.findByShirtName(name).isEmpty();
     }
 
-    public boolean hasErrors(){
-        return !errors.isEmpty();
+    public boolean hasErrors() {
+        return !errorsPlayer.isEmpty();
     }
 
 

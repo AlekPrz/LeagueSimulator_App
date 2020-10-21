@@ -35,5 +35,4 @@ public class Contract {
     private LocalDate endOfContract;
     private Boolean isCurrently;
     private Long goals;
-    private BigDecimal salary;
 }

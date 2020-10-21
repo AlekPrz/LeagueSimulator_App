@@ -4,6 +4,7 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
@@ -21,8 +22,8 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.UserRegister;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -89,23 +90,6 @@ public class AdminControllerPlayer {
     }
 
 
- /*   @GetMapping("/panelDruzyn")
-    public String getTeams(Model model, @RequestParam(required = false) String keyword) {
-
-
-
-        if(keyword != null){
-            model.addAttribute("team",teamRepository.findByKeyword(keyword));
-        }
-        else{
-            model.addAttribute("team", teamService.getAllTeam());
-
-        }
-
-        return "admin/allTeamsForAdmin";
-
-    }*/
-
     @GetMapping("/panelGraczy")
     public String getPlayers(Model model) {
         List<Player> players = new ArrayList<>();
@@ -138,6 +122,38 @@ public class AdminControllerPlayer {
 
     }
 
+    @PostMapping("/dodajPiłkarza")
+    public String addPlayerPost(@Valid @ModelAttribute Player player, BindingResult bindingResult, Contract contract, Model model) {
+
+        Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
+
+        System.out.println(bindingResult);
+
+
+        allErrorsFromMyValidate.putAll(playerService.checkErrors(player, contract, bindingResult));
+
+        if (!allErrorsFromMyValidate.isEmpty()) {
+            model.addAttribute("errors", allErrorsFromMyValidate);
+            model.addAttribute("player", player);
+            model.addAttribute("contract", contract);
+            model.addAttribute("team", teamService.getAllTeam());
+            model.addAttribute("position", Position.values());
+            return "admin/addPlayer";
+        }
+
+        playerService.createPlayer(player, contract);
+        return "redirect:/admin/panelGraczy";
+    }
+
+
+    @GetMapping("/edytujGracza/{id}")
+    public String workerModifyGet(Model model, @PathVariable Long id) {
+        model.addAttribute("player", playerService.findPlayerById(id));
+        model.addAttribute("team", teamService.getAllTeam());
+        model.addAttribute("position", Position.values());
+        model.addAttribute("contract", playerService.findCurrentlyContract(id));
+        return "admin/modifyPlayer";
+    }
 
 
     @PostMapping("/usunPilkarza")
@@ -151,34 +167,6 @@ public class AdminControllerPlayer {
 
         playerService.deletePlayer(id);
         return "redirect:/admin/panelGraczy";
-    }
-
-
-    @PostMapping("/dodajPiłkarza")
-    public String addPlayerPost(Player player, Contract contract) {
-
-        playerService.createPlayer(player);
-
-        Team team = contract.getTeam();
-
-        Contract contract1 =
-                Contract.builder()
-                        .endOfContract(contract.getEndOfContract())
-                        .startOfContract(contract.getStartOfContract())
-                        .player(player)
-                        .team(team)
-                        .goals(0L)
-                        .salary(contract.getSalary()).build();
-
-        contractRepository.save(contract1);
-
-        team.getContracts().add(contract1);
-        player.getContracts().add(contract1);
-
-
-        return "redirect:/admin/panelGraczy";
-
-
     }
 
 

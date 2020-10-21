@@ -67,7 +67,6 @@ public class AdminControllerTeam {
 
         Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
 
-        System.out.println(managerTeam.getEndOfContract());
 
         allErrorsFromMyValidate.putAll(teamService.checkErrors(team, managerTeam, bindingResult));
 

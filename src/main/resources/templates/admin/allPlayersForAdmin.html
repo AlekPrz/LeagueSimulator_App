@@ -19,17 +19,22 @@
 
 <div class="container">
 
-    <h2>Lista drużyn</h2>
-<!--
-    <table class="table table-bordered table-striped">
--->
+    <h2 class="text-center">Lista drużyn</h2>
+
 
     <form th:action="@{/admin/panelGraczy}" method="get">
-        <input id="txtSearch" type="text" name="keyword">
-        <button type="submit">Go</button>
+        <h4>Wyszukiwanie po słowie </h4>
+
+        <div class="input-group pb-2">
+            <div class="input-group-prepend">
+                <input class="form-control" id="txtSearch" type="text" name="keyword">
+            </div>
+            <button class="btn btn-primary" type="submit">Szukaj</button>
+        </div>
     </form>
 
-    <table class="table table-advance table-hover table-striped">
+
+    <table class="table table-bordered table-striped">
         <tr>
             <th>Imie</th>
             <th>Nazwisko</th>
@@ -50,8 +55,7 @@
             <td>
                      <span th:each="team : ${w.getContracts()}">
 
-
-       <div th:if="${team.isCurrently}">
+                         <div th:if="${team.isCurrently}">
            <div th:text="${team.team.getName()}">
            </div>
        </div>
@@ -62,34 +66,31 @@
             </td>
 
             <td>
-                <a th:href="@{/team/modify/{id}(id=${w.id})}" class="button"> Edytuj
-                </a>
 
 
-                <form action="/admin/usunPilkarza" method="post">
-
-                    <input type="text" name="id" th:value="${w.id}" hidden="hidden">
-                    <input class="button" type="submit" value="Usuń"/>
-                </form>
+                <div class="btn-group" role="group" aria-label="Basic example">
 
 
-            </td>
+                    <a class="btn btn-primary  text-dark btn-outline-danger" th:href="@{/admin/edytujGracza/{id}(id=${w.id})}"
+                       role="button">Edytuj
+                    </a>
 
-
-        </tr>
-
-        <tr>
-
-            <td>
-
-                <a href="/admin/dodajPiłkarza" class="button text-black"> Dodaj nowego piłkarza </a>
+                    <form action="/admin/usunPilkarza" method="post">
+                        <input type="text" name="id" th:value="${w.id}" hidden="hidden">
+                        <input class="btn btn-outline-danger btn-danger text-dark" type="submit" value="Usuń"/>
+                    </form>
+                </div>
 
 
             </td>
 
 
         </tr>
+
     </table>
+
+    <a href="/admin/dodajPiłkarza" class="btn btn-secondary text-black float-left"> Dodaj nowego piłkarza </a>
+
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class Team {
     @GeneratedValue
     private Long id;
 
-    @Pattern(regexp = "[A-Z][a-z]{3,9} [A-Z][a-z]{3,9}", message = "2 wyrazy zacyznajace się z dużej litery, " +
+    @Pattern(regexp = "[A-Z]([a-z]{3,9}) [A-Z]([a-z]{3,9})", message = "2 wyrazy zacyznajace się z dużej litery, " +
             "każdy z wyrazów 3-9 liter")
     @NotBlank(message = "Pole nie może być puste")
     private String name;
