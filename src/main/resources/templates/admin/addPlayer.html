@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -112,7 +114,6 @@
                                       th:field="${player.position}" th:value="${p}" required>
                                <label th:text="${p}">
                                </label>
-
                            </li>
                        </ul>-->
                     <div class="form-check" th:each="p:${position}">
@@ -156,11 +157,11 @@
                 </td>
             </tr>
 
-          <!--  <tr>
-                <td>
-                    <input class="btn btn-primary" type="submit" value="Potwierdź"/>
-                </td>
-            </tr>-->
+            <!--  <tr>
+                  <td>
+                      <input class="btn btn-primary" type="submit" value="Potwierdź"/>
+                  </td>
+              </tr>-->
         </table>
         <a href="/admin/panelGraczy" class="btn btn-secondary text-black"> Zawodnicy </a>
 
@@ -171,3 +172,6 @@
 </div>
 </body>
 </html>
+
+
+ 

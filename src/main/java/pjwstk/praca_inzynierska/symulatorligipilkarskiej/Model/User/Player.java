@@ -21,7 +21,6 @@ import java.util.Set;
 
 public class Player extends User {
 
-
     @Pattern(regexp = "[A-Z][a-z]+", message = " Imie musi zaczynać się z dużej litery, reszta z małej, bez spacji")
     private String name;
     @Pattern(regexp = "[A-Z][a-z]+", message = " Nazwisko musi zaczynać się z dużej litery, reszta z małej, bez spacji")
@@ -36,5 +35,4 @@ public class Player extends User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Contract> contracts = new LinkedHashSet<>();
-
 }

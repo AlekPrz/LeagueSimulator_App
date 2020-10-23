@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.TeamException;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
@@ -59,6 +58,7 @@ public class PlayerService {
     public Player createPlayer(Player player, Contract contract) {
 
 
+
         Team team = contract.getTeam();
 
 
@@ -78,7 +78,6 @@ public class PlayerService {
         player.getContracts().add(contract1);
 
      /*   String password = PasswordGenerator.stringGenerator();
-
         Player player1 = Player.builder()
                 .username(player.getName().substring(0, 1).concat(player.getSurname()))
                 .password(UserRegister.encodePassword(password))
@@ -132,5 +131,4 @@ public class PlayerService {
         }
 
     }
-
 }

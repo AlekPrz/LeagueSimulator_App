@@ -14,6 +14,7 @@ import java.util.Optional;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
     Optional<Team> findByName(String name);
+    Optional<Team> findByShortName(String shortName);
 
     @Query(value = "select * from Team e where e.name like %:keyword% ", nativeQuery = true)
     List<Team> findByKeyword(@Param("keyword") String keyword);

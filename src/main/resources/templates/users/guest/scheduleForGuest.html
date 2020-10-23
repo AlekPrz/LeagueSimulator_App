@@ -18,25 +18,9 @@
 
 <div class="container">
 
-    <h2>Lista drużyn</h2>
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>Nazwa</th>
-            <th>Skrócona nazwa</th>
-            <th>Kolory</th>
-            <th>Akcje</th>
-
-
-        </tr>
-        <tr th:each="w:${team}">
-            <td th:text="${w.name}"></td>
-            <td th:text="${w.shortName}"></td>
-            <td th:text="${w.colors}"></td>
-
-
-        </tr>
-    </table>
-    <a href="/drużyny" class="btn btn-secondary text-black float-left"> Drużyny </a>
+   <div th:if="${error}">
+       <h1>Terminarz w budowie, liga się jeszcze nie rozpoczeła</h1>
+   </div>
 
 </div>
 </body>

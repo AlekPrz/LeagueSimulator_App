@@ -29,8 +29,11 @@ public class TeamValidator {
         errorsTeam.clear();
 
 
-        if (!teamExist(team.getName())) {
+        if (!teamExistByName(team.getName())) {
             errorsTeam.put("TeamName", "Drużyna o takiej nazwie znajduje się w bazie");
+        }
+        if (!teamExistByShortName(team.getShortName())) {
+            errorsTeam.put("TeamShortName", "Drużyna o takiej krótkiej nazwie znajduje się w bazie");
         }
 
         if (managerTeam.getManager() == null) {
@@ -41,12 +44,15 @@ public class TeamValidator {
             errorsTeam.put("Data", "Data nie może pozostać pusta");
 
         }
+
+
+
 ;
         Manager manager = managerService.findManagerById(managerTeam.getManager().getId());
 
 
         for (ManagerTeam mt : manager.getManagerTeams()) {
-            if (mt.getIsCurrently().equals(true)) {
+            if (mt.getIsCurrently()) {
                 errorsTeam.put("ManagerCurrently", "Ten manager ma już drużyne, nie może mieć 2 drużyn!");
             }
 
@@ -57,9 +63,13 @@ public class TeamValidator {
     }
 
 
-    private boolean teamExist(String name) {
+    private boolean teamExistByName(String name) {
         return teamRepository.findByName(name).isEmpty();
     }
+    private boolean teamExistByShortName(String name) {
+        return teamRepository.findByShortName(name).isEmpty();
+    }
+
 
     public boolean hasErrors() {
         return !errorsTeam.isEmpty();

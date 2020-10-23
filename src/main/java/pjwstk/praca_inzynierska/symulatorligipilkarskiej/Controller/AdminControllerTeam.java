@@ -9,19 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.PlayerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -91,7 +87,7 @@ public class AdminControllerTeam {
 
         model.addAttribute("players", teamService.getAllPlayersInThatTeam(id));
 
-        return "users/guest/playersInThatTeam";
+        return "admin/playersInThatTeam";
     }
 
 

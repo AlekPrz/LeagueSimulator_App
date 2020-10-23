@@ -66,6 +66,9 @@
                 </td>
                 <td>
                     <input type="text" class="form-control col-lg-4" th:field="${team.shortName}"/>
+                    <div class="text-danger" th:if="${error?.containsKey('TeamShortName')}">
+                        <p th:text="${error.get('TeamShortName')}"></p>
+                    </div>
                     <div class="text-danger" th:if="${error?.containsKey('shortName')}">
                         <p th:text="${error.get('shortName')}"></p>
                     </div>
@@ -92,8 +95,8 @@
                     <div th:if="${error?.containsKey('ManagerNull')}">
                         <p class="text-danger" th:text="${error.get('ManagerNull')}"></p>
                     </div>
-                    <div th:if="${error?.containsKey('ManagerTeam')}">
-                        <p class="text-danger" th:text="${error.get('ManagerTeam')}"></p>
+                    <div th:if="${error?.containsKey('ManagerCurrently')}">
+                        <p class="text-danger" th:text="${error.get('ManagerCurrently')}"></p>
                     </div>
 
                 </td>
