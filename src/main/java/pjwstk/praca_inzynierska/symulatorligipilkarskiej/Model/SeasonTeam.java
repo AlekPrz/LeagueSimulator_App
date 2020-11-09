@@ -1,7 +1,9 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 
@@ -10,6 +12,9 @@ import java.util.*;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SeasonTeam {
 
     @Id
@@ -17,23 +22,17 @@ public class SeasonTeam {
     private Long id;
     private Integer points;
     private Integer goals;
+    private Integer matchesDone;
+    private Integer currentlyPlace;
     private boolean isCurrently;
 
 
-
-    // DRUŻYNA BRALA UDZIAL W WIELU SEZONACH
     @ManyToOne
     @JoinColumn(name = "team_id")
-     private Team team;
+    private Team team;
     @ManyToOne
     @JoinColumn(name = "season_id")
-     private Season season;
-
-
-
-
-
-
+    private Season season;
 
 
 }

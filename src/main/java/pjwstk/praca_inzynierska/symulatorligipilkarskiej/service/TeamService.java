@@ -5,14 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.TeamException;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.TeamValidator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.MatchTeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 
 import java.util.*;
@@ -25,6 +24,8 @@ public class TeamService {
     private final TeamValidator teamValidator;
     private final ContractService contractService;
     private final ManagerService managerService;
+    private final SeasonTeamRepository seasonTeamRepository;
+    private final MatchTeamRepository matchTeamRepository;
 
     private final ManagerTeamRepository managerTeamRepository;
 
@@ -73,18 +74,32 @@ public class TeamService {
     }
 
     public void deleteTeam(Long id) {
-        for (Contract contract : contractService.getAllContracts()) {
-            if (contract.getTeam().getId().equals(id)) {
-                contractService.deleteContract(contract);
+
+
+        Team teamToDelete = teamRepository.findById(id).orElse(null);
+
+
+        for (SeasonTeam tmp : seasonTeamRepository.findAll()) {
+            if (tmp.getTeam().getId().equals(teamToDelete.getId())) {
+                seasonTeamRepository.delete(tmp);
+
             }
         }
-        for (ManagerTeam managerTeam : managerTeamRepository.findAll()) {
-            if (managerTeam.getTeam().getId().equals(id)) {
-                managerTeamRepository.delete(managerTeam);
+        for (MatchTeam tmp : matchTeamRepository.findAll()) {
+            if (tmp.getHomeTeam().getId().equals(teamToDelete.getId())) {
+                matchTeamRepository.delete(tmp);
+            }
+            if (tmp.getVisitTeam().getId().equals(teamToDelete.getId())) {
+                matchTeamRepository.delete(tmp);
             }
         }
-        teamRepository.deleteById(id);
+
+
+        teamRepository.delete(teamToDelete);
+
+
     }
+
 
     public List<Team> getAllTeam() {
         return teamRepository
@@ -115,6 +130,23 @@ public class TeamService {
 
         return playersInThatTeam;
 
+    }
+
+    public ManagerTeam findCurrentlyManager(Long id) {
+
+        Team team = teamRepository.findById(id).orElse(null);
+
+
+        ManagerTeam managerTeam = null;
+
+        for (ManagerTeam tmp : team.getManagerTeams()) {
+            if (tmp.getIsCurrently()) {
+                managerTeam = tmp;
+            }
+        }
+
+
+        return managerTeam;
     }
 
 }

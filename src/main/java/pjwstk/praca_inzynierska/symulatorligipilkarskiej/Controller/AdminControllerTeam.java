@@ -6,10 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Position;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.PlayerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
@@ -29,6 +32,7 @@ public class AdminControllerTeam {
     private final PlayerService playerService;
     private final ManagerService managerService;
     private final ManagerTeamRepository managerTeamRepository;
+    private final TeamRepository teamRepository;
 
 
     @GetMapping("/panelDruzyn")
@@ -38,11 +42,13 @@ public class AdminControllerTeam {
         } else {
             model.addAttribute("team", teamService.getAllTeam());
         }
-        return "admin/allTeamsForAdmin";
+        return "admin/teams/allTeamsForAdmin";
     }
 
     @PostMapping("/usunDruzyne")
     public String deleteTeam(Long id) {
+
+
         teamService.deleteTeam(id);
         return "redirect:/admin/panelDruzyn";
     }
@@ -50,10 +56,12 @@ public class AdminControllerTeam {
     @GetMapping("/dodajDrużyne")
     public String addTeam(Model model) {
         List<Manager> managers = managerService.findManagers();
+
+
         model.addAttribute("manager", managers);
         model.addAttribute("managerTeam", new ManagerTeam());
         model.addAttribute("team", new Team());
-        return "admin/addTeam";
+        return "admin/teams/addTeam";
     }
 
 
@@ -73,7 +81,7 @@ public class AdminControllerTeam {
             model.addAttribute("manager", managers);
             model.addAttribute("managerTeam", managerTeam);
             model.addAttribute("team", team);
-            return "admin/addTeam";
+            return "admin/teams/addTeam";
         }
 
         teamService.createTeam(team, managerTeam);
@@ -87,7 +95,45 @@ public class AdminControllerTeam {
 
         model.addAttribute("players", teamService.getAllPlayersInThatTeam(id));
 
-        return "admin/playersInThatTeam";
+        return "admin/teams/playersInThatTeam";
+    }
+
+
+    @GetMapping("/edytujDruzyne/{id}")
+    public String editTeamGet(Model model, @PathVariable Long id) {
+        List<Manager> managers = managerService.findManagers();
+
+
+        model.addAttribute("manager", managers);
+        model.addAttribute("managerTeam", teamService.findCurrentlyManager(id));
+        model.addAttribute("team", teamRepository.findById(id).orElse(null));
+
+
+        return "admin/teams/modifyTeam";
+    }
+
+    @PostMapping("/edytujDruzyne")
+    public String editTeamPost(@Valid @ModelAttribute Team team, BindingResult bindingResult, ManagerTeam managerTeam, Model model) {
+
+
+        Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
+
+
+        allErrorsFromMyValidate.putAll(teamService.checkErrors(team, managerTeam, bindingResult));
+
+        if (!allErrorsFromMyValidate.isEmpty()) {
+
+            List<Manager> managers = managerService.findManagers();
+            model.addAttribute("error", allErrorsFromMyValidate);
+            model.addAttribute("manager", managers);
+            model.addAttribute("managerTeam", managerTeam);
+            model.addAttribute("team", team);
+            return "admin/teams/addTeam";
+        }
+
+        teamService.createTeam(team, managerTeam);
+        return "redirect:/admin/panelDruzyn";
+
     }
 
 

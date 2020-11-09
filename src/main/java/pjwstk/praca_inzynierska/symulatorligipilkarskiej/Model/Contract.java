@@ -1,9 +1,6 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 
@@ -21,18 +18,17 @@ public class Contract {
 
     @Id
     @GeneratedValue
-    @Column(name = "PlayerTeam_id")
     Long id;
     @ManyToOne
     @JoinColumn(name = "team_id")
+    @ToString.Exclude
+
     private Team team;
     @ManyToOne
     @JoinColumn(name = "player_id")
     private Player player;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startOfContract;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endOfContract;
     private Boolean isCurrently;
     private Long goals;
 }

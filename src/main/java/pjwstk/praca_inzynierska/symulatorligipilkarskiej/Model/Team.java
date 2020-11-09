@@ -16,9 +16,8 @@ import java.util.Set;
 public class Team {
 
 
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Pattern(regexp = "[A-Z]([a-z]+) [A-Z]([a-z]+)", message = "2 wyrazy zacyznajace się z dużej litery")
@@ -31,28 +30,36 @@ public class Team {
     private String colors;
 
 
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
+    @EqualsAndHashCode.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
     private Set<Contract> contracts = new LinkedHashSet<>();
 
-    @EqualsAndHashCode.Exclude
+
     @ToString.Exclude
-
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
+    @EqualsAndHashCode.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "team")
     private Set<ManagerTeam> managerTeams = new LinkedHashSet<>();
 
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "homeTeam")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "homeTeam")
     private Set<MatchTeam> homeGames = new LinkedHashSet<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "visitTeam")
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "visitTeam")
     private Set<MatchTeam> visitGames = new LinkedHashSet<>();
 
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "team")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "team")
     private Set<SeasonTeam> seasonTeams = new LinkedHashSet<>();
+
+
 
 
 }

@@ -1,9 +1,6 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
@@ -24,7 +21,10 @@ public class ManagerTeam {
     @GeneratedValue
     @Column(name = "ManagerTeam_Id")
     Long id;
+
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "team_id")
     private Team team;
     @ManyToOne

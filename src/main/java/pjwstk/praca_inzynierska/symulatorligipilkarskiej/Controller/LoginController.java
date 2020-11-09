@@ -22,6 +22,11 @@ public class LoginController {
 
     }
 
+    @GetMapping("/accessDenied")
+    public String accessDenied(Model model) {
+        model.addAttribute("info", "Dostęp zabroniony!!!!");
+        return "security/accessDenied";
+    }
 
 
 

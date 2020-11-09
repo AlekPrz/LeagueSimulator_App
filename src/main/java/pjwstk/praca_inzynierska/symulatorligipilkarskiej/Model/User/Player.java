@@ -7,6 +7,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Position;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -28,7 +29,8 @@ public class Player extends User {
     @Enumerated(EnumType.STRING)
     private Position position;
     private String shirtName;
-    @Min(value = 18, message = "Wiek musi być większy niż 16")
+
+    @Min(value = 16, message = "Wiek musi być większy niż 16")
     private Integer age;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "player")

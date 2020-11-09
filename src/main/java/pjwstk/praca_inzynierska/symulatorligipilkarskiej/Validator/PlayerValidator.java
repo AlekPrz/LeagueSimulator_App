@@ -26,17 +26,49 @@ public class PlayerValidator {
         errorsPlayer.clear();
 
 
-        if (!playerExist(player.getShirtName())) {
+        if (!playerExist(player.getShirtName()))
+        {
             errorsPlayer.put("shirtName", "Gracz o takiej nazwie znajduje się już w bazie!");
         }
-        if (contract.getEndOfContract() == null) {
-            errorsPlayer.put("DataEnd", "Data nie może pozostać pusta");
-        }
+
         if (contract.getStartOfContract() == null) {
             errorsPlayer.put("DataStart", "Data nie może pozostać pusta");
         }
-        if (contract.getStartOfContract().compareTo(contract.getEndOfContract()) >= 0) {
-            errorsPlayer.put("DataCompare", "Data rozpoczęcia kontraktu nie może być późniejsza niż zakończenia !");
+
+        if (player.getAge() == null) {
+            errorsPlayer.put("ageNull", "Wiek nie może być pusty");
+
+        }
+
+
+        return errorsPlayer;
+
+
+    }
+
+
+
+
+    public Map<String, String> validateModify(Player player, Contract contract) {
+
+
+
+        errorsPlayer.clear();
+
+
+        if (!playerExist(player.getShirtName()) &&
+                !player.getShirtName().equals(playerUserRepository.findById(player.getId()).orElse(null).getShirtName()))
+        {
+            errorsPlayer.put("shirtName", "Gracz o takiej nazwie znajduje się już w bazie!");
+        }
+
+        if (contract.getStartOfContract() == null) {
+            errorsPlayer.put("DataStart", "Data nie może pozostać pusta");
+        }
+
+        if (player.getAge() == null) {
+            errorsPlayer.put("ageNull", "Wiek nie może być pusty");
+
         }
 
 
@@ -53,7 +85,6 @@ public class PlayerValidator {
     public boolean hasErrors() {
         return !errorsPlayer.isEmpty();
     }
-
 
 
 }
