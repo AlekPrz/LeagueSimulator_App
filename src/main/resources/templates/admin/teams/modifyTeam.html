@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+
+
+<div th:insert="navigation/adminNavigation">Navigation</div>
+
+<div class="container">
+    <h2>Dodaj drużyne</h2>
+
+    <form action="/admin/edytujDruzyne" method="post">
+        <input type="text" th:field="${team.id}" hidden="hidden">
+
+        <table class="table table-striped table-bordered">
+            <tr>
+                <td>
+                    <label>Nazwa Drużyny: </label>
+                </td>
+
+                <td>
+                    <input type="text" class="form-control col-lg-4" th:field="${team.name}"/>
+                    <div th:if="${error?.containsKey('name')}">
+                        <p class="text-danger" th:text="${error.get('name')}"></p>
+                    </div>
+                    <div th:if="${error?.containsKey('TeamName')}">
+                        <p class="text-danger" th:text="${error.get('TeamName')}"></p>
+                    </div>
+
+                </td>
+
+
+            </tr>
+            <tr>
+                <td>
+                    <label>Kolory: </label>
+
+                </td>
+                <td>
+                    <input type="text" class="form-control col-lg-4" th:field="${team.colors}"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>Skrócona Nazwa </label>
+
+                </td>
+                <td>
+                    <input type="text" class="form-control col-lg-4" th:field="${team.shortName}"/>
+                    <div class="text-danger" th:if="${error?.containsKey('TeamShortName')}">
+                        <p th:text="${error.get('TeamShortName')}"></p>
+                    </div>
+                    <div class="text-danger" th:if="${error?.containsKey('shortName')}">
+                        <p th:text="${error.get('shortName')}"></p>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <label>Trener: </label>
+
+                </td>
+
+                <td>
+
+
+                    <select class="form-control col-lg-4" th:field="${managerTeam.manager.id}" required>
+                        <option
+                                th:each="m: ${manager}"
+                                th:value="${m.id}"
+                                th:text="${m.username}">
+                        </option>
+                    </select>
+                    <div th:if="${error?.containsKey('ManagerNull')}">
+                        <p class="text-danger" th:text="${error.get('ManagerNull')}"></p>
+                    </div>
+                    <div th:if="${error?.containsKey('ManagerCurrently')}">
+                        <p class="text-danger" th:text="${error.get('ManagerCurrently')}"></p>
+                    </div>
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <label>Data Podpisania Kontraktu: </label>
+
+                </td>
+                <td>
+                    <input type="date" class="form-control col-lg-4" th:field="${managerTeam.startOfContract}"/>
+                    <div class="text-danger" th:if="${error?.containsKey('Data')}">
+                        <p th:text="${error.get('Data')}"></p>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <label>Data Zakonczenia Kontraktu: </label>
+
+                </td>
+                <td>
+                    <input type="date" class="form-control col-lg-4" th:field="${managerTeam.endOfContract}"/>
+                </td>
+
+            </tr>
+            <div th:if="${error?.containsKey('Team')}">
+                <p class="text-danger" th:text="${error.get('Team')}"></p>
+            </div>
+
+            </tr>
+
+
+            <tr>
+                <td>
+                    <input class="btn btn-primary" type="submit" value="Potwierdź"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</div>
+
+</form>
+
+</div>
+</body>
+</html>

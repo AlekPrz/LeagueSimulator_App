@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    table a {
+        color: black;
+    }
+</style>
+<body>
+<div th:insert="navigation/navigation">Navigation</div>
+
+<div class="container">
+
+    <div th:if="${error}">
+        <h1>Rozgrywki się jeszcze nie rozpoczęły!</h1>
+    </div>
+    <div th:unless="${error}">
+
+
+
+    <h2 class="pt-5">Tabela</h2>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Miejsce</th>
+            <th>Nazwa</th>
+            <th>Skrót</th>
+            <th>Ilość zdobytych goli</th>
+            <th>Rozegrane mecze</th>
+            <th>Zdobyte Punkty</th>
+
+
+        </tr>
+
+
+        <tr th:each="w:${teamTable}">
+
+
+            <td th:text="${w.getCurrentlyPlace()}"></td>
+            <td th:text="${w.getTeam().name}"></td>
+            <td th:text="${w.getTeam().getShortName()}"></td>
+            <td th:text="${w.getGoals()}"></td>
+            <td th:text="${w.getMatchesDone()}"></td>
+            <td th:text="${w.getPoints()}"></td>
+
+
+        </tr>
+    </table>
+
+    </div>
+</div>
+</body>
+</html>

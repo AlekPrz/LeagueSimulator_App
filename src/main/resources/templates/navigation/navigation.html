@@ -4,19 +4,23 @@
 
     <style>
 
-    .nav.navbar-nav.navbar-right li a {
-        color: white;
-    }
+        .nav.navbar-nav.navbar-right li a {
+            color: white;
+        }
 
-</style>
+    </style>
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand text-white">PJWSTK</a>
 
 
-
             <ul class="navbar-nav mr-auto">
+
+
+                <li sec:authorize="!isAuthenticated()">
+                    <span class="navbar-text px-2 text-white" th:text="Gość"></span>
+                </li>
 
 
                 <li sec:authorize="isAuthenticated()">
@@ -29,34 +33,15 @@
                 </li>
 
 
-
-<!--
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Rozgrywki
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/drużyny">Drużyny</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/terminarz">Terminarz</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/Tabela">Tabela</a>
-                    </div>
-                </li>
--->
-
-
-
-               <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link text-white" href="/drużyny">Drużyny</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/terminarz">Terminarz</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="/tabela">Tabela</a>
+                    <a class="nav-link text-white" href="/tabela">Tabela Ligowa</a>
                 </li>
-
 
 
                 <li class="nav-item" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
@@ -71,7 +56,6 @@
                         Panel Managera
                     </a>
                 </li>
-
 
 
             </ul>

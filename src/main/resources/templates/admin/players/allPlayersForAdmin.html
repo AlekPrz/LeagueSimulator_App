@@ -19,19 +19,7 @@
 
 <div class="container">
 
-    <h2 class="text-center">Lista drużyn</h2>
-
-
-    <form th:action="@{/admin/panelGraczy}" method="get">
-        <h4>Wyszukiwanie po słowie </h4>
-
-        <div class="input-group pb-2">
-            <div class="input-group-prepend">
-                <input class="form-control" id="txtSearch" type="text" name="keyword">
-            </div>
-            <button class="btn btn-primary" type="submit">Szukaj</button>
-        </div>
-    </form>
+    <h2 class="text-center">Lista Graczy</h2>
 
 
     <table class="table table-bordered table-striped">
@@ -71,7 +59,8 @@
                 <div class="btn-group" role="group" aria-label="Basic example">
 
 
-                    <a class="btn btn-primary  text-dark btn-outline-danger" th:href="@{/admin/edytujGracza/{id}(id=${w.id})}"
+                    <a class="btn btn-primary  text-dark btn-outline-danger"
+                       th:href="@{/admin/edytujGracza/{id}(id=${w.id})}"
                        role="button">Edytuj
                     </a>
 

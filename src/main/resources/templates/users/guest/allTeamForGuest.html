@@ -4,12 +4,13 @@
 
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <style>
-    table a{
+    table a {
         color: black;
     }
 </style>
@@ -18,25 +19,31 @@
 
 <div class="container">
 
-    <h2>Lista drużyn</h2>
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>Nazwa</th>
-            <th>Skrócona nazwa</th>
-            <th>Kolory</th>
-            <th>Akcje</th>
+    <div th:if="${error}">
+        <h1>Drużyny jeszcze nie zostały dodane do bazy !</h1>
+    </div>
+
+    <div th:unless="${error}">
 
 
-        </tr>
-        <tr th:each="w:${team}">
-            <td th:text="${w.name}"></td>
-            <td th:text="${w.shortName}"></td>
-            <td th:text="${w.colors}"></td>
+        <h2 class="pt-5">Lista drużyn</h2>
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Nazwa</th>
+                <th>Skrócona nazwa</th>
+                <th>Kolory</th>
 
 
-        </tr>
-    </table>
-    <a href="/drużyny" class="btn btn-secondary text-black float-left"> Drużyny </a>
+            </tr>
+            <tr th:each="w:${team}">
+                <td th:text="${w.name}"></td>
+                <td th:text="${w.shortName}"></td>
+                <td th:text="${w.colors}"></td>
+
+
+            </tr>
+        </table>
+    </div>
 
 </div>
 </body>

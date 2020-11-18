@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    table a {
+        color: black;
+    }
+
+    .btn-group .btn-outline-danger {
+        margin: 2px;
+
+    }
+
+</style>
+<body>
+<div th:insert="navigation/adminNavigation">Navigation</div>
+
+<div class="container py-3 ">
+
+    <div th:if="${emptyMatch}">
+        <form action="/admin/generujTerminarz" method="post">
+
+            <button class="btn btn-danger" type="submit">Generuj Terminarz</button>
+
+        </form>
+    </div>
+
+    <div th:unless="${emptyMatch}">
+        <form action="/admin/usuńTerminarz" method="post">
+            <button class="btn btn-danger" type="submit">Usuń Terminarz</button>
+        </form>
+
+
+
+
+        <div>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Kolejka</th>
+                    <th>1 Drużyna</th>
+                    <th>Wynik</th>
+                    <th>2 Drużyna</th>
+                    <th>Data Rozegrania meczu</th>
+                    <th>Akcja</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${page.content}">
+                    <td th:text="${p.queue}"></td>
+                    <td th:text="${p.homeTeam.name}"></td>
+                    <td th:text="${p.score}"></td>
+                    <td th:text="${p.visitTeam.name}"></td>
+                    <td th:text="${p.dateOfGame}"></td>
+
+                    <td>
+
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+
+                            <a class="btn btn-light text-dark btn-outline-danger " th:href="@{/admin/wprowadźWynik/{id}(id=${p.id})}"
+                               role="button">Wprowadź wynik </a>
+
+                        </div>
+
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <ul class="pagination">
+    <span th:if="${page.hasPrevious()}">
+        <li class="page-item">
+        <a class="page-link"
+           th:href="@{/admin/terminarz(page=${page.number-1},size=${page.size})}">Poprzednia Kolejka</a>
+        </li>
+    </span>
+
+
+                <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+                    <li class="page-item">
+                        <span th:if="${page.number == i}" class="selected page-link">[[${i}+1]]</span>
+                        <span th:unless="${page.number == i}">
+             <a class="page-link" th:href="@{/admin/terminarz(page=${i},size=${page.size})}">[[${i}+1]]</a>
+        </span>
+                    </li>
+                </th:block>
+                <span th:if="${page.hasNext()}">
+                <li class="page-item">
+        <a class="page-link" th:href="@{/admin/terminarz(page=${page.number+1},size=${page.size})}">Następna Kolejka</a>
+                </li>
+    </span>
+            </ul>
+
+
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+                    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+                    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+                    crossorigin="anonymous"></script>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

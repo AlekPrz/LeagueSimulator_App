@@ -80,6 +80,9 @@
                     <input type="number" class="form-control col-lg-4" th:field="${player.age}"/>
                     <div th:if="${errors?.containsKey('age')}">
                         <p class="text-danger" th:text="${errors.get('age')}"></p>
+
+                        <div th:if="${errors?.containsKey('ageNull')}">
+                            <p class="text-danger" th:text="${errors.get('ageNull')}"></p>
                     </div>
                 </td>
             </tr>
@@ -92,7 +95,11 @@
                 </td>
 
                 <td>
-                    <select class="form-control col-lg-4" th:field="*{contract.team.id}" required>
+                    <select class="form-control col-lg-4" th:field="*{contract.team.id}"
+                            oninvalid="this.setCustomValidity('Wybierz drużyne')"
+                            oninput="setCustomValidity('')" required>
+
+                        <option value=""> -- Wybierz drużyne -- </option>
                         <option th:each="t: ${team}" th:value="${t.id}"
                                 th:text="${t.shortName}">
 
@@ -130,7 +137,7 @@
 
             <tr>
                 <td>
-                    <label>Data Podpisania Kontraktu: </label>
+                    <label>Data Dołączenia: </label>
 
                 </td>
                 <td>
@@ -141,21 +148,7 @@
                 </td>
             </tr>
 
-            <tr>
-                <td>
-                    <label>Data Zakonczenia Kontraktu: </label>
 
-                </td>
-                <td>
-                    <input type="date" class="form-control col-lg-4" th:field="${contract.endOfContract}"/>
-                    <div th:if="${errors?.containsKey('DataEnd')}">
-                        <p class="text-danger" th:text="${errors.get('DataEnd')}"></p>
-                    </div>
-                    <div th:if="${errors?.containsKey('DataCompare')}">
-                        <p class="text-danger" th:text="${errors.get('DataCompare')}"></p>
-                    </div>
-                </td>
-            </tr>
 
             <!--  <tr>
                   <td>
