@@ -8,6 +8,8 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,6 +24,7 @@ public class MatchTeam {
     @GeneratedValue
     @EqualsAndHashCode.Exclude
     private Long id;
+
 
     @ManyToOne
     @JoinColumn(name = "hosting_team_id")
@@ -44,10 +47,25 @@ public class MatchTeam {
     private Integer queue;
 
 
-
     @EqualsAndHashCode.Exclude
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfGame;
+
+    public boolean isDuplicate(MatchTeam matchTeam) {
+
+        if (homeTeam.equals(matchTeam.getHomeTeam()) && visitTeam.equals(matchTeam.getVisitTeam())) {
+
+
+            return true;
+        } else if (homeTeam.equals(matchTeam.getVisitTeam()) && visitTeam.equals(matchTeam.getHomeTeam())) {
+
+
+            return true;
+        }
+        return false;
+    }
+
+    public static List<MatchTeam> oldMatch = new ArrayList<>();
 
 
 }

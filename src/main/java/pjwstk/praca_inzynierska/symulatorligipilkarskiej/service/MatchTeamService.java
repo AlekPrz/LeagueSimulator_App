@@ -29,7 +29,9 @@ public class MatchTeamService {
     private final SeasonTeamRepository seasonTeamRepository;
 
 
-    public void generateSchedule() {
+
+
+/*    public void generateSchedule() {
 
         matchTeamRepository.deleteAll();
 
@@ -132,6 +134,119 @@ public class MatchTeamService {
         }
 
 
+    }*/
+
+
+    public void generateSchedule() {
+
+        matchTeamRepository.deleteAll();
+
+
+        Season season = Season.builder()
+                .seasonStart(LocalDate.now())
+                .seasonEnd(LocalDate.now().plusYears(1))
+                .match(new LinkedHashSet<>())
+                .seasonTeams(new LinkedHashSet<>()).build();
+
+
+        seasonRepository.save(season);
+
+
+        List<Team> allTeams = teamRepository.findAll();
+        List<MatchTeam> listOfEarlyMatches = new ArrayList<>();
+        List<Team> currentlyTeams = teamRepository.findAll();
+
+
+        for (Team team : allTeams) {
+
+            SeasonTeam seasonTeam = SeasonTeam.builder().team(team).season(season).points(0).goals(0).matchesDone(0).isCurrently(true).currentlyPlace(0).build();
+
+
+            seasonTeamRepository.save(seasonTeam);
+        }
+
+
+        int i = teamRepository.findAll().size() - 1;
+        int queue = 1;
+        LocalDate localDate = LocalDate.of(2020, 11, 06);
+
+        Random random = new Random();
+
+        int firstRandom;
+        int secondRandom;
+
+
+        while (i != 0) {
+            while (allTeams.size() != 0) {
+
+
+                firstRandom = random.nextInt(allTeams.size());
+                secondRandom = random.nextInt(allTeams.size());
+
+                while (firstRandom == secondRandom) {
+                    secondRandom = random.nextInt(allTeams.size());
+                }
+                Team firstTeam = allTeams.get(firstRandom);
+                Team secondTeam = allTeams.get(secondRandom);
+
+                MatchTeam matchTeam =
+                        MatchTeam.builder()
+                                .homeTeam(firstTeam)
+                                .visitTeam(secondTeam)
+                                .season(season)
+                                .queue(queue)
+                                .dateOfGame(localDate)
+                                .build();
+
+
+                if (allTeams.size() == 2 && isDuplication(matchTeam)) {
+                    MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                    MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+
+
+                    for (MatchTeam tmp : matchTeamRepository.findAll()) {
+                        if (tmp.getQueue() == queue) {
+                            matchTeamRepository.delete(tmp);
+                        }
+                    }
+
+                }
+
+
+                if (!isDuplication(matchTeam)) {
+
+                    MatchTeam.oldMatch.add(matchTeam);
+                    matchTeamRepository.save(matchTeam);
+
+
+                    if (firstRandom > secondRandom) {
+                        allTeams.remove(firstRandom);
+                        allTeams.remove(secondRandom);
+                    } else {
+                        allTeams.remove(secondRandom);
+                        allTeams.remove(firstRandom);
+                    }
+                }
+
+            }
+            i--;
+            queue++;
+            localDate = localDate.plusWeeks(2);
+            allTeams.addAll(teamRepository.findAll());
+
+        }
+
+
+    }
+
+
+    private boolean isDuplication(MatchTeam tmp) {
+        for (MatchTeam oldMatch : MatchTeam.oldMatch) {
+            if (oldMatch.isDuplicate(tmp)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
