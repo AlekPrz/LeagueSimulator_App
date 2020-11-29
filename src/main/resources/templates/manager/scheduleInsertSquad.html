@@ -37,7 +37,7 @@
 
 
                     <input type="checkbox" th:value="${tmp}"
-                           th:field="*{player.playerList[__${playerId.index}__]v14}"
+                           th:field="*{player.playerList[__${playerId.index}__]}"
                     />
                     <label class="text-success" th:text="${tmp.name} + ' ' + ${tmp.surname}"></label>
                 </li>
