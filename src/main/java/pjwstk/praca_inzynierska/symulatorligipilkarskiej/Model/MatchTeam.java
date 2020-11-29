@@ -4,12 +4,14 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -29,6 +31,12 @@ public class MatchTeam {
     @ManyToOne
     @JoinColumn(name = "hosting_team_id")
     private Team homeTeam;
+
+    @ManyToMany(mappedBy = "matchTeamsHome")
+    private Set<Player> homeTeamPlayers;
+
+    @ManyToMany(mappedBy = "matchTeamsVisit")
+    private Set<Player> visitTeamPlayers;
 
     @ManyToOne
     @JoinColumn(name = "visit_team_id")

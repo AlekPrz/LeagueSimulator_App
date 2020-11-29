@@ -48,6 +48,8 @@ public class AdminControllerGameplay {
         }
 
 
+
+
         model.addAttribute("page", page);
 
         return "admin/schedule/schedule";
@@ -68,6 +70,7 @@ public class AdminControllerGameplay {
     @PostMapping("/wprowadźWynik")
     public String postInsert(@Valid @ModelAttribute MatchTeam matchTeam, BindingResult bindingResult, Model model) {
 
+        System.out.println(matchTeam.getDateOfGame());
 
         Map<String, String> errorsFromBinding
                 = bindingResult

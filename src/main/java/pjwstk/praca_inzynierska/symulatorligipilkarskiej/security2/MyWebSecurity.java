@@ -47,9 +47,11 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
                 csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/*").permitAll()
-                .antMatchers("/użytkownik/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+            /*    .antMatchers("/użytkownik/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")*/
+/*
                 .antMatchers("/manager/**").hasRole("MANAGER")
+*/
                 .anyRequest().authenticated()
 
                 .and().formLogin()

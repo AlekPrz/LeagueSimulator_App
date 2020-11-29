@@ -3,19 +3,15 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <style>
 
-        .navbar-nav a{
+        .navbar-nav a {
             color: white;
         }
-
-
-
 
 
     </style>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand text-white">PJWSTK</a>
-
 
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -31,14 +27,13 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/manager/mojaDruzyna/">Zarządzaj moją drużyną</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/manager/terminarzDruzyny/">Terminarz mojej drużyny</a>
+                    </li>
 
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right px-2">
-
-
-
-
 
 
                     <li sec:authorize="isAuthenticated()">
