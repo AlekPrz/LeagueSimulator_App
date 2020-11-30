@@ -33,14 +33,40 @@
 
         <div class="form-group">
             <ul class="list-inline">
-                <li class="list-inline-item" th:each="tmp,playerId : ${player.playerList}">
+
+                <tr th:each="book, itemStat : ${form.playerList}">
 
 
-                    <input type="checkbox" th:value="${tmp}"
-                           th:field="*{player.playerList[__${playerId.index}__]}"
+                    <input type="checkbox"
+                           th:value="${book.id}"
+                           th:field="*{form.playerList[__${itemStat.index}__].id}"/>
+                    <label class="text-success" th:text="${book.name} + ' ' + ${book.surname}"></label>
+
                     />
-                    <label class="text-success" th:text="${tmp.name} + ' ' + ${tmp.surname}"></label>
+                </tr>
+
+
+                <!--
+                                <li class="list-inline-item" th:each="book, itemStat : ${form.playerList}">
+                                    <input type="checkbox"
+                                           th:value="${tmp}"
+                                           th:field="*{form.playerList[__${playerId.index}__]}"
+                                    />
+                                    <label class="text-success" th:text="${tmp.name} + ' ' + ${tmp.surname}"></label>
+
+                -->
+
+
                 </li>
+
+                <!--th:field="*{playersFromForm.ids[__${tmp.index}__]}"-->
+                <!--        <li class="list-inline-item" th:each="player,tmp : ${players}">
+                            <input type="checkbox"
+                                   th:value="${player.id}"
+                                   th:field="*{playersFromForm[__${tmp.index}__]}"
+                            />
+                            <label class="text-success" th:text="${player.name} + ' ' + ${player.surname}"></label>
+                        </li>-->
             </ul>
         </div>
 

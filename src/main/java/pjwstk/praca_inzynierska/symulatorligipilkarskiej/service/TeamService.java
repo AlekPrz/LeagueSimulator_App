@@ -2,6 +2,7 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,8 +23,6 @@ import java.util.stream.Collectors;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamValidator teamValidator;
-    private final ContractService contractService;
-    private final ManagerService managerService;
     private final SeasonTeamRepository seasonTeamRepository;
     private final MatchTeamRepository matchTeamRepository;
 

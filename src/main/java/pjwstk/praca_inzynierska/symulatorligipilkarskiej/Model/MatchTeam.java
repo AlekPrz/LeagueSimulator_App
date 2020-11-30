@@ -32,9 +32,11 @@ public class MatchTeam {
     @JoinColumn(name = "hosting_team_id")
     private Team homeTeam;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "matchTeamsHome")
     private Set<Player> homeTeamPlayers;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "matchTeamsVisit")
     private Set<Player> visitTeamPlayers;
 

@@ -2,6 +2,7 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;

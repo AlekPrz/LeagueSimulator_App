@@ -29,20 +29,12 @@ public class MatchTeamService {
     private final SeasonTeamRepository seasonTeamRepository;
 
 
-
-
     public void generateSchedule() {
-
-
-        if (teamRepository.findAll().size() < 4) {
-            throw new RuntimeException("Drużyn w bazie jest za mało, aby rozpocząć rozgrywki!");
-        }
-
-
 
 
         MatchTeam.oldMatch.clear();
         matchTeamRepository.deleteAll();
+        seasonRepository.deleteAll();
 
 
         if (teamRepository.findAll().size() % 2 == 0) {
@@ -104,17 +96,53 @@ public class MatchTeamService {
                                     .dateOfGame(localDate)
                                     .build();
 
-
                     if (allTeams.size() == 2 && isDuplication(matchTeam)) {
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+
+                        allTeams.clear();
                         allTeams.addAll(teamRepository.findAll());
+
+                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+
+
 
                         for (MatchTeam tmp : matchTeamRepository.findAll()) {
                             if (tmp.getQueue() == queue) {
                                 matchTeamRepository.delete(tmp);
                             }
                         }
+
+                        queue = queue - 1;
+                        i = i + 1;
+
+                        for (MatchTeam tmp : matchTeamRepository.findAll()) {
+                            if (tmp.getQueue() == queue) {
+                                matchTeamRepository.delete(tmp);
+                            }
+                        }
+
+                        firstRandom = random.nextInt(allTeams.size());
+                        secondRandom = random.nextInt(allTeams.size());
+
+                        while (firstRandom == secondRandom) {
+                            secondRandom = random.nextInt(allTeams.size());
+                        }
+                        firstTeam = allTeams.get(firstRandom);
+                        secondTeam = allTeams.get(secondRandom);
+
+                        matchTeam =
+                                MatchTeam.builder()
+                                        .homeTeam(firstTeam)
+                                        .visitTeam(secondTeam)
+                                        .season(season)
+                                        .queue(queue)
+                                        .dateOfGame(localDate)
+                                        .build();
+
 
                     }
 

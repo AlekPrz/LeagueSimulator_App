@@ -1,50 +1,40 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Dto.PlayersDto;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Dto.PlayerToFormDto;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Dto.PlayersIdsFromFormData;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Dto.mapper.Mappers;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Dto.mapper.PlayersDto;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.MatchTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ContractService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping("/manager")
+@RequiredArgsConstructor
 public class ManagerController {
 
-    private final TeamRepository teamRepository;
-    private final UserRepository<Manager> managerUserRepository;
     private final ManagerService managerService;
-    private final TeamService teamService;
+    private final ContractService contractService;
     private final MatchTeamRepository matchTeamRepository;
+    private final TeamService teamService;
 
-
-    public ManagerController(TeamRepository teamRepository,
-                             UserRepository<Manager> managerUserRepository,
-                             ManagerService managerService, TeamService teamService, MatchTeamRepository matchTeamRepository
-
-    ) {
-        this.teamRepository = teamRepository;
-        this.managerUserRepository = managerUserRepository;
-        this.managerService = managerService;
-        this.teamService = teamService;
-        this.matchTeamRepository = matchTeamRepository;
-
-    }
-
+    // private final TeamRepository teamRepository;
+    // private final UserRepository<Manager> managerUserRepository;
+    // private final TeamService teamService;
+    // private final MatchTeamRepository matchTeamRepository;
 
     @GetMapping("/")
     public String dash() {
@@ -54,35 +44,18 @@ public class ManagerController {
     @GetMapping("/mojaDruzyna")
     public String getMyTeam(Model model) {
 
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Optional<Manager> manager = Optional.empty();
-
-        if (principal instanceof UserDetails) {
-
-            String usernameName = ((UserDetails) principal).getUsername();
-            manager = managerUserRepository.findManagerByUsername(usernameName);
-
-        }
-
-        System.out.println(manager.get().getId());
-
-        if (manager.isPresent()) {
-
-            ManagerTeam managerTeam =
-                    manager.get()
-                            .getManagerTeams()
-                            .stream()
-                            .filter(p -> p.getIsCurrently().equals(true))
-                            .findFirst()
-                            .orElse(null);
+        Manager manager = managerService.getCurrentManager();
 
 
-            model.addAttribute("manager", managerTeam);
-        } else {
-            throw new RuntimeException("Manager problem with team");
-        }
+        ManagerTeam managerTeam =
+                manager.getManagerTeams()
+                        .stream()
+                        .filter(p -> p.getIsCurrently().equals(true))
+                        .findFirst()
+                        .orElse(null);
+
+
+        model.addAttribute("manager", managerTeam);
 
 
         return "manager/myTeam";
@@ -93,27 +66,8 @@ public class ManagerController {
     public String getSchedule(Model model) {
 
 
-        List<MatchTeam> getMyTeamMatches = new ArrayList<>();
+        List<MatchTeam> getMyTeamMatches = managerService.getCurrentMatches();
 
-        Manager manager = managerService.getCurrentManager();
-
-        Team team =
-                manager.getManagerTeams().stream().filter(p -> p.getIsCurrently().equals(true))
-                        .findFirst().map(ManagerTeam::getTeam).orElse(null);
-
-
-        getMyTeamMatches.addAll(team.getHomeGames());
-        getMyTeamMatches.addAll(team.getVisitGames());
-
-
-        getMyTeamMatches.sort(Comparator.comparing(MatchTeam::getQueue));
-
-
-        if (manager != null) {
-            model.addAttribute("manager", true);
-        }
-
-        System.out.println(manager);
 
         model.addAttribute("matchTeam", getMyTeamMatches);
 
@@ -122,33 +76,36 @@ public class ManagerController {
     }
 
     @GetMapping("/terminarzDruzyny/ustalSklad/{id}")
-    public String getInsert(@PathVariable Long id, Model model) {
-
-        Manager manager = managerService.getCurrentManager();
-
-        Team team =
-                manager.getManagerTeams().stream().filter(p -> p.getIsCurrently().equals(true))
-                        .findFirst().map(ManagerTeam::getTeam).orElse(null);
+    public String chooseSquadOnMatch(@PathVariable Long id, Model model) {
 
 
-        List<Player> players = teamService.getAllPlayersInThatTeam(team.getId());
+        List<Player> players = teamService
+                .getAllPlayersInThatTeam(managerService.getCurrentPlayersOfTeam().getId());
 
 
-        model.addAttribute("matchTeam", matchTeamRepository.findById(id));
-        model.addAttribute("player", new PlayersDto(players));
+        model.addAttribute("form", new PlayersDto(players));
+
+
+
+/*
+        var players = contractService
+                .getAllPlayersIdsFromTeam(managerService.getCurrentPlayersOfTeam().getId())
+                .stream()
+                .map(Mappers::fromPlayerToPlayerToFormDto)
+                .collect(Collectors.toList());
+        var ids = players.stream().map(PlayerToFormDto::getId).collect(Collectors.toList());
+
+
+        model.addAttribute("players", players);
+        model.addAttribute("playersFromForm", ids);*/
 
         return "manager/scheduleInsertSquad";
-
     }
 
     @PostMapping("/terminarzDruzyny/ustalSklad")
-    public String postPlayer(@ModelAttribute PlayersDto player) {
-
-
-        System.out.println(player.getPlayerList());
-
+    public String chooseSquadOnMatchPost(@ModelAttribute PlayersDto playersIdsFromFormData) {
+        System.out.println(playersIdsFromFormData);
         return "redirect:/manager/terminarzDruzyny";
-
     }
 
 
