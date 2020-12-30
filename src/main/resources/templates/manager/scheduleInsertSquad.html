@@ -27,53 +27,83 @@
 <div th:insert="navigation/managerNavigation">Navigation</div>
 
 <div class="container">
-    <h2>Wybierz skład na mecz</h2>
+    <div th:if="${thereArePlayers}">
+        <h2>Skład na mecz został wybrany !</h2>
 
-    <form action="/manager/terminarzDruzyny/ustalSklad" method="post">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Imie</th>
+                <th>Nazwisko</th>
 
-        <div class="form-group">
-            <ul class="list-inline">
+            </tr>
+            <tr th:each="w:${playersReadyOnMatch}">
+                <td th:text="${w.getName()}"></td>
+                <td th:text="${w.getSurname()}"></td>
 
-                <tr th:each="book, itemStat : ${form.playerList}">
+            </tr>
 
+        </table>
+        <!--     <form action="/manager/terminarzDruzyny/ustalSklad/usunSklad" method="post">
+                 <div th:if="${homeTeamPlayersToDelete}">
+                     <input type="text" name="homeTeamPlayersToDelete" th:value="${matchTeam.id}" hidden="hidden">
+                     <input class="btn btn-secondary text-black float-left" type="submit" value="Usuń wybrany skład HOME"/>
+                 </div>
+                 <div th:if="${visitTeamPlayersToDelete}">
+                     <input type="text" name="homeTeamPlayersToDelete" th:value="${matchTeam.id}" hidden="hidden">
+                     <input class="btn btn-secondary text-black float-left" type="submit" value="Usuń wybrany skład VISIT"/>
+                 </div>
+             </form>-->
 
-                    <input type="checkbox"
-                           th:value="${book.id}"
-                           th:field="*{form.playerList[__${itemStat.index}__].id}"/>
-                    <label class="text-success" th:text="${book.name} + ' ' + ${book.surname}"></label>
-
-                    />
-                </tr>
-
-
-                <!--
-                                <li class="list-inline-item" th:each="book, itemStat : ${form.playerList}">
-                                    <input type="checkbox"
-                                           th:value="${tmp}"
-                                           th:field="*{form.playerList[__${playerId.index}__]}"
-                                    />
-                                    <label class="text-success" th:text="${tmp.name} + ' ' + ${tmp.surname}"></label>
-
-                -->
-
-
-                </li>
-
-                <!--th:field="*{playersFromForm.ids[__${tmp.index}__]}"-->
-                <!--        <li class="list-inline-item" th:each="player,tmp : ${players}">
-                            <input type="checkbox"
-                                   th:value="${player.id}"
-                                   th:field="*{playersFromForm[__${tmp.index}__]}"
-                            />
-                            <label class="text-success" th:text="${player.name} + ' ' + ${player.surname}"></label>
-                        </li>-->
-            </ul>
+        <div th:if="${homeTeamPlayersToDelete}">
+            <form action="/manager/terminarzDruzyny/ustalSklad/usunSkladHome" method="post">
+                <input type="text" name="homeTeamPlayersToDeleteId" th:value="${matchTeam.id}" hidden="hidden">
+                <input class="btn btn-secondary text-black float-left" type="submit" value="Usuń wybrany skład HOME"/>
+            </form>
+        </div>
+        <div th:if="${visitTeamPlayersToDelete}">
+            <form action="/manager/terminarzDruzyny/ustalSklad/usunSkladVisit" method="post">
+                <input type="text" name="visitTeamPlayersToDelete" th:value="${matchTeam.id}" hidden="hidden">
+                <input class="btn btn-secondary text-black float-left" type="submit" value="Usuń wybrany skład Visit"/>
+            </form>
         </div>
 
 
-        <input class=" btn btn-primary float-left  " type="submit" value="Potwierdź"/>
+    </div>
+    <div th:unless="${thereArePlayers}">
+        <h2>Wybierz skład na mecz</h2>
 
-    </form>
+        <form action="/manager/terminarzDruzyny/ustalSklad" method="post">
+
+            <input type="text" th:field="${matchTeam.id}" hidden="hidden" readonly="readonly">
+            <input type="text" th:field="${matchTeam.homeTeam}" hidden="hidden" readonly="readonly">
+            <input type="text" th:field="${matchTeam.visitTeam}" hidden="hidden" readonly="readonly">
+
+
+            <div class="form-group">
+                <ul class="list-inline">
+
+                    <tr th:each="book, itemStat : ${form.playerList}">
+
+
+                        <input type="checkbox"
+                               th:value="${book.id}"
+                               th:field="*{form.playerList[__${itemStat.index}__].id}"/>
+                        <label  th:text="${book.name} + ' ' + ${book.surname}"></label>
+
+
+                    </tr>
+
+                    </li>
+
+
+                </ul>
+            </div>
+
+
+            <input class=" btn btn-light float-left  " type="submit" value="Potwierdź"/>
+
+        </form>
+    </div>
 
 
 </div>

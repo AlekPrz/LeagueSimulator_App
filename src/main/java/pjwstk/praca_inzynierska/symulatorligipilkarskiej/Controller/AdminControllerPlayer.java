@@ -34,18 +34,12 @@ public class AdminControllerPlayer {
     private final UserRepository<Manager> userRepository;
     private final TeamService teamService;
     private final PlayerService playerService;
-    private final ManagerTeamRepository managerTeamRepository;
     private final ContractRepository contractRepository;
-    private final UserRepository<Player> playerUserRepository;
-    private final TeamRepository teamRepository;
 
 
     @GetMapping("/")
     public String dash() {
-
-
         return "admin/dash";
-
     }
 
     @GetMapping("/dodajUzytkownika")
@@ -53,9 +47,10 @@ public class AdminControllerPlayer {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
         model.addAttribute("rolesAdmin", true);
-
         return "security/register";
     }
+
+    //Poprawic
 
     @PostMapping("/register")
     public String registerPost(@ModelAttribute User user, Model model) {
@@ -64,42 +59,21 @@ public class AdminControllerPlayer {
         String repeatPassword = user.getRepeatPassword();
 
 
-        if (user.getRole().getDescription().equals("ROLE_MANAGER")) {
-
-
-            Manager manager = Manager.builder().username(user.getUsername()).password(UserRegister.encodePassword(password))
-                    .repeatPassword(UserRegister.encodePassword(repeatPassword)).role(user.getRole()).build();
-
-            userRepository.save(manager);
-
-
-            return "redirect:/login";
-
-        }
-
-
         if (!password.equals(repeatPassword)) {
             model.addAttribute("errorPassword", true);
             return "security/register";
         }
 
-        userService.registerNewUser(user);
+        userService.registerNewManager(user);
         return "redirect:/login";
     }
 
 
     @GetMapping("/panelGraczy")
     public String getPlayers(Model model) {
-        List<Player> players = new ArrayList<>();
-
-        for (User tmp : playerUserRepository.findAll()) {
-            if (tmp instanceof Player) {
-                players.add((Player) tmp);
-            }
-        }
 
 
-        model.addAttribute("player", players);
+        model.addAttribute("player", playerService.getAllPlayers());
         model.addAttribute("position", Position.values());
         return "admin/players/allPlayersForAdmin";
 
@@ -180,7 +154,6 @@ public class AdminControllerPlayer {
             return "admin/players/modifyPlayer";
         }
 
-        System.out.println(contract);
 
         playerService.modifyPlayer(player, contract);
         return "redirect:/admin/panelGraczy";

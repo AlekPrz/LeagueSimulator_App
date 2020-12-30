@@ -43,7 +43,7 @@ public class Player extends User {
     @EqualsAndHashCode.Exclude
     private Set<Contract> contracts = new LinkedHashSet<>();
 
-
+    @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "MatchTeamHomePlayers",
@@ -52,6 +52,13 @@ public class Player extends User {
     )
     Set<MatchTeam> matchTeamsHome = new LinkedHashSet<>();
 
+    public void removeMatchTeamHome(MatchTeam matchTeam) {
+        this.matchTeamsHome.remove(matchTeam);
+        matchTeam.getHomeTeamPlayers().remove(this);
+    }
+
+
+    @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "MatchTeamVisitPlayers",

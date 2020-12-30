@@ -27,6 +27,13 @@
 <div class="container py-3 ">
 
 
+      <span th:if="${matchTeamNotInit}">
+        <h2>Dla podanej drużyny nie ma jeszcze terminarzu</h2>
+    </span>
+
+    <span th:unless="${matchTeamNotInit}">
+
+
     <div>
 
         <table class="table table-bordered">
@@ -50,15 +57,56 @@
                 <td th:text="${p.dateOfGame}"></td>
 
                 <td>
+                        <a class="btn btn-light  text-dark btn-outline-danger"
+                      <!--     th:href="@{/manager/terminarzDruzyny/zmieńTerminarz/{id}(id=${p.id})}" role="button">
+                            Zaproponuj zmiane daty meczu-->
+                    <form action="${/m}">
+                        <input type="submit" value="Go to Google" />
+                        </form>
+                        </a>
+
+                    <div th:with="mycounter = ${sum.get()}">
 
 
-                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <div th:each="tmp: ${p.getHomeTeamPlayers()}">
+                            <div th:if="${players.contains(tmp)}">
+                                <div th:with="mycounter=${sum.increment()}">
+                                    <a class="btn btn-light  text-dark btn-outline-danger"
+                                       th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
+                                       role="button">
+                                        Edytuj skład na mecz HOME
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
 
-                            <a class="btn btn-light text-dark btn-outline-danger "
-                               th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
-                               role="button">Ustal skład na mecz</a></div>
+                        <div th:each="tmp: ${p.getVisitTeamPlayers()}">
+                            <div th:if="${players.contains(tmp)}">
+                                <div th:with="mycounter=${sum.increment()}">
 
+                                    <a class="btn btn-light  text-dark btn-outline-danger"
+                                       th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
+                                       role="button">
+                                        Edytuj skład na mecz VISIT
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div th:if="${sum.get()<1}">
+
+                        <a class="btn btn-light  text-dark btn-outline-danger"
+                           th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
+                           role="button">
+                            Wybierz Sklad na mecz
+                        </a>
+
+
+                    </div>
 
 
 
@@ -78,6 +126,7 @@
                 integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
                 crossorigin="anonymous"></script>
     </div>
+    </span>
 </div>
 </body>
 </html>

@@ -44,6 +44,11 @@ public class SymulatorligipilkarskiejApplication {
         SpringApplication.run(SymulatorligipilkarskiejApplication.class, args);
 
 
+/*
+        matchTeamRepository.findById(2456L).orElse(null).getHomeTeamPlayers().forEach(p -> System.out.println(p.getName()));
+*/
+
+
 
 
     }

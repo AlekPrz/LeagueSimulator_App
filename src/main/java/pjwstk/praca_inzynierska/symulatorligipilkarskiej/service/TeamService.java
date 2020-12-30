@@ -113,6 +113,12 @@ public class TeamService {
     public List<Player> getAllPlayersInThatTeam(Long id) {
 
 
+
+        if (id == null) {
+
+            return new ArrayList<>();
+        }
+
         List<Player> playersInThatTeam = new ArrayList<>();
 
         Team team = teamRepository.findById(id).orElse(null);

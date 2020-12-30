@@ -3,6 +3,7 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Fan;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,5 +47,11 @@ public class Season {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "season")
     private Set<SeasonTeam> seasonTeams = new LinkedHashSet<>();
 
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "leagueOfFans_id")
+    private LeagueOfFans leagueOfFans;
 
 }

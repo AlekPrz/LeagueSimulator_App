@@ -63,14 +63,23 @@
                     <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                         <a href="/admin/dodajUzytkownika">
                             <span class="fa fa-sign-in px-3 text-white"></span>
-                            Dodaj nowego użytkownika
+                            <span class="pr-3"> Dodaj nowego użytkownika</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                        <a href="/manager/wiadomosci">
+                            <span class="fa fa-envelope px-1"></span>
+                            Wiadomości
                         </a>
                     </li>
 
 
+
                     <li sec:authorize="isAuthenticated()">
                         <a href="/logout">
-                            <span class="fa fa-sign-in px-3 text-white"></span>
+                            <span class="fa fa-sign-in px-3
+                             text-white"></span>
                             Wyloguj
                         </a>
                     </li>

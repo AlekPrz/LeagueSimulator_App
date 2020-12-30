@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface MatchTeamRepository extends JpaRepository<MatchTeam, Long> {
 
+
+
     Page<MatchTeam> findAllByOrderByQueue(Pageable pageable);
 
 }

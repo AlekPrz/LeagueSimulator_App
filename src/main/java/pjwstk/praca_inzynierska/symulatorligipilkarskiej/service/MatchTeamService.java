@@ -49,7 +49,7 @@ public class MatchTeamService {
 
             seasonRepository.save(season);
 
-
+            List<Team> allTeamsNoModify = teamRepository.findAll();
             List<Team> allTeams = teamRepository.findAll();
 
 
@@ -66,7 +66,7 @@ public class MatchTeamService {
 
 
             int queue = 1;
-            LocalDate localDate = LocalDate.of(2020, 11, 06);
+            LocalDate localDate = LocalDate.now();
 
             Random random = new Random();
 
@@ -75,6 +75,7 @@ public class MatchTeamService {
 
 
             while (i != 0) {
+
                 while (allTeams.size() != 0) {
 
 
@@ -98,59 +99,37 @@ public class MatchTeamService {
 
                     if (allTeams.size() == 2 && isDuplication(matchTeam)) {
 
-                        allTeams.clear();
-                        allTeams.addAll(teamRepository.findAll());
 
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
-                        MatchTeam.oldMatch.remove(MatchTeam.oldMatch.size() - 1);
+                        List<MatchTeam> toRemove = new ArrayList<MatchTeam>();
 
 
-
-                        for (MatchTeam tmp : matchTeamRepository.findAll()) {
+                        for (MatchTeam tmp : MatchTeam.oldMatch) {
                             if (tmp.getQueue() == queue) {
-                                matchTeamRepository.delete(tmp);
+                                toRemove.add(tmp);
                             }
                         }
 
                         queue = queue - 1;
                         i = i + 1;
+                        localDate = localDate.minusWeeks(2);
 
-                        for (MatchTeam tmp : matchTeamRepository.findAll()) {
-                            if (tmp.getQueue() == queue) {
-                                matchTeamRepository.delete(tmp);
+                        for (MatchTeam tmp2 : MatchTeam.oldMatch) {
+                            if (tmp2.getQueue() == queue) {
+                                toRemove.add(tmp2);
                             }
                         }
+                        MatchTeam.oldMatch.removeAll(toRemove);
 
-                        firstRandom = random.nextInt(allTeams.size());
-                        secondRandom = random.nextInt(allTeams.size());
-
-                        while (firstRandom == secondRandom) {
-                            secondRandom = random.nextInt(allTeams.size());
-                        }
-                        firstTeam = allTeams.get(firstRandom);
-                        secondTeam = allTeams.get(secondRandom);
-
-                        matchTeam =
-                                MatchTeam.builder()
-                                        .homeTeam(firstTeam)
-                                        .visitTeam(secondTeam)
-                                        .season(season)
-                                        .queue(queue)
-                                        .dateOfGame(localDate)
-                                        .build();
-
-
+                        matchTeam.setQueue(20);
+                        allTeams.clear();
+                        allTeams.addAll(allTeamsNoModify);
                     }
 
 
-                    if (!isDuplication(matchTeam)) {
+
+                    if (!isDuplication(matchTeam) && matchTeam.getQueue() != 20) {
 
                         MatchTeam.oldMatch.add(matchTeam);
-                        matchTeamRepository.save(matchTeam);
 
 
                         if (firstRandom > secondRandom) {
@@ -167,8 +146,12 @@ public class MatchTeamService {
                 queue++;
                 localDate = localDate.plusWeeks(2);
                 allTeams.addAll(teamRepository.findAll());
-
             }
+            for (MatchTeam tmp : MatchTeam.oldMatch) {
+                matchTeamRepository.save(tmp);
+            }
+
+
         } else {
 
             Season season = Season.builder()
@@ -440,6 +423,15 @@ public class MatchTeamService {
         }
 
     }
+
+
+    public void deleteSchedule(){
+        matchTeamRepository.deleteAll();
+        seasonRepository.deleteAll();
+    }
+
+
+
 
 
 }

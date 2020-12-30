@@ -37,6 +37,18 @@
 
 
                     <li sec:authorize="isAuthenticated()">
+                        <a href="/manager/wiadomosci/odebrane">
+                            <span class="fa fa-envelope"></span>
+                            Wiadomości
+                        </a>
+                    </li>
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right px-2">
+
+
+                    <li sec:authorize="isAuthenticated()">
                         <a href="/logout">
                             <span class="fa fa-sign-in px-3 text-white"></span>
                             Wyloguj

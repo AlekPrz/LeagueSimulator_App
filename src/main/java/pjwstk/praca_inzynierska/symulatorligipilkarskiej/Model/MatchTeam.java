@@ -33,11 +33,16 @@ public class MatchTeam {
     private Team homeTeam;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "matchTeamsHome")
+    @ManyToMany(mappedBy = "matchTeamsHome", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private Set<Player> homeTeamPlayers;
 
+    public void removeMatchTeamHome(Player player) {
+        this.homeTeamPlayers.remove(player);
+        player.getMatchTeamsHome().remove(this);
+    }
+
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "matchTeamsVisit")
+    @ManyToMany(mappedBy = "matchTeamsVisit", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Set<Player> visitTeamPlayers;
 
     @ManyToOne

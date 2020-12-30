@@ -10,6 +10,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.TeamException;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.PlayerValidator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.TeamValidator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.helpingMethods.PasswordGenerator;
@@ -17,6 +18,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ContractRepo
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,8 +142,17 @@ public class PlayerService {
 
 
     public List<Player> getAllPlayers() {
-        return playerUserRepository
-                .findAll();
+        List<Player> players = new ArrayList<>();
+
+        for (User tmp : playerUserRepository.findAll()) {
+
+            if (tmp instanceof Player) {
+                players.add((Player) tmp);
+            }
+        }
+
+        return players;
+
     }
 
 

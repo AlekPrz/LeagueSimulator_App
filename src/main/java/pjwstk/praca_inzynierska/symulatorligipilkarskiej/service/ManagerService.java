@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Message;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
@@ -17,13 +18,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ManagerService {
 
     private final UserRepository<Manager> managerUserRepository;
-
 
 
     public List<Manager> findManagers() {
@@ -44,6 +45,16 @@ public class ManagerService {
 
         return managerUserRepository.findById(id).orElse(null);
 
+    }
+
+    public Team getCurrentManagerTeam() {
+
+        Manager manager = getCurrentManager();
+        Team team =
+                manager.getManagerTeams().stream().filter(p -> p.getIsCurrently().equals(true))
+                        .findFirst().map(ManagerTeam::getTeam).orElse(null);
+
+        return team;
     }
 
     public Manager getCurrentManager() {
@@ -70,36 +81,72 @@ public class ManagerService {
 
 
         Manager manager = getCurrentManager();
+
+
         Team team =
                 manager.getManagerTeams().stream().filter(p -> p.getIsCurrently().equals(true))
                         .findFirst().map(ManagerTeam::getTeam).orElse(null);
 
+        if (team != null) {
+            listOfCurrentMatches.addAll(team.getHomeGames());
+            listOfCurrentMatches.addAll(team.getVisitGames());
+            listOfCurrentMatches.sort(Comparator.comparing(MatchTeam::getQueue));
+            return listOfCurrentMatches;
+        }
 
-        listOfCurrentMatches.addAll(team.getHomeGames());
-        listOfCurrentMatches.addAll(team.getVisitGames());
-
-        listOfCurrentMatches.sort(Comparator.comparing(MatchTeam::getQueue));
-
-        return listOfCurrentMatches;
+        return new ArrayList<>();
 
 
     }
 
-    public Team getCurrentPlayersOfTeam() {
+    public List<Team> getCurrentEnemy() {
+
+        List<MatchTeam> currentMatches = getCurrentMatches();
+
+
+        List<Team> listOfCurrentEnemy = new ArrayList<>();
+
+        for (MatchTeam tmp : currentMatches) {
+            if (tmp.getHomeTeam().equals(getCurrentManagerTeam())) {
+                listOfCurrentEnemy.add(tmp.getVisitTeam());
+            }
+            if (tmp.getVisitTeam().equals(getCurrentManagerTeam())) {
+                listOfCurrentEnemy.add(tmp.getHomeTeam());
+            }
+        }
+
+
+        return listOfCurrentEnemy;
+
+
+    }
+
+
+    public Optional<Team> getCurrentPlayersOfTeam() {
 
 
         Manager manager = getCurrentManager();
 
-        Team team =
+
+        System.out.println(manager.getUsername());
+
+        Optional<Team> team =
                 manager.getManagerTeams().stream().filter(p -> p.getIsCurrently().equals(true))
-                        .findFirst().map(ManagerTeam::getTeam).orElse(null);
-
-
+                        .findFirst().map(ManagerTeam::getTeam);
 
 
         return team;
 
+    }
 
+    public Long getNotRead(){
+
+        List<Message> getAllNoDeletedMessages = getCurrentManager()
+                        .getMessagesGot().stream()
+                        .filter(p -> !p.getIsDeleteByReceiver())
+                        .collect(Collectors.toList());
+
+        return getAllNoDeletedMessages.stream().filter(p->!p.getIsRead()).count();
     }
 
 }

@@ -3,6 +3,7 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
@@ -11,7 +12,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserReposito
 public class UserRegister {
 
 
-    private UserRepository <User> userRepository;
+    private UserRepository<User> userRepository;
     private static PasswordEncoder passwordEncoder;
 
 
@@ -35,4 +36,20 @@ public class UserRegister {
 
     }
 
+    public void registerNewManager(User user) {
+
+
+        if (user.getRole().getDescription().equals("ROLE_MANAGER")) {
+
+
+            Manager manager = Manager.builder().username(user.getUsername()).password(UserRegister.encodePassword(user.getPassword()))
+                    .repeatPassword(UserRegister.encodePassword(user.getRepeatPassword())).role(user.getRole()).build();
+
+            userRepository.save(manager);
+
+        }
+        registerNewUser(user);
+
+
+    }
 }
