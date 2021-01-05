@@ -17,7 +17,6 @@ public class TeamController {
 
     private final TeamRepository teamRepository;
     private final MatchTeamRepository matchTeamRepository;
-    public static int teamsize;
 
 
     private final SeasonTeamRepository seasonTeamRepository;

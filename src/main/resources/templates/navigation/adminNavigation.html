@@ -67,12 +67,14 @@
                         </a>
                     </li>
 
-                    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                        <a href="/manager/wiadomosci">
-                            <span class="fa fa-envelope px-1"></span>
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/wiadomosci/odebrane">
+                            <span class="fa fa-envelope"></span>
                             Wiadomości
                         </a>
                     </li>
+
+
 
 
 

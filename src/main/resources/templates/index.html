@@ -35,12 +35,14 @@
 
 
 <div class="container">
-    <p th:if="${registerSuccess}">Rejestracja udała się !</p>
 
     <div class="row">
 <p class="text-center h1">Aplikacja do zarządzania ligą piłarską</p>
         </div>
-    </div>
+
+    <h1 class="text-center text-success py-3" th:if="${registerSuccess}">Rejestracja udała się !</h1>
+
+</div>
 </div>
 
 

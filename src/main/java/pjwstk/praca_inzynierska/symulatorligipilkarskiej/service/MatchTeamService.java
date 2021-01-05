@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Enum.StatusOfMatch;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.SeasonTeam;
@@ -95,6 +96,7 @@ public class MatchTeamService {
                                     .season(season)
                                     .queue(queue)
                                     .dateOfGame(localDate)
+                                    .statusOfMatch(StatusOfMatch.SCHEDULED)
                                     .build();
 
                     if (allTeams.size() == 2 && isDuplication(matchTeam)) {
@@ -124,7 +126,6 @@ public class MatchTeamService {
                         allTeams.clear();
                         allTeams.addAll(allTeamsNoModify);
                     }
-
 
 
                     if (!isDuplication(matchTeam) && matchTeam.getQueue() != 20) {
@@ -213,6 +214,7 @@ public class MatchTeamService {
                                     .season(season)
                                     .queue(queue)
                                     .dateOfGame(localDate)
+                                    .statusOfMatch(StatusOfMatch.SCHEDULED)
                                     .build();
 
 
@@ -276,6 +278,8 @@ public class MatchTeamService {
 
         String previousScore = matchTeamRepository.findById(matchTeam.getId()).orElse(null).getScore();
 
+        MatchTeam matchTeamToSave = matchTeamRepository.findById(matchTeam.getId()).orElse(null);
+
 
         if (currentlyScore != null && !currentlyScore.isEmpty()) {
             SeasonTeam firstTeam = seasonTeamRepository.findByTeam_Id(matchTeam.getHomeTeam().getId());
@@ -283,6 +287,10 @@ public class MatchTeamService {
 
             Integer firstTeamGoalsCurrently = Integer.parseInt(String.valueOf(currentlyScore.charAt(0)));
             Integer secondTeamGoalsCurrently = Integer.parseInt(String.valueOf(currentlyScore.charAt(2)));
+
+
+            System.out.println(firstTeamGoalsCurrently);
+            System.out.println(secondTeamGoalsCurrently);
 
 
             Integer firstTeamGoalsPrevious = 0;
@@ -393,6 +401,9 @@ public class MatchTeamService {
             }
             seasonTeamRepository.save(firstTeam);
             seasonTeamRepository.save(secondTeam);
+            matchTeamToSave.setStatusOfMatch(StatusOfMatch.DONE);
+            matchTeamToSave.setScore(matchTeam.getScore());
+            matchTeamRepository.save(matchTeamToSave);
             setPlace();
         }
 
@@ -425,13 +436,10 @@ public class MatchTeamService {
     }
 
 
-    public void deleteSchedule(){
+    public void deleteSchedule() {
         matchTeamRepository.deleteAll();
         seasonRepository.deleteAll();
     }
-
-
-
 
 
 }

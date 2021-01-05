@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class ManagerService {
 
     private final UserRepository<Manager> managerUserRepository;
+    private final UserRepository<User> userRepository;
 
 
     public List<Manager> findManagers() {
@@ -74,6 +75,48 @@ public class ManagerService {
         return manager.orElse(null);
 
     }
+    public User getCurrentUser() {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<User> user = Optional.empty();
+
+        if (principal instanceof UserDetails) {
+
+            String usernameName = ((UserDetails) principal).getUsername();
+            user = userRepository.findUserByUsername(usernameName);
+
+        }
+
+
+        return user.orElse(null);
+
+    }
+
+    public Manager getCurrentEnemy(MatchTeam matchTeam) {
+
+
+        for (ManagerTeam tmp : matchTeam.getHomeTeam().getManagerTeams()) {
+
+            if (!tmp.getManager().getUsername().equals(getCurrentManager().getUsername())
+                    && tmp.getIsCurrently()) {
+
+                return tmp.getManager();
+            }
+        }
+        for (ManagerTeam tmp : matchTeam.getVisitTeam().getManagerTeams()) {
+
+            if (!tmp.getManager().getUsername().equals(getCurrentManager().getUsername())
+                    && tmp.getIsCurrently()) {
+
+                return tmp.getManager();
+            }
+        }
+
+        return null;
+
+    }
+
 
     public List<MatchTeam> getCurrentMatches() {
 
@@ -122,6 +165,7 @@ public class ManagerService {
     }
 
 
+
     public Optional<Team> getCurrentPlayersOfTeam() {
 
 
@@ -139,14 +183,32 @@ public class ManagerService {
 
     }
 
-    public Long getNotRead(){
+ /*   public Long getNotRead() {
 
         List<Message> getAllNoDeletedMessages = getCurrentManager()
-                        .getMessagesGot().stream()
-                        .filter(p -> !p.getIsDeleteByReceiver())
-                        .collect(Collectors.toList());
+                .getMessagesGot().stream()
+                .filter(p -> !p.getIsDeleteByReceiver())
+                .collect(Collectors.toList());
 
-        return getAllNoDeletedMessages.stream().filter(p->!p.getIsRead()).count();
+        return getAllNoDeletedMessages.stream().filter(p -> !p.getIsRead()).count();
+    }*/
+
+       public Long getNotRead() {
+
+        List<Message> getAllNoDeletedMessages = getCurrentUser()
+                .getMessagesGot().stream()
+                .filter(p -> !p.getIsDeleteByReceiver())
+                .collect(Collectors.toList());
+
+        return getAllNoDeletedMessages.stream().filter(p -> !p.getIsRead()).count();
     }
+    public Long getAllMessage() {
 
+        List<Message> getAllNoDeletedMessages = getCurrentUser()
+                .getMessagesGot().stream()
+                .filter(p -> !p.getIsDeleteByReceiver())
+                .collect(Collectors.toList());
+
+        return getAllNoDeletedMessages.stream().count();
+    }
 }

@@ -26,20 +26,29 @@
 
 <div class="container py-3 ">
 
-    <div th:if="${emptyMatch}">
+
+ <!--   <div th:if="${size2low}">
+        <h1 class="text-center text-danger">W bazie jest za mało drużyn aby wygenerować terminarz !!</h1>
+    </div>
+-->
+<!--
+    <div th:unless="${size2low}">
+-->
         <form action="/admin/generujTerminarz" method="post">
+
 
             <button class="btn btn-danger" type="submit">Generuj Terminarz</button>
 
+
+
+
         </form>
-    </div>
+    <!--</div>-->
 
     <div th:unless="${emptyMatch}">
         <form action="/admin/usuńTerminarz" method="post">
             <button class="btn btn-danger" type="submit">Usuń Terminarz</button>
         </form>
-
-
 
 
         <div>
@@ -70,7 +79,8 @@
                         <div class="btn-group" role="group" aria-label="Basic example">
 
 
-                            <a class="btn btn-light text-dark btn-outline-danger " th:href="@{/admin/wprowadźWynik/{id}(id=${p.id})}"
+                            <a class="btn btn-light text-dark btn-outline-danger "
+                               th:href="@{/admin/wprowadźWynik/{id}(id=${p.id})}"
                                role="button">Wprowadź wynik </a>
 
 
@@ -80,12 +90,12 @@
                         <div class="btn-group" role="group" aria-label="Basic example">
 
 
-                            <a class="btn btn-light text-dark btn-outline-danger " th:href="@{/admin/zmienDateMeczu/{id}(id=${p.id})}"
+                            <a class="btn btn-light text-dark btn-outline-danger "
+                               th:href="@{/admin/zmienDateMeczu/{id}(id=${p.id})}"
                                role="button"> Zmień date meczu </a>
 
 
                         </div>
-
 
 
                     </td>

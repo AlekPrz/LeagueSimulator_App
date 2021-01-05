@@ -19,14 +19,18 @@
     }
 
 
-    .form-row {
-        padding-bottom: 25px;
-    }
+
+
 
 
 </style>
 <body>
+<span th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
 <div th:insert="navigation/managerNavigation">Navigation</div>
+</span>
+<span th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+<div th:insert="navigation/adminNavigation">Admin</div>
+</span>
 
 
 <div class="container py-4">
@@ -35,18 +39,20 @@
             <nav>
                 <ul class="nav py-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/nowa"><i class="fa fa-envelope"></i> Nowa wiadomość<span
+                        <a class="nav-link" href="/wiadomosci/nowa"><i class="fa fa-envelope"></i> Nowa wiadomość<span
                                 class="badge badge-danger"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/odebrane"><i class="fa fa-inbox"></i> Odebrane <span
-                                class="badge badge-danger"  th:text="${howMuchNotRead}"></span></a>
+                        <a class="nav-link" href="/wiadomosci/odebrane"><i class="fa fa-inbox"></i> Odebrane
+                            <span style="font-size:11px" class="badge badge-danger" th:text="${howMuchNotRead}"> </span>
+                            <span style="font-size:11px" class="badge badge-success" th:text="${howMuchRead}"> </span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/wyslane"><i class="fa fa-send"></i> Wysłane </a>
+                        <a class="nav-link" href="/wiadomosci/wyslane"><i class="fa fa-send"></i> Wysłane </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/kosz"><i class="fa fa-trash"></i> Kosz</a>
+                        <a class="nav-link" href="/wiadomosci/kosz"><i class="fa fa-trash"></i> Kosz</a>
                     </li>
 
 
@@ -54,18 +60,13 @@
             </nav>
         </div>
         <div class="col-sm-10">
-            <div class="rowe pt-5 pl-5">
 
-                <p><b>Temat: </b> <span th:text="${message.subject}"> </span> </p>
-            </div>
             <div class="rowe pt-3 pl-5">
                 <span th:text=" 'Data wysłania: ' + ${message.dateOfSend}" style="float:right;"></span>
 
 
                 <p><b>Od: </b><span th:text="${message.userSender.username}"></span> </p>
-           <!--     <b>Od: &nbsp; </b>
-                <p th:text="${message.userSender.username}">
-                </p>-->
+
 
 
 
@@ -73,7 +74,13 @@
 
 
             </div>
-            <div class="pt-4 pl-5">
+
+            <div class="rowe pt-5 pl-5">
+
+                <p><b>Temat: </b> <span th:text="${message.subject}"> </span> </p>
+            </div>
+
+            <div class="rowe pt-4 pl-5">
                 <b>Treść: &nbsp; </b>
                 <p th:text="' ' +${message.text}"> </p>
 

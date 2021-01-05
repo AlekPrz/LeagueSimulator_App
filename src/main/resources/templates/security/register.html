@@ -16,29 +16,40 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-    <div th:include="navigation/navigation">Navigation</div>
-    <div class="container">
+<div th:include="navigation/navigation">Navigation</div>
+<div class="container">
     <div class="row">
         <div class="col-8 offset-2">
-            <h1>Zarejestruj użytkownika </h1>
+            <h1>Zarejestruj się jako kibic </h1>
 
 
-            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/register'}" th:action="@{/register}" method="post" th:object="${user}" onsubmit="return validation();">
+            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/register'}" th:action="@{/register}"
+                  method="post" th:object="${user}" onsubmit="return validation();">
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username">Użytkownik</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control"/>
                 </div>
+                <span th:if="${usernameExist}">
+
+                <h1 class="text-danger" th:text="'Podana nazwa jest już zajęta!'"></h1>
+
+                    </p>
+                </span>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Hasło</label>
                     <input type="password" id="password" th:field="*{password}" class="form-control"/>
                 </div>
+                <span th:if="${errorPassword}">
 
+                <h1 class="text-danger" th:text="'Hasla się nie zgadzają'"></h1>
+
+                    </p>
+                </span>
                 <div class="form-group">
-                    <label for="repeatPassword">RepeatPassword</label>
+                    <label for="repeatPassword">Powtórz Hasło</label>
                     <input type="password" id="repeatPassword" th:field="*{repeatPassword}" class="form-control"/>
                 </div>
-                <p th:if="${errorPassword}">Hasla sie nie zgadzaja</p>
 
 
                 <div th:if="${rolesAdmin}">
@@ -49,22 +60,20 @@
                         </select>
                     </div>
                 </div>
-                <div th:unless="${rolesAdmin}">
-               <h1>Rejestrować może się tylko kibic, innych użytkowników może dodawać admin</h1>
-                </div>
-
-
 
 
                 <div class="form-group">
                     <button class="btn btn-success">Rejestracja</button>
-                    <button class="btn btn-danger">Resetuj</button>
+                </div>
+
+                <div th:unless="${rolesAdmin}">
+                    <h1>Innych użytkowników może dodawać admin</h1>
                 </div>
             </form>
 
 
-
-            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/admin/dodajUzytkownika'}" th:action="@{/admin/register}" method="post" th:object="${user}" onsubmit="return validation();">
+            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/admin/dodajUzytkownika'}"
+                  th:action="@{/admin/register}" method="post" th:object="${user}" onsubmit="return validation();">
                 <div class="form-group">
                     <label for="username">Nazwa</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control"/>
@@ -84,27 +93,21 @@
 
                 <div th:if="${rolesAdmin}">
                     <div class="form-group">
-                        <label>Role</label>
+                        <label>Rola</label>
                         <select th:field="*{role}">
                             <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
                         </select>
                     </div>
                 </div>
                 <div th:unless="${rolesAdmin}">
-                    <h1>Rejestrować może się tylko kibic, innych użytkowników może dodawać admin</h1>
+                    <h1>Innych użytkowników może dodawać admin</h1>
                 </div>
-
-
 
 
                 <div class="form-group">
                     <button class="btn btn-success">Rejestracja</button>
-                    <button class="btn btn-danger">Resetuj</button>
                 </div>
             </form>
-
-
-
 
 
         </div>
@@ -118,8 +121,7 @@
 
 
         var age = document.getElementById("age").value;
-     ;
-
+        ;
 
 
         if (age < 18 || age > 50) {

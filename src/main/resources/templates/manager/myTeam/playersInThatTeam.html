@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<style>
+    table a {
+        color: black;
+    }
+</style>
+<body>
+<div th:insert="navigation/managerNavigation">Navigation</div>
+
+<div class="container">
+
+    <h2>Lista Zawodników w tej drużynie</h2>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Imie</th>
+            <th>Nazwisko</th>
+            <th>Nazwa na koszulce</th>
+            <th>Wiek</th>
+            <th>Pozycja</th>
+        </tr>
+        <tr th:each="w:${players}">
+            <td th:text="${w.name}"></td>
+            <td th:text="${w.surname}"></td>
+            <td th:text="${w.shirtName}"></td>
+            <td th:text="${w.age}"></td>
+            <td th:text="${w.position.name()}"></td>
+
+        </tr>
+
+
+    </table>
+    <a href="/manager/mojaDruzyna" class="btn btn-secondary text-black float-left"> Moja Drużyna </a>
+
+</div>
+</body>
+</html>

@@ -17,6 +17,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.MatchTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonTeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.MatchTeamService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
@@ -37,6 +38,7 @@ public class AdminControllerGameplay {
     private final MatchTeamService matchTeamService;
     private final MatchTeamRepository matchTeamRepository;
     private final TeamService teamService;
+    private final TeamRepository teamRepository;
 
 
     @GetMapping("/terminarz")
@@ -48,6 +50,9 @@ public class AdminControllerGameplay {
         if (matchTeamRepository.findAll().isEmpty()) {
             model.addAttribute("emptyMatch", true);
         }
+       /* if (teamRepository.findAll().size()<5) {
+            model.addAttribute("size2low", true);
+        }*/
 
         model.addAttribute("page", page);
 
@@ -87,7 +92,6 @@ public class AdminControllerGameplay {
         }
 
         matchTeamService.generateTable(matchTeam);
-        matchTeamRepository.save(matchTeam);
 
         return "redirect:/admin/terminarz";
 
@@ -114,7 +118,6 @@ public class AdminControllerGameplay {
 
         MatchTeam matchTeamToSave = matchTeamRepository.findById(matchTeam.getId()).get();
 
-        System.out.println("hmm");
 
         LocalDate nextMatch = Objects.requireNonNull(matchTeamRepository
                 .findAll()
@@ -124,10 +127,6 @@ public class AdminControllerGameplay {
                 .orElse(null))
                 .getDateOfGame();
 
-        System.out.println("XDDD");
-
-        System.out.println(nextMatch);
-
 
         LocalDate currentlyDate = matchTeamRepository.findById(matchTeam.getId()).get().getDateOfGame();
         LocalDate newDateParse = null;
@@ -136,9 +135,6 @@ public class AdminControllerGameplay {
             newDateParse = LocalDate.parse(newDate);
         }
 
-
-        System.out.println(currentlyDate);
-        System.out.println(newDate);
 
         if (newDateParse != null) {
             if (newDateParse.compareTo(currentlyDate) == 0) {
@@ -176,6 +172,11 @@ public class AdminControllerGameplay {
 
     @PostMapping("/generujTerminarz")
     public String postScheduleGenerate() {
+
+
+
+
+
         matchTeamService.generateSchedule();
         return "redirect:/admin/terminarz";
 

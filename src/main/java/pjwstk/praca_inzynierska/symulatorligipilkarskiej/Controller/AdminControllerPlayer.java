@@ -64,7 +64,7 @@ public class AdminControllerPlayer {
             return "security/register";
         }
 
-        userService.registerNewManager(user);
+        userService.registerNewUser(user);
         return "redirect:/login";
     }
 

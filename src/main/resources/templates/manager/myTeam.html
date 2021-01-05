@@ -32,6 +32,7 @@
                 <th>Kolory</th>
                 <th>Początek Kontraktu</th>
                 <th>Koniec Kontraktu</th>
+                <th>Akcje</th>
 
 
             </tr>
@@ -44,6 +45,31 @@
                 <td th:text="*{manager.startOfContract}"></td>
                 <td th:text="*{manager.endOfContract}"></td>
 
+                <td>
+
+
+                    <div class="btn-group" role="group" aria-label="Basic example">
+
+
+                        <a class="btn btn-danger  text-dark btn-outline-danger"
+                           th:href="@{/manager/dodajGracza/{id}(id=${manager.team.id})}"
+                           role="button">Dodaj zawodnika
+                        </a>
+                        <a class="btn btn-primary  text-dark btn-outline-danger"
+                           th:href="@{/manager/terminarzDruzyny/}"
+                           role="button">Zarządzaj meczami
+                        </a>
+                        <a class="btn btn-info  text-dark btn-outline-danger"
+                           th:href="@{/manager/podejrzyjZawodników/{id}(id=${manager.team.id})}"
+                           role="button">Podejrzyj zawodników
+                        </a>
+
+
+
+                    </div>
+
+
+                </td>
 
             </tr>
 

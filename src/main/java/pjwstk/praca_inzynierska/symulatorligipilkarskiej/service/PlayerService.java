@@ -2,9 +2,11 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.TeamException;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
@@ -18,10 +20,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ContractRepo
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +30,8 @@ public class PlayerService {
     private final PlayerValidator playerValidator;
     private final ContractRepository contractRepository;
     private final TeamRepository teamRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ManagerService managerService;
 
 
     public Map<String, String> checkErrors(Player player, Contract contract, BindingResult bindingResult) {
@@ -131,6 +132,10 @@ public class PlayerService {
                 .build();
 
 
+        player.setRole(Role.PLAYER);
+        player.setUsername(player.getShirtName());
+
+
         playerUserRepository.save(player);
         contractRepository.save(contract2);
         team.getContracts().add(contract2);
@@ -204,5 +209,22 @@ public class PlayerService {
 
         return contract;
     }
+
+    public List<MatchTeam> findMyMatches() {
+        Player player = (Player) managerService.getCurrentUser();
+
+        Contract contract = findCurrentlyContract(player.getId());
+
+        List<MatchTeam> matchTeamForPlayers = new ArrayList<>();
+
+        matchTeamForPlayers.addAll(contract.getTeam().getHomeGames());
+        matchTeamForPlayers.addAll(contract.getTeam().getVisitGames());
+        matchTeamForPlayers.sort(Comparator.comparing(MatchTeam::getQueue));
+
+        return  matchTeamForPlayers;
+
+
+    }
+
 
 }

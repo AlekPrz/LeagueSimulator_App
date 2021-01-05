@@ -2,9 +2,12 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Enum.StatusOfMatch;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -41,6 +44,11 @@ public class MatchTeam {
         player.getMatchTeamsHome().remove(this);
     }
 
+    public void removeMatchTeamVisit(Player player) {
+        this.visitTeamPlayers.remove(player);
+        player.getMatchTeamsVisit().remove(this);
+    }
+
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "matchTeamsVisit", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Set<Player> visitTeamPlayers;
@@ -49,8 +57,18 @@ public class MatchTeam {
     @JoinColumn(name = "visit_team_id")
     private Team visitTeam;
 
+
+    @ManyToOne
+    @JoinColumn(name = "managerProposer_id")
+    private Manager managerProposer;
+
+    @ManyToOne
+    @JoinColumn(name = "managerReceiver_id")
+    private Manager managerReceiver;
+
+
     @EqualsAndHashCode.Exclude
-    @Pattern(regexp = "[1-9]-[1-9]", message = " Wynik musi być w formacie liczba-liczba, (minusowe liczby nie są akceptowalne) ")
+    @Pattern(regexp = "[0-9]-[0-9]", message = " Wynik musi być w formacie liczba-liczba, (minusowe liczby nie są akceptowalne) ")
     private String score;
 
     @ManyToOne
@@ -81,6 +99,16 @@ public class MatchTeam {
     }
 
     public static List<MatchTeam> oldMatch = new ArrayList<>();
+
+
+    @EqualsAndHashCode.Exclude
+    @Enumerated(EnumType.STRING)
+    private StatusOfMatch statusOfMatch;
+
+
+    @EqualsAndHashCode.Exclude
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate newDateOfGame;
 
 
 }

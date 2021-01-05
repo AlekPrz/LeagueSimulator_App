@@ -3,9 +3,12 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Fan;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
+
+import static pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role.FAN;
 
 @Service
 
@@ -23,10 +26,27 @@ public class UserRegister {
 
     public void registerNewUser(User user) {
 
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRepeatPassword(passwordEncoder.encode(user.getRepeatPassword()));
 
-        userRepository.save(user);
+        if (user.getRole().getDescription().equals("ROLE_FAN")) {
+            userRepository.save(Fan.builder()
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .repeatPassword(user.getRepeatPassword())
+                    .role(user.getRole())
+                    .favouriteTeam("Do poprawy")
+                    .build());
+        } else if (user.getRole().getDescription().equals("ROLE_MANAGER")) {
+            userRepository.save(Manager.builder()
+                    .username(user.getUsername())
+                    .password(user.getPassword())
+                    .repeatPassword(user.getRepeatPassword())
+                    .role(user.getRole()).build());
+        } else if(user.getRole().getDescription().equals("ROLE_ADMIN")){
+            userRepository.save(user);
+
+        }
     }
 
     public static String encodePassword(String s) {
@@ -35,21 +55,6 @@ public class UserRegister {
 
 
     }
-
-    public void registerNewManager(User user) {
-
-
-        if (user.getRole().getDescription().equals("ROLE_MANAGER")) {
-
-
-            Manager manager = Manager.builder().username(user.getUsername()).password(UserRegister.encodePassword(user.getPassword()))
-                    .repeatPassword(UserRegister.encodePassword(user.getRepeatPassword())).role(user.getRole()).build();
-
-            userRepository.save(manager);
-
-        }
-        registerNewUser(user);
-
-
     }
-}
+
+

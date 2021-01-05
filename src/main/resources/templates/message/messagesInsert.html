@@ -23,26 +23,36 @@
 
 </style>
 <body>
+<span th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
 <div th:insert="navigation/managerNavigation">Navigation</div>
-
+</span>
+<span th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+<div th:insert="navigation/adminNavigation">Admin</div>
+</span>
+<span th:if="${#authorization.expression('hasRole(''FAN'')')}">
+<div th:insert="navigation/fanNavigation">Admin</div>
+</span>
 <div class="container py-4">
     <div class="row">
         <div class="col-sm-2">
             <nav>
                 <ul class="nav py-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/nowa"><i class="fa fa-envelope"></i> Nowa wiadomość<span
+                        <a class="nav-link" href="/wiadomosci/nowa"><i class="fa fa-envelope"></i> Nowa wiadomość<span
                                 class="badge badge-danger"></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/odebrane"><i class="fa fa-inbox"></i> Odebrane <span
-                                class="badge badge-danger" th:text="${howMuchNotRead}"> </span></a>
+                        <a class="nav-link" href="/wiadomosci/odebrane"><i class="fa fa-inbox"></i> Odebrane
+                            <span style="font-size:11px" class="badge badge-danger" th:text="${howMuchNotRead}"> </span>
+                            <span style="font-size:11px" class="badge badge-success" th:text="${howMuchRead}"> </span>
+
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/wyslane"><i class="fa fa-send"></i> Wysłane </a>
+                        <a class="nav-link" href="/wiadomosci/wyslane"><i class="fa fa-send"></i> Wysłane </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/wiadomosci/kosz"><i class="fa fa-trash"></i> Kosz</a>
+                        <a class="nav-link" href="/wiadomosci/kosz"><i class="fa fa-trash"></i> Kosz</a>
                     </li>
 
                 </ul>
@@ -50,7 +60,7 @@
         </div>
         <div class="col-sm-10">
             <p class="text-center"><b>Nowa wiadomość</b></p>
-            <form method="post", action="/manager/sending">
+            <form method="post", action="/messages/sending">
 
                 <div class="form-row">
                     <div class="col-1">
@@ -64,12 +74,19 @@
 
                 <div class="form-row py-2">
                     <div class="col-1">
-                        <p class="text-center">Wybierz trenera:</p>
+                        <span th:if="${#authorization.expression('hasRole(''FAN'')')}">
+
+                        <div th:i class="text-center">Wybierz admina:</div>
+                        </span>
+                        <span th:unless="${#authorization.expression('hasRole(''FAN'')')}">
+
+                        <div th:i class="text-center">Wybierz usera:</div>
+                        </span>
                     </div>
                     <div class="col-11">
                         <select class="form-control col-lg-4" th:field="${message.userReceiver.id}" required>
                             <option
-                                    th:each="m: ${manager}"
+                                    th:each="m: ${users}"
                                     th:value="${m.id}"
                                     th:text="${m.username}">
                             </option>

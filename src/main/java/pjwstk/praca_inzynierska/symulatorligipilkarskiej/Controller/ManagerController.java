@@ -76,7 +76,6 @@ public class ManagerController {
         Long idOfTeam;
 
         if (managerService.getCurrentPlayersOfTeam().isPresent()) {
-            System.out.println("a tu?");
             idOfTeam = managerService.getCurrentPlayersOfTeam().get().getId();
         } else {
             idOfTeam = null;
@@ -91,6 +90,7 @@ public class ManagerController {
             model.addAttribute("matchTeam", getMyTeamMatches);
             model.addAttribute("players", players);
             model.addAttribute("sum", new Counter());
+            model.addAttribute("managerUsername", managerService.getCurrentManager().getUsername());
         } else {
             model.addAttribute("matchTeamNotInit", true);
         }
@@ -184,14 +184,28 @@ public class ManagerController {
         return "redirect:/manager/terminarzDruzyny";
 
     }
+    @PostMapping("/terminarzDruzyny/ustalSklad/usunSkladVisit")
+    public String deletePlayerVisit(Long visitTeamPlayersToDelete) {
 
+
+        MatchTeam matchTeam1 = matchTeamRepository.findById(visitTeamPlayersToDelete).orElse(null);
+        for (Player tmp : matchTeam1.getVisitTeamPlayers()) {
+            matchTeam1.removeMatchTeamVisit(tmp);
+        }
+        matchTeamRepository.save(matchTeam1);
+
+
+        return "redirect:/manager/terminarzDruzyny";
+
+    }
+/*
 
     @GetMapping("/wiadomosci/nowa")
     public String messagesDash(Model model) {
 
         model.addAttribute("manager", managerService.findManagers());
         model.addAttribute("message", new Message());
-        model.addAttribute("howMuchNotRead",managerService.getNotRead());
+        model.addAttribute("howMuchNotRead", managerService.getNotRead());
 
 
         return "manager/messagesInsert";
@@ -224,13 +238,12 @@ public class ManagerController {
                 managerService.getCurrentManager()
                         .getMessagesGot().stream()
                         .filter(p -> !p.getIsDeleteByReceiver())
+                        .sorted(Comparator.comparing(Message::getDateOfSend).reversed())
                         .collect(Collectors.toList());
 
 
-
-
         model.addAttribute("messages", getAllNoDeletedMessages);
-        model.addAttribute("howMuchNotRead",managerService.getNotRead());
+        model.addAttribute("howMuchNotRead", managerService.getNotRead());
 
         return "manager/messagesInBox";
     }
@@ -242,17 +255,19 @@ public class ManagerController {
         List<Message> getAllNoDeletedMessages =
                 managerService.getCurrentManager()
                         .getMessagesSend().stream()
-                        .filter(p -> !p.getIsDeletedBySender()).collect(Collectors.toList());
+                        .filter(p -> !p.getIsDeletedBySender())
+                        .sorted(Comparator.comparing(Message::getDateOfSend).reversed())
+                        .collect(Collectors.toList());
 
 
         model.addAttribute("messages", getAllNoDeletedMessages);
-        model.addAttribute("howMuchNotRead",managerService.getNotRead());
+        model.addAttribute("howMuchNotRead", managerService.getNotRead());
 
 
         return "manager/messagesInSent";
-    }
+    }*/
 
-    @PostMapping("/messages/deleteSentMessage")
+ /*   @PostMapping("/messages/deleteSentMessage")
     public String deleteSentMessage(Long id) {
 
         System.out.println(id);
@@ -307,8 +322,10 @@ public class ManagerController {
         }
 
 
-        model.addAttribute("messages", getAllDeletedMessages);
-        model.addAttribute("howMuchNotRead",managerService.getNotRead());
+        model.addAttribute("messages", getAllDeletedMessages.stream().
+                sorted(Comparator.comparing(Message::getDateOfSend).reversed()).collect(Collectors.toList())
+        );
+        model.addAttribute("howMuchNotRead", managerService.getNotRead());
 
 
         return "manager/messagesInTrash";
@@ -343,20 +360,13 @@ public class ManagerController {
             model.addAttribute("message", message.get());
         }
 
-        model.addAttribute("howMuchNotRead",managerService.getNotRead());
+        model.addAttribute("howMuchNotRead", managerService.getNotRead());
 
         return "manager/messageDetail";
 
-    }
-
-
-/*
-    @GetMapping("/terminarzDruzyny/ustalSklad/{id}")
-    public String chooseSquadOnMatch(@PathVariable Long id, Model model) {
+    }*/
 
 
 
-    }
-*/
 
 }

@@ -14,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @PrimaryKeyJoinColumn(name = "FanId")
 
+
 public class Fan extends User {
 
     private String favouriteTeam;

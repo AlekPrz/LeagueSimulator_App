@@ -56,6 +56,18 @@
                         Panel Managera
                     </a>
                 </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasRole(''FAN'')')}">
+                    <a class="nav-link" href="/fan/">
+                        <span class="fa fa-user"></span>
+                        Panel Kibica
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasRole(''PLAYER'')')}">
+                    <a class="nav-link" href="/player/">
+                        <span class="fa fa-user"></span>
+                        Panel Kibica
+                    </a>
+                </li>
 
 
             </ul>
@@ -76,12 +88,17 @@
                     </a>
                 </li>
 
-                <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                    <a href="/admin/dodajUzytkownika">
-                        <span class="fa fa-sign-in px-3 text-white"></span>
-                        Dodaj nowego użytkownika
-                    </a>
-                </li>
+
+
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/wiadomosci/odebrane">
+                            <span class="fa fa-envelope"></span>
+                            Wiadomości
+                        </a>
+                    </li>
+
+
 
 
                 <li sec:authorize="isAuthenticated()">

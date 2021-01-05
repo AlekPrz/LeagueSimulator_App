@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Configuration
-public class MyWebSecurity extends WebSecurityConfigurerAdapter {
+
+public class MyWebSecurity extends WebSecurityConfigurerAdapter{
 
 
     private UserDetailsService userDetailsService;
@@ -38,6 +39,10 @@ public class MyWebSecurity extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
 
     }
+
+
+
+
 
 
     @Override

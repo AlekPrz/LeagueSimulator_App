@@ -42,15 +42,21 @@ public class GuestController {
         String repeatPassword = user.getRepeatPassword();
 
 
-        if (!password.equals(repeatPassword)) {
+       if(userRepository.findUserByUsername(user.getUsername()).isPresent()){
+           model.addAttribute("usernameExist", true);
+           return "security/register";
+       }
+
+        if (!password.equals(repeatPassword) || password.isEmpty() || password.isBlank()) {
             model.addAttribute("errorPassword", true);
             return "security/register";
         }
         model.addAttribute("registerSuccess", true);
-        user.setRole(Role.USER);
+        user.setRole(Role.FAN);
         userService.registerNewUser(user);
-        return "index";
+        return "security/login";
     }
+
     @GetMapping("/default")
     public String defaultAfterLogin(HttpServletRequest request) {
 
