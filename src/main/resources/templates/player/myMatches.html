@@ -49,7 +49,7 @@
                 <th>Wynik</th>
                 <th>2 Drużyna</th>
                 <th>Data Rozegrania meczu</th>
-                <th>Akcja</th>
+                <th>Informacje o powołaniu</th>
 
             </tr>
             </thead>
@@ -60,7 +60,72 @@
                 <td th:text="${p.score}"></td>
                 <td th:text="${p.visitTeam.name}"></td>
                 <td th:text="${p.dateOfGame}"></td>
+                <td>
 
+
+
+                    <div th:each="tmp: ${p.getVisitTeamPlayers()}">
+                        <div th:if="${tmp.getUsername()} == ${currentUser}">
+                            <div th:with="mycounter=${sum.increment()}">
+                                 <span th:text="'Zostałeś powołany na ten mecz !'">
+                                 </span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div th:each="tmp: ${p.getHomeTeamPlayers()}">
+                        <div th:if="${tmp.getUsername()} == ${currentUser}">
+                            <div th:with="mycounter=${sum.increment()}">
+                                 <span th:text="'Zostałeś powołany na ten mecz !'">
+                                 </span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${sum.get()<1}">
+
+                         <span th:text="'Nie zostałeś powołany na ten mecz'">
+                         </span>
+
+                    </div>
+
+
+                    <!--
+                     <span th:unless="${p.getVisitTeamPlayers().isEmpty()} || ${p.getHomeTeamPlayers().isEmpty()}">
+
+
+                     <div th:with="mycounter = ${sum.get()}">
+
+                     <div th:each="tmp: ${p.getHomeTeamPlayers()}">
+                         <div th:if="${tmp.getUsername == ${currentUser}}">
+                             <div th:with="mycounter=${sum.increment()}">
+
+                             <span th:text="'Zostałeś powołany na ten mecz !'">
+
+                             </span>
+                         </div>
+                     </div>
+                     </div>
+                     <div th:each="tmp: ${p.getVisitTeamPlayers()}">
+                         <div th:if="${tmp.getUsername == ${currentUser}}">
+                             <div th:with="mycounter=${sum.increment()}">
+                                 <span th:text="'Zostałeś powołany na ten mecz !'">
+
+                             </span>
+                         </div>
+                     </div>
+                     </div>
+
+                     </div>
+                     <div th:if="${sum.get()<1}">
+
+                         <span th:text="'Nie zostałeś powołany na ten mecz'">
+                         </span>
+
+                     </div>
+                     </span>
+               -->
+                </td>
 
             </tr>
             </tbody>

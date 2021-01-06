@@ -87,6 +87,8 @@ public class ManagerController {
 
 
         if (getMyTeamMatches != null && !getMyTeamMatches.isEmpty() && !players.isEmpty()) {
+
+            model.addAttribute("currentlyTeam",managerService.getCurrentManagerTeam());
             model.addAttribute("matchTeam", getMyTeamMatches);
             model.addAttribute("players", players);
             model.addAttribute("sum", new Counter());
@@ -112,7 +114,6 @@ public class ManagerController {
 
         MatchTeam matchTeam = matchTeamRepository.findById(id).orElse(null);
 
-        // Musze znaleźć aktualnie przypisanych graczy
 
         if (!Collections.disjoint(players, matchTeam.getHomeTeamPlayers())) {
             playersReadyOnMatch.addAll(matchTeam.getHomeTeamPlayers());
@@ -140,11 +141,17 @@ public class ManagerController {
     public String chooseSquadOnMatchPost(@ModelAttribute PlayersDto playersIdsFromFormData, MatchTeam matchTeam) {
 
 
-        List<Player> playersFromDb = playerService.getAllPlayers()
-                .stream()
-                .filter(second -> playersIdsFromFormData.getPlayerList().stream().allMatch
-                        (p -> p.getId().equals(second.getId())))
-                .collect(Collectors.toList());
+        System.out.println(playerService.getAllPlayers());
+
+        List<Player> playersFromDb = new ArrayList<>();
+
+        for (Player tmp : playersIdsFromFormData.getPlayerList()) {
+            for (Player tmp1 : playerService.getAllPlayers()) {
+                if (tmp.getId() == tmp1.getId()) {
+                    playersFromDb.add(tmp1);
+                }
+            }
+        }
 
         System.out.println(playersFromDb);
 
@@ -173,200 +180,53 @@ public class ManagerController {
     @PostMapping("/terminarzDruzyny/ustalSklad/usunSkladHome")
     public String deletePlayerMatch(Long homeTeamPlayersToDeleteId) {
 
+        System.out.println(homeTeamPlayersToDeleteId);
+
 
         MatchTeam matchTeam1 = matchTeamRepository.findById(homeTeamPlayersToDeleteId).orElse(null);
+
+
+
+
+        List<Player> toRemove = new ArrayList<>();
+
         for (Player tmp : matchTeam1.getHomeTeamPlayers()) {
-            matchTeam1.removeMatchTeamHome(tmp);
+            tmp.getMatchTeamsHome().remove(matchTeam1);
+            toRemove.add(tmp);
         }
+
+        matchTeam1.getHomeTeamPlayers().removeAll(toRemove);
         matchTeamRepository.save(matchTeam1);
 
 
         return "redirect:/manager/terminarzDruzyny";
 
     }
+
     @PostMapping("/terminarzDruzyny/ustalSklad/usunSkladVisit")
     public String deletePlayerVisit(Long visitTeamPlayersToDelete) {
 
 
+
         MatchTeam matchTeam1 = matchTeamRepository.findById(visitTeamPlayersToDelete).orElse(null);
+
+
+
+
+        List<Player> toRemove = new ArrayList<>();
+
         for (Player tmp : matchTeam1.getVisitTeamPlayers()) {
-            matchTeam1.removeMatchTeamVisit(tmp);
+            tmp.getMatchTeamsVisit().remove(matchTeam1);
+            toRemove.add(tmp);
         }
+
+        matchTeam1.getVisitTeamPlayers().removeAll(toRemove);
         matchTeamRepository.save(matchTeam1);
 
 
         return "redirect:/manager/terminarzDruzyny";
 
     }
-/*
-
-    @GetMapping("/wiadomosci/nowa")
-    public String messagesDash(Model model) {
-
-        model.addAttribute("manager", managerService.findManagers());
-        model.addAttribute("message", new Message());
-        model.addAttribute("howMuchNotRead", managerService.getNotRead());
-
-
-        return "manager/messagesInsert";
-    }
-
-    @PostMapping("/sending")
-    public String sendMessage(Message message) {
-
-
-        messageRepository.save
-                (Message.builder()
-                        .text(message.getText())
-                        .dateOfSend(LocalDate.now())
-                        .isDeleteByReceiver(false)
-                        .isDeletedBySender(false)
-                        .isRead(false)
-                        .userReceiver(managerService.findManagerById(message.getUserReceiver().getId()))
-                        .userSender(managerService.getCurrentManager())
-                        .subject(message.getSubject()).build());
-
-        return "redirect:/manager/wiadomosci/odebrane";
-
-    }
-
-    @GetMapping("/wiadomosci/odebrane")
-    public String messagesInbox(Model model) {
-
-
-        List<Message> getAllNoDeletedMessages =
-                managerService.getCurrentManager()
-                        .getMessagesGot().stream()
-                        .filter(p -> !p.getIsDeleteByReceiver())
-                        .sorted(Comparator.comparing(Message::getDateOfSend).reversed())
-                        .collect(Collectors.toList());
-
-
-        model.addAttribute("messages", getAllNoDeletedMessages);
-        model.addAttribute("howMuchNotRead", managerService.getNotRead());
-
-        return "manager/messagesInBox";
-    }
-
-
-    @GetMapping("/wiadomosci/wyslane")
-    public String messagesSent(Model model) {
-
-        List<Message> getAllNoDeletedMessages =
-                managerService.getCurrentManager()
-                        .getMessagesSend().stream()
-                        .filter(p -> !p.getIsDeletedBySender())
-                        .sorted(Comparator.comparing(Message::getDateOfSend).reversed())
-                        .collect(Collectors.toList());
-
-
-        model.addAttribute("messages", getAllNoDeletedMessages);
-        model.addAttribute("howMuchNotRead", managerService.getNotRead());
-
-
-        return "manager/messagesInSent";
-    }*/
-
- /*   @PostMapping("/messages/deleteSentMessage")
-    public String deleteSentMessage(Long id) {
-
-        System.out.println(id);
-
-        Optional<Message> message = messageRepository.findById(id);
-
-
-        if (message.isPresent()) {
-            message.get().setIsDeletedBySender(true);
-            messageRepository.save(message.get());
-        }
-
-
-        return "redirect:/manager/wiadomosci/wyslane";
-    }
-
-    @PostMapping("/messages/deleteInBoxMessage")
-    public String deleteInBoxMessage(Long id) {
-
-
-        Optional<Message> message = messageRepository.findById(id);
-
-
-        if (message.isPresent()) {
-            message.get().setIsDeleteByReceiver(true);
-            messageRepository.save(message.get());
-        }
-
-        return "redirect:/manager/wiadomosci/wyslane";
-    }
-
-    @GetMapping("/wiadomosci/kosz")
-    public String messagesDeleted(Model model) {
-
-
-        List<Message> getAllDeletedMessages = new ArrayList<>();
-
-
-        Manager manager = managerService.getCurrentManager();
-
-
-        for (Message tmp : manager.getMessagesSend()) {
-            if (tmp.getIsDeletedBySender()) {
-                getAllDeletedMessages.add(tmp);
-            }
-        }
-
-        for (Message tmp : manager.getMessagesGot()) {
-            if (tmp.getIsDeleteByReceiver()) {
-                getAllDeletedMessages.add(tmp);
-            }
-        }
-
-
-        model.addAttribute("messages", getAllDeletedMessages.stream().
-                sorted(Comparator.comparing(Message::getDateOfSend).reversed()).collect(Collectors.toList())
-        );
-        model.addAttribute("howMuchNotRead", managerService.getNotRead());
-
-
-        return "manager/messagesInTrash";
-    }
-
-    @GetMapping("/wiadomosci/odczytajWiadomosc/{id}")
-    public String getDetatilsOfMessage(@PathVariable Long id, Model model) {
-
-
-        Optional<Message> message = messageRepository.findById(id);
-
-
-        if (message.isPresent()) {
-            model.addAttribute("message", message.get());
-            message.get().setIsRead(true);
-            messageRepository.save(message.get());
-        }
-
-
-        return "manager/messageDetail";
-
-    }
-
-    @GetMapping("/wiadomosci/odczytWiadomosc/{id}")
-    public String getDetailsOfSentMessage(@PathVariable Long id, Model model) {
-
-
-        Optional<Message> message = messageRepository.findById(id);
-
-
-        if (message.isPresent()) {
-            model.addAttribute("message", message.get());
-        }
-
-        model.addAttribute("howMuchNotRead", managerService.getNotRead());
-
-        return "manager/messageDetail";
-
-    }*/
-
-
 
 
 }

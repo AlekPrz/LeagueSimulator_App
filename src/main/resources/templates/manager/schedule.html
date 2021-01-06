@@ -129,37 +129,42 @@ and ${p.getStatusOfMatch()?.name()=='INCOME'}">
                     </div>
 
                     <div th:unless="${p.getStatusOfMatch()?.name()=='DONE'}">
-                    <div th:with="mycounter = ${sum.get()}">
+                        <div th:with="mycounter = ${sum.get()}"> </div>
 
 
+                        <div th:if="${currentlyTeam.getName()} == ${p.getHomeTeam().getName()}">
                         <div th:each="tmp: ${p.getHomeTeamPlayers()}">
                             <div th:if="${players.contains(tmp)}">
-                                <div th:with="mycounter=${sum.increment()}">
-                                    <a class="btn btn-light  text-dark btn-outline-danger"
-                                       th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
-                                       role="button">
+                                <div th:with="mycounter=${sum.increment()}"></div>
+                            </div>
+                        </div>
+                                            <div th:if="${sum.get()>0}">
+
+                          <a class="btn btn-light  text-dark btn-outline-danger"
+                             th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
+                             role="button">
                                         Edytuj skład na mecz HOME
                                     </a>
-                                </div>
-                            </div>
-                        </div>
+                                            </div>
+                    </div>
 
-
+                        <div th:unless="${currentlyTeam.getName()} == ${p.getHomeTeam().getName()}">
                         <div th:each="tmp: ${p.getVisitTeamPlayers()}">
-                            <div th:if="${players.contains(tmp)}">
-                                <div th:with="mycounter=${sum.increment()}">
-
-                                    <a class="btn btn-light  text-dark btn-outline-danger"
-                                       th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
-                                       role="button">
-                                        Edytuj skład na mecz VISIT
-                                    </a>
-                                </div>
+                             <div th:if="${players.contains(tmp)}">
+                                <div th:with="mycounter=${sum.increment()}"></div>
                             </div>
                         </div>
 
+                            <div th:if="${sum.get()>0}">
+
+                          <a class="btn btn-light  text-dark btn-outline-danger"
+                             th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
+                             role="button">
+                                        Edytuj skład na mecz Visit
+                                    </a>
 
                     </div>
+                        </div>
 
                     <div th:if="${sum.get()<1}">
 
@@ -170,8 +175,9 @@ and ${p.getStatusOfMatch()?.name()=='INCOME'}">
                         </a>
 
 
-                    </div>
                         </div>
+                    </div>
+
 
 
 

@@ -10,6 +10,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.helpingMethods.Counter;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.PlayerService;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class PlayerController {
     private final PlayerService playerService;
+    private final ManagerService managerService;
 
     @GetMapping("/mojeMecze")
     public String getSchedule(Model model) {
@@ -28,6 +30,11 @@ public class PlayerController {
         System.out.println("witam");
         List<MatchTeam> getMyTeamMatches = playerService.findMyMatches();
 
+
+
+
+        model.addAttribute("sum", new Counter());
+        model.addAttribute("currentUser", managerService.getCurrentUser().getUsername());
         model.addAttribute("myMatches", getMyTeamMatches);
 
         return "player/myMatches";

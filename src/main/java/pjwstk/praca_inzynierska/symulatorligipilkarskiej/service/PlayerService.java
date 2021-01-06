@@ -151,7 +151,7 @@ public class PlayerService {
 
         for (User tmp : playerUserRepository.findAll()) {
 
-            if (tmp instanceof Player) {
+            if (tmp.getRole().getDescription().equals("ROLE_PLAYER")) {
                 players.add((Player) tmp);
             }
         }
@@ -164,8 +164,7 @@ public class PlayerService {
     public void deletePlayer(Long id) {
         for (Contract contract : contractRepository.findAll()) {
             if (contract.getPlayer().getId().equals(id)) {
-          /*      contract.getTeam().getContracts().remove(contract);
-                contract.getPlayer().getContracts().remove(contract);*/
+
                 contractRepository.delete(contract);
             }
         }
@@ -221,7 +220,7 @@ public class PlayerService {
         matchTeamForPlayers.addAll(contract.getTeam().getVisitGames());
         matchTeamForPlayers.sort(Comparator.comparing(MatchTeam::getQueue));
 
-        return  matchTeamForPlayers;
+        return matchTeamForPlayers;
 
 
     }

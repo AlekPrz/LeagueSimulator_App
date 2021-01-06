@@ -74,10 +74,8 @@ public class ManagerControllerGameplay {
 
             if (newDateParse.compareTo(currentlyDate) == 0) {
                 errors.put("DateError", "Data nie może być taka sama!");
-                System.out.println("1");
             } else if (newDateParse.compareTo(LocalDate.now()) < 0) {
                 errors.put("DateError", "Data nie może być wcześniejsza niż dzień dzisiejszy!");
-                System.out.println("2");
             }
         }
 
