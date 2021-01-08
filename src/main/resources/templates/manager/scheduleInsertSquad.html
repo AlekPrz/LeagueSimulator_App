@@ -80,23 +80,20 @@
 
 
             <div class="form-group">
-                <ul class="list-inline">
 
                     <tr th:each="book, itemStat : ${form.playerList}">
+                        <ul class="list-group">
+<li>
 
-
-                        <input type="checkbox"
+                            <input type="checkbox"
                                th:value="${book.id}"
                                th:field="*{form.playerList[__${itemStat.index}__].id}"/>
-                        <label  th:text="${book.name} + ' ' + ${book.surname}"></label>
-
-
+                        <label  th:text="${book.name} + ' ' + ${book.surname} + ' pseudonim: ' + ${book.username}"></label>
+               </li>
+                  </ul>
                     </tr>
 
-                    </li>
 
-
-                </ul>
             </div>
 
 

@@ -42,10 +42,10 @@ public class AdminControllerGameplay {
 
 
     @GetMapping("/terminarz")
-    public String getSchedule(Model model) {
+    public String getSchedule(@PageableDefault(size = 2) Pageable pageable, Model model) {
 
 
-        Page<MatchTeam> page = matchTeamRepository.findAllByOrderByQueue(PageRequest.of(0, teamService.getAllTeam().size() / 2));
+        Page<MatchTeam> page = matchTeamRepository.findAllByOrderByQueue(pageable);
 
         if (matchTeamRepository.findAll().isEmpty()) {
             model.addAttribute("emptyMatch", true);
@@ -118,14 +118,14 @@ public class AdminControllerGameplay {
 
         MatchTeam matchTeamToSave = matchTeamRepository.findById(matchTeam.getId()).get();
 
-
-        LocalDate nextMatch = Objects.requireNonNull(matchTeamRepository
+        MatchTeam nextMatch = matchTeamRepository
                 .findAll()
                 .stream()
                 .filter(p -> p.getQueue() == matchTeamToSave.getQueue() + 1)
                 .findFirst()
-                .orElse(null))
-                .getDateOfGame();
+                .orElse(null);
+
+        System.out.println("3");
 
 
         LocalDate currentlyDate = matchTeamRepository.findById(matchTeam.getId()).get().getDateOfGame();
@@ -144,8 +144,7 @@ public class AdminControllerGameplay {
                 errors.put("DateError", "Data nie może być wcześniejsza niż dzień dzisiejszy!");
                 System.out.println("2");
 
-            } else if (newDateParse.compareTo(nextMatch) > 0 ||
-                    newDateParse.compareTo(currentlyDate.minusWeeks(2)) < 0) {
+            } else if (nextMatch != null && (newDateParse.compareTo(nextMatch.getDateOfGame()) > 0 || newDateParse.compareTo(currentlyDate.minusWeeks(2)) < 0)) {
                 errors.put("DateError",
                         "Data nie może być późniejsza niż następny mecz");
             }

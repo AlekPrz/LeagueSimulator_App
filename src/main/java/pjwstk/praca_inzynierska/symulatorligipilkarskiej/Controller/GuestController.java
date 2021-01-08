@@ -5,9 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.UserRegister;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
 
@@ -20,6 +22,7 @@ public class GuestController {
 
     private final UserRepository<User> userRepository;
     private final UserRegister userService;
+    private final TeamService teamService;
 
 
     @GetMapping("/")
@@ -64,6 +67,7 @@ public class GuestController {
         return "redirect:/";
 
     }
+
 
 
 }

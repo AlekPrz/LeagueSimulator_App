@@ -32,7 +32,8 @@
                 <th>Nazwa</th>
                 <th>Skrócona nazwa</th>
                 <th>Kolory</th>
-
+                <th>Nazwa trenera</th>
+                <th>Akcja</th>
 
             </tr>
             <tr th:each="w:${team}">
@@ -40,6 +41,21 @@
                 <td th:text="${w.shortName}"></td>
                 <td th:text="${w.colors}"></td>
 
+                <td>
+                    <div th:each="tmp:${w.getManagerTeams()}">
+                        <div th:if="${tmp.isCurrently}">
+                            <span th:text="${tmp.getManager().getUsername()}"></span>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <a class="btn btn-info  text-dark btn-outline-danger"
+                       th:href="@{/druzyny/gracze/{id}(id=${w.id})}"
+                       role="button">Podejrzyj zawodników
+                    </a>
+
+                </td>
 
             </tr>
         </table>

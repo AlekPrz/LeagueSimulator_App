@@ -88,43 +88,10 @@
                          </span>
 
                     </div>
+                    <div th:span="${sum.clear()}"></div>
 
 
-                    <!--
-                     <span th:unless="${p.getVisitTeamPlayers().isEmpty()} || ${p.getHomeTeamPlayers().isEmpty()}">
 
-
-                     <div th:with="mycounter = ${sum.get()}">
-
-                     <div th:each="tmp: ${p.getHomeTeamPlayers()}">
-                         <div th:if="${tmp.getUsername == ${currentUser}}">
-                             <div th:with="mycounter=${sum.increment()}">
-
-                             <span th:text="'Zostałeś powołany na ten mecz !'">
-
-                             </span>
-                         </div>
-                     </div>
-                     </div>
-                     <div th:each="tmp: ${p.getVisitTeamPlayers()}">
-                         <div th:if="${tmp.getUsername == ${currentUser}}">
-                             <div th:with="mycounter=${sum.increment()}">
-                                 <span th:text="'Zostałeś powołany na ten mecz !'">
-
-                             </span>
-                         </div>
-                     </div>
-                     </div>
-
-                     </div>
-                     <div th:if="${sum.get()<1}">
-
-                         <span th:text="'Nie zostałeś powołany na ten mecz'">
-                         </span>
-
-                     </div>
-                     </span>
-               -->
                 </td>
 
             </tr>

@@ -51,6 +51,7 @@ public class ManagerControllerGameplay {
 
         Map<String, String> errors = new LinkedHashMap<>();
         MatchTeam matchTeamToSave = matchTeamRepository.findById(matchTeam.getId()).orElse(null);
+
         MatchTeam nextMatch = matchTeamRepository
                 .findAll()
                 .stream()
@@ -101,8 +102,8 @@ public class ManagerControllerGameplay {
 
             messageRepository.save
                     (Message.builder()
-                            .text("Przeciwnik zaproponował Ci zmiane daty rozegrania maeczu, jeśli chciałbyś tego dokonać, wejdź w terminarz" +
-                                    "swojej drużyny i zatwierdź zmianę, zaproponowany termin to: " + newDate)
+                            .text("Przeciwnik zaproponował Ci zmiane daty rozegrania meczu, jeśli chciałbyś tego dokonać, wejdź w terminarz  " +
+                                    " swojej drużyny i zatwierdź zmianę, zaproponowany termin to: " + newDate)
                             .dateOfSend(LocalDate.now())
                             .isDeleteByReceiver(false)
                             .isDeletedBySender(false)

@@ -11,10 +11,8 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.SeasonTeam;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.MatchTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -28,6 +26,7 @@ public class MatchTeamService {
     private final TeamRepository teamRepository;
     private final SeasonRepository seasonRepository;
     private final SeasonTeamRepository seasonTeamRepository;
+    private final UserRepository<Player> playerUserRepository;
 
 
     public void generateSchedule() {
@@ -437,8 +436,32 @@ public class MatchTeamService {
 
 
     public void deleteSchedule() {
-        matchTeamRepository.deleteAll();
+/*
         seasonRepository.deleteAll();
+*/
+        System.out.println(matchTeamRepository.getOne(300L).getHomeTeamPlayers());
+        System.out.println(playerUserRepository.findById(61L).orElse(null).getMatchTeamsHome());
+
+        for (MatchTeam tmp : matchTeamRepository.findAll()) {
+
+            for (Player tmp1 : tmp.getHomeTeamPlayers()) {
+                tmp1.getMatchTeamsHome().remove(tmp);
+                playerUserRepository.save(tmp1);
+            }
+
+            tmp.getHomeTeamPlayers().clear();
+
+            matchTeamRepository.save(tmp);
+
+        }
+
+
+
+
+        matchTeamRepository.deleteAll();
+
+
+
     }
 
 
