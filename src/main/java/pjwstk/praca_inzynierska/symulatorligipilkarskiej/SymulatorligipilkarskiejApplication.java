@@ -57,6 +57,3 @@ public class SymulatorligipilkarskiejApplication implements CommandLineRunner {
                             .role(Role.ADMIN).build());
     }
 }
-
-
-
