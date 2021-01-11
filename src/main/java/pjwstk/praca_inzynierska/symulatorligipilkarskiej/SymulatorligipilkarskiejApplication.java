@@ -50,10 +50,13 @@ public class SymulatorligipilkarskiejApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        if (userUserRepository.findUserByUsername("admin").isEmpty())
             userUserRepository.save
                     (User.builder().username("admin")
                             .password(passwordEncoder.encode("admin"))
                             .repeatPassword(passwordEncoder.encode("admin"))
                             .role(Role.ADMIN).build());
     }
-}
+    }
+
