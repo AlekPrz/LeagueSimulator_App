@@ -69,7 +69,6 @@ public class ManagerControllerGameplay {
         }
 
 
-
         if (!newDate.isEmpty() && errors.isEmpty()) {
             newDateParse = LocalDate.parse(newDate);
 
@@ -84,7 +83,7 @@ public class ManagerControllerGameplay {
         if (nextMatch != null && errors.isEmpty()) {
             if (newDateParse.compareTo(nextMatch.getDateOfGame()) > 0 || newDateParse.compareTo(currentlyDate.minusWeeks(2)) < 0) {
                 errors.put("DateError",
-                        "Data nie może być późniejsza niż następny mecz");
+                        "Data nie może być późniejsza, lub wcześniejsza niż następny/poprzedni mecz");
             }
 
         }

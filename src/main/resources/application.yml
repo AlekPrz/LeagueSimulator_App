@@ -1,8 +1,22 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: jdbc:mysql://localhost:3306/ projekt_inzynierski?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: root
+#spring:
+ # jpa:
+  #  hibernate:
+   #   ddl-auto: update
+ # datasource:
+  #  url: jdbc:mysql://localhost:3306/ projekt_inzynierski?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+   # username: root
+    #password: root
+
+
+#spring:
+#  jpa:
+ #   database: POSTGRESQL
+  #  show-sql: true
+   # hibernate:
+    #  ddl-auto: create
+  #datasource:
+   # platform: postgres
+    #url: jdbc:postgresql://localhost:5432/XD
+    #username: postgres
+    #password: root
+    #driverClassName: org.postgresql.Driver

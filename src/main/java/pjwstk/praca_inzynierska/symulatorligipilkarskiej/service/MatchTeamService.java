@@ -439,8 +439,7 @@ public class MatchTeamService {
 /*
         seasonRepository.deleteAll();
 */
-        System.out.println(matchTeamRepository.getOne(300L).getHomeTeamPlayers());
-        System.out.println(playerUserRepository.findById(61L).orElse(null).getMatchTeamsHome());
+
 
         for (MatchTeam tmp : matchTeamRepository.findAll()) {
 
@@ -448,8 +447,14 @@ public class MatchTeamService {
                 tmp1.getMatchTeamsHome().remove(tmp);
                 playerUserRepository.save(tmp1);
             }
+            for (Player tmp1 : tmp.getVisitTeamPlayers()) {
+                tmp1.getMatchTeamsVisit().remove(tmp);
+                playerUserRepository.save(tmp1);
+            }
 
             tmp.getHomeTeamPlayers().clear();
+            tmp.getVisitTeamPlayers().clear();
+
 
             matchTeamRepository.save(tmp);
 

@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.*;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
 
 import javax.transaction.Transactional;
@@ -17,24 +20,16 @@ import java.util.Random;
 import java.util.Set;
 
 @SpringBootApplication
-public class SymulatorligipilkarskiejApplication {
+public class SymulatorligipilkarskiejApplication implements CommandLineRunner {
 
 
-    private static TeamRepository teamRepository;
-    private static MatchTeamRepository matchTeamRepository;
-    private static SeasonRepository seasonRepository;
-    private static ContractRepository contractRepository;
-    private static SeasonTeamRepository seasonTeamRepository;
+    @Autowired
+    private  UserRepository<User> userUserRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public SymulatorligipilkarskiejApplication(TeamRepository teamRepository,
-                                               MatchTeamRepository matchTeamRepository,
-                                               SeasonRepository seasonRepository, ContractRepository contractRepository,
-                                               SeasonTeamRepository seasonTeamRepository) {
-        this.teamRepository = teamRepository;
-        this.matchTeamRepository = matchTeamRepository;
-        this.seasonRepository = seasonRepository;
-        this.contractRepository = contractRepository;
-        this.seasonTeamRepository = seasonTeamRepository;
+    public SymulatorligipilkarskiejApplication(){
+
     }
 
 
@@ -51,6 +46,15 @@ public class SymulatorligipilkarskiejApplication {
 
 
 
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+            userUserRepository.save
+                    (User.builder().username("admin")
+                            .password(passwordEncoder.encode("admin"))
+                            .repeatPassword(passwordEncoder.encode("admin"))
+                            .role(Role.ADMIN).build());
     }
 }
 

@@ -127,7 +127,7 @@ public class MessageController {
             messageRepository.save(message.get());
         }
 
-        return "redirect:/wiadomosci/wyslane";
+        return "redirect:/wiadomosci/odebrane";
     }
 
     @GetMapping("/wiadomosci/kosz")

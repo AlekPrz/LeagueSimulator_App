@@ -86,7 +86,7 @@ public class ManagerController {
                 .getAllPlayersInThatTeam(idOfTeam);
 
 
-        if (getMyTeamMatches != null && !getMyTeamMatches.isEmpty() && !players.isEmpty()) {
+        if (getMyTeamMatches != null && !getMyTeamMatches.isEmpty()) {
 
             model.addAttribute("currentlyTeam",managerService.getCurrentManagerTeam());
             model.addAttribute("matchTeam", getMyTeamMatches);
