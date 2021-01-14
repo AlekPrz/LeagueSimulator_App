@@ -2,6 +2,8 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.Controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,7 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.helpingMethods.PasswordGenerator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ContractRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
@@ -31,10 +34,10 @@ public class AdminControllerPlayer {
 
 
     private final UserRegister userService;
-    private final UserRepository<Manager> userRepository;
     private final TeamService teamService;
     private final PlayerService playerService;
     private final ContractRepository contractRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/")
@@ -44,13 +47,19 @@ public class AdminControllerPlayer {
 
     @GetMapping("/dodajUzytkownika")
     public String registerGet(Model model) {
+
+        List<Role> roles = new ArrayList<>(Arrays.asList(Role.values()));
+        roles.removeIf(p -> p.equals(Role.PLAYER));
+        roles.removeIf(p -> p.equals(Role.FAN));
+
+
+
         model.addAttribute("user", new User());
-        model.addAttribute("roles", Role.values());
+        model.addAttribute("roles",roles);
         model.addAttribute("rolesAdmin", true);
         return "security/register";
     }
 
-    //Poprawic
 
     @PostMapping("/register")
     public String registerPost(@ModelAttribute User user, Model model) {
@@ -103,6 +112,8 @@ public class AdminControllerPlayer {
         allErrorsFromMyValidate.putAll(playerService.checkErrors(player, contract, bindingResult));
 
 
+
+
         if (!allErrorsFromMyValidate.isEmpty()) {
 
             model.addAttribute("errors", allErrorsFromMyValidate);
@@ -113,8 +124,18 @@ public class AdminControllerPlayer {
             return "admin/players/addPlayer";
         }
 
+        String resultPassword = PasswordGenerator.stringGenerator();
+        player.setPassword(passwordEncoder.encode(resultPassword));
+        player.setRepeatPassword(passwordEncoder.encode(resultPassword));
+
         playerService.createPlayer(player, contract);
-        return "redirect:/admin/panelGraczy";
+
+        model.addAttribute("registerSuccess",true);
+        model.addAttribute("haslo", resultPassword);
+        model.addAttribute("login", player.getUsername());
+
+
+        return "admin/players/InfoForPlayer";
     }
 
 

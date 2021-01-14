@@ -126,9 +126,11 @@ public class ManagerService {
         Manager manager = getCurrentManager();
 
 
-        Team team =
-                manager.getManagerTeams().stream().filter(p -> p.getIsCurrently().equals(true))
-                        .findFirst().map(ManagerTeam::getTeam).orElse(null);
+        Team team = manager.getManagerTeams()
+                .stream()
+                .filter(p -> p.getIsCurrently().equals(true))
+                        .findFirst()
+                .map(ManagerTeam::getTeam).orElse(null);
 
         if (team != null) {
             listOfCurrentMatches.addAll(team.getHomeGames());
@@ -194,7 +196,9 @@ public class ManagerService {
     }*/
 
        public Long getNotRead() {
-
+        if(getCurrentUser() == null){
+            return 0L;
+        }
         List<Message> getAllNoDeletedMessages = getCurrentUser()
                 .getMessagesGot().stream()
                 .filter(p -> !p.getIsDeleteByReceiver())

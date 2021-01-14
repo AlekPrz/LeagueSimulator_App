@@ -30,7 +30,6 @@ public class PlayerService {
     private final PlayerValidator playerValidator;
     private final ContractRepository contractRepository;
     private final TeamRepository teamRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ManagerService managerService;
 
 

@@ -34,7 +34,7 @@
 <div th:insert="navigation/adminNavigation">Admin</div>
 </span>
 <span th:if="${#authorization.expression('hasRole(''FAN'')')}">
-<div th:insert="navigation/adminNavigation">Fan</div>
+<div th:insert="navigation/funNavigation">Fan</div>
 </span>
 
 
@@ -50,7 +50,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/wiadomosci/odebrane"><i class="fa fa-inbox"></i> Odebrane
                             <span style="font-size:11px" class="badge badge-danger" th:text="${howMuchNotRead}"> </span>
-                            <span style="font-size:11px" class="badge badge-success" th:text="${howMuchRead}"> </span></a>
+                            <span style="font-size:11px" class="badge badge-success" th:text="${howMuchReadd}"> </span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/wiadomosci/wyslane"><i class="fa fa-send"></i> Wysłane </a>

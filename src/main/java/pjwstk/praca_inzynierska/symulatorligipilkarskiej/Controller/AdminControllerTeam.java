@@ -14,10 +14,12 @@ import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ManagerService;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.MatchTeamService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.PlayerService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +31,9 @@ import java.util.Map;
 public class AdminControllerTeam {
 
     private final TeamService teamService;
-    private final PlayerService playerService;
     private final ManagerService managerService;
-    private final ManagerTeamRepository managerTeamRepository;
     private final TeamRepository teamRepository;
-
+    private final MatchTeamService matchTeamService;
 
     @GetMapping("/panelDruzyn")
     public String getTeams(Model model, @RequestParam(required = false) String keyword) {
@@ -50,6 +50,11 @@ public class AdminControllerTeam {
 
 
         teamService.deleteTeam(id);
+
+        if (teamRepository.findAll().size() < 3) {
+            matchTeamService.deleteSchedule();
+        }
+
         return "redirect:/admin/panelDruzyn";
     }
 
@@ -105,7 +110,7 @@ public class AdminControllerTeam {
 
 
         model.addAttribute("manager", managers);
-        model.addAttribute("managerTeam", teamService.findCurrentlyManager(id));
+        model.addAttribute("managerTeam", teamService.findCurrentlyManagerTeam(id));
         model.addAttribute("team", teamRepository.findById(id).orElse(null));
 
 
@@ -119,7 +124,7 @@ public class AdminControllerTeam {
         Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
 
 
-        allErrorsFromMyValidate.putAll(teamService.checkErrors(team, managerTeam, bindingResult));
+        allErrorsFromMyValidate.putAll(teamService.checkErrorsModify(team, managerTeam, bindingResult));
 
         if (!allErrorsFromMyValidate.isEmpty()) {
 
@@ -128,10 +133,10 @@ public class AdminControllerTeam {
             model.addAttribute("manager", managers);
             model.addAttribute("managerTeam", managerTeam);
             model.addAttribute("team", team);
-            return "admin/teams/addTeam";
+            return "admin/teams/modifyTeam";
         }
 
-        teamService.createTeam(team, managerTeam);
+        teamService.modifyTeam(team, managerTeam);
         return "redirect:/admin/panelDruzyn";
 
     }

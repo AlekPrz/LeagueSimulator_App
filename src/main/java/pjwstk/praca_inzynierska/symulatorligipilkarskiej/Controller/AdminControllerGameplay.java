@@ -14,20 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.MatchTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ContractService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.MatchTeamService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.TeamService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -37,12 +32,15 @@ public class AdminControllerGameplay {
 
     private final MatchTeamService matchTeamService;
     private final MatchTeamRepository matchTeamRepository;
-    private final TeamService teamService;
     private final TeamRepository teamRepository;
+    private final ContractService contractService;
 
 
     @GetMapping("/terminarz")
     public String getSchedule(@PageableDefault(size = 2) Pageable pageable, Model model) {
+
+
+
 
 
         Page<MatchTeam> page = matchTeamRepository.findAllByOrderByQueue(pageable);
@@ -50,9 +48,20 @@ public class AdminControllerGameplay {
         if (matchTeamRepository.findAll().isEmpty()) {
             model.addAttribute("emptyMatch", true);
         }
-       /* if (teamRepository.findAll().size()<5) {
+        if (teamRepository.findAll().size() < 3) {
+            System.out.println("ja?");
             model.addAttribute("size2low", true);
-        }*/
+            model.addAttribute("sizeOfTeams", teamRepository.findAll().size());
+        }
+        if (teamRepository.findAll().size() > 6) {
+            System.out.println("Jaa?");
+            model.addAttribute("size2big", true);
+            model.addAttribute("sizeOfTeams", teamRepository.findAll().size());
+        }
+        if(!contractService.ifEnoughPlayersInTeam()){
+            model.addAttribute("sizeOfPlayers2Low", true);
+        }
+
 
         model.addAttribute("page", page);
 
@@ -167,13 +176,9 @@ public class AdminControllerGameplay {
 
     }
 
-    //Do poprawie
 
     @PostMapping("/generujTerminarz")
     public String postScheduleGenerate() {
-
-
-
 
 
         matchTeamService.generateSchedule();

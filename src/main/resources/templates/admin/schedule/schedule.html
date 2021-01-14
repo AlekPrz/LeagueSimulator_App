@@ -27,17 +27,43 @@
 <div class="container py-3 ">
 
 
-    <div th:if="${emptyMatch}">
-        <form action="/admin/generujTerminarz" method="post">
+    <div th:unless="${size2low}">
+        <div th:unless="${size2big}">
+            <div th:unless="${size2low}">
+        <div th:if="${emptyMatch}">
+            <form action="/admin/generujTerminarz" method="post">
 
 
-            <button class="btn btn-danger" type="submit">Generuj Terminarz</button>
+                <button class="btn btn-danger" type="submit">Generuj Terminarz</button>
 
 
-
-
-        </form>
+            </form>
+        </div>
+        </div>
     </div>
+    </div>
+
+
+
+    <div th:if="${size2low}">
+        <h1 th:text="'W bazie jest za mało drużyn aby wygenerować terminarz, sa/jest ' +${sizeOfTeams}
+ +' drużyny/drużyna , a  potrzeba minimum 3.' ">
+
+        </h1>
+    </div>
+    <div th:if="${size2big}">
+        <h1 th:text="'W bazie jest za dużo drużyn aby wygenerować terminarz, jest ' +${sizeOfTeams}
+ +' drużyny, a  może być maksymalnie 6.' ">
+
+        </h1>
+    </div>
+
+    <div th:if="${sizeOfPlayers2Low}">
+        <h1 th:text="'Któraś z drużyn ma za małą liczbę graczy w drużynie, usuń drużyne, albo dodaj gracza '">
+
+        </h1>
+    </div>
+
     <div th:unless="${emptyMatch}">
         <form action="/admin/usuńTerminarz" method="post">
             <button class="btn btn-danger" type="submit">Usuń Terminarz</button>

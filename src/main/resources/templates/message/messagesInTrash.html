@@ -26,12 +26,18 @@
 
 </style>
 <body>
+
 <span th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
 <div th:insert="navigation/managerNavigation">Navigation</div>
 </span>
 <span th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
 <div th:insert="navigation/adminNavigation">Admin</div>
 </span>
+<span th:if="${#authorization.expression('hasRole(''FAN'')')}">
+<div th:insert="navigation/funNavigation">Fan</div>
+</span>
+
+
 <div class="container py-4">
     <div class="row">
         <div class="col-sm-2">
@@ -44,7 +50,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/wiadomosci/odebrane"><i class="fa fa-inbox"></i> Odebrane
                             <span style="font-size:11px" class="badge badge-danger" th:text="${howMuchNotRead}"> </span>
-                            <span style="font-size:11px" class="badge badge-success" th:text="${howMuchRead}"> </span></a>
+                            <span style="font-size:11px" class="badge badge-success" th:text="${howMuchReadd}"> </span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/wiadomosci/wyslane"><i class="fa fa-send"></i> Wysłane </a>
@@ -53,23 +59,16 @@
                         <a class="nav-link" href="/wiadomosci/kosz"><i class="fa fa-trash"></i> Kosz</a>
                     </li>
 
+
                 </ul>
             </nav>
         </div>
         <div class="col-sm-10">
             <div class="row">
                 <div class="col-md-4 py-2">
-                    <b><p style="font-size:17px">Usuniete wiadomości</p></b>
+                    <b><p style="font-size:17px">Usuniete Wiadomości</p></b>
                 </div>
-                <div class="col-md-8 pull-right">
-                    <form action="#" class="text-right">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                            <button type="submit" class=" btn-sm"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
+
 
             </div>
             <div class="table-responsive py-3">
@@ -87,9 +86,26 @@
 
 
                         <td><a th:text="${tmp.getUserSender().username}"></a></td>
-                        <td><a href="#" th:text="${tmp.subject}"></a></td>
-                        <td><div th:text="${tmp.getDateOfSend()}"></div></td>
 
+
+                        <td>
+                            <div th:if="${!tmp.getIsRead()}">
+                                <a class="text-danger"
+                                   th:href="@{/wiadomosci/odczytajWiadomosc/{id}(id=${tmp.id})}"
+                                   th:text="${tmp.getSubject()}">
+                                </a>
+                            </div>
+                            <div th:unless="${!tmp.getIsRead()}">
+                                <a
+                                        th:href="@{/wiadomosci/odczytajWiadomosc/{id}(id=${tmp.id})}"
+                                        th:text="${tmp.getSubject()}">
+                                </a>
+                            </div>
+                        </td>
+
+
+
+                        <td><div th:text="${tmp.getDateOfSend()}"></div></td>
 
 
                     </tr>

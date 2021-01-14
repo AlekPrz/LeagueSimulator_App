@@ -29,8 +29,7 @@ public class Manager extends User {
     @Pattern(regexp = "[A-Z][a-z]+", message = " Nazwisko musi zaczynać się z dużej litery, reszta z małej, bez spacji")
     private String surname;
     private Integer age;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOfBirth;
+
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "manager")
     @ToString.Exclude

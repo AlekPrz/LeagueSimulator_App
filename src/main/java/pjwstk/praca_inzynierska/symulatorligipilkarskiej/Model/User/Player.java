@@ -35,8 +35,7 @@ public class Player extends User {
 
     @Min(value = 16, message = "Wiek musi być większy niż 16")
     private Integer age;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOfBirth;
+
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "player")
     @ToString.Exclude

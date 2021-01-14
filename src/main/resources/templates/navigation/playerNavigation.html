@@ -30,9 +30,21 @@
 
 
 
+
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right px-2">
+
+
+
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/wiadomosci/odebrane">
+                            <span class="fa fa-envelope"></span>
+                            Wiadomości
+                            <span style="font-size:11px" class="badge badge-danger" th:text="${howMuchRead}">
+                            </span>
+                        </a>
+                    </li>
 
 
                     <li sec:authorize="isAuthenticated()">

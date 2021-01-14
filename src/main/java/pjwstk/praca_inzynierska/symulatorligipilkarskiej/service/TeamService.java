@@ -9,11 +9,9 @@ import org.springframework.validation.BindingResult;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.TeamValidator;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ManagerTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.MatchTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.SeasonTeamRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,11 +23,12 @@ public class TeamService {
     private final TeamValidator teamValidator;
     private final SeasonTeamRepository seasonTeamRepository;
     private final MatchTeamRepository matchTeamRepository;
-
+    private final UserRepository<Manager> managerUserRepository;
     private final ManagerTeamRepository managerTeamRepository;
 
 
     public Map<String, String> checkErrors(Team team, ManagerTeam managerTeam, BindingResult bindingResult) {
+
 
         Map<String, String> errorsFromBinding
                 = bindingResult
@@ -43,6 +42,27 @@ public class TeamService {
 
         Map<String, String> errorsFromMyValidate = new LinkedHashMap<>();
         errorsFromMyValidate.putAll(teamValidator.validate(team, managerTeam));
+        errorsFromBinding.forEach(errorsFromMyValidate::putIfAbsent);
+
+        return errorsFromMyValidate;
+
+    }
+
+    public Map<String, String> checkErrorsModify(Team team, ManagerTeam managerTeam, BindingResult bindingResult) {
+
+
+        Map<String, String> errorsFromBinding
+                = bindingResult
+                .getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                        e -> e.getField(),
+                        e -> e.getDefaultMessage(),
+                        (v1, v2) -> v1 + ", " + v2
+                ));
+
+        Map<String, String> errorsFromMyValidate = new LinkedHashMap<>();
+        errorsFromMyValidate.putAll(teamValidator.validateModify(team, managerTeam));
         errorsFromBinding.forEach(errorsFromMyValidate::putIfAbsent);
 
         return errorsFromMyValidate;
@@ -64,13 +84,66 @@ public class TeamService {
 
 
         managerTeamRepository.save(managerTeam1);
-
-
         manager.getManagerTeams().add(managerTeam);
         team.getManagerTeams().add(managerTeam);
         return team;
 
     }
+
+    public Team modifyTeam(Team team, ManagerTeam managerTeam) {
+
+        Manager manager = managerTeam.getManager();
+        ManagerTeam managerTeam1 = ManagerTeam.builder()
+                .isCurrently(true)
+                .endOfContract(managerTeam.getEndOfContract())
+                .startOfContract(managerTeam.getStartOfContract())
+                .team(team)
+                .manager(manager)
+                .build();
+
+
+        if (teamChangedHisManager(manager.getId(), team.getId())) {
+            System.out.println("zmienił?");
+            ManagerTeam contractCurrently = findCurrentlyContract(team.getId());
+            System.out.println("1?");
+            contractCurrently.setIsCurrently(false);
+            System.out.println("2?");
+
+            managerTeamRepository.save(contractCurrently);
+            managerTeamRepository.save(managerTeam1);
+            return team;
+        }
+
+        if (findCurrentlyContract(team.getId()) == null) {
+            team.getManagerTeams().add(managerTeam1);
+            manager.getManagerTeams().add(managerTeam1);
+            managerTeamRepository.save(managerTeam1);
+            teamRepository.save(team);
+
+            return team;
+        }
+        teamRepository.save(team);
+        return team;
+
+
+    }
+
+    public boolean teamChangedHisManager(Long managerId, Long teamId) {
+
+        Manager manager = findManagerByid(managerId);
+        Team team = teamRepository.findById(teamId).orElse(null);
+
+
+        for (ManagerTeam tmp : team.getManagerTeams()) {
+            if (tmp.getIsCurrently() && !tmp.getManager().getUsername().equals(manager.getUsername())) {
+                System.out.println("ZMIENIL DRUZYNE");
+                return true;
+            }
+        }
+        return false;
+
+    }
+
 
     public void deleteTeam(Long id) {
 
@@ -113,7 +186,6 @@ public class TeamService {
     public List<Player> getAllPlayersInThatTeam(Long id) {
 
 
-
         if (id == null) {
 
             return new ArrayList<>();
@@ -137,7 +209,7 @@ public class TeamService {
 
     }
 
-    public ManagerTeam findCurrentlyManager(Long id) {
+    public ManagerTeam findCurrentlyManagerTeam(Long id) {
 
         Team team = teamRepository.findById(id).orElse(null);
 
@@ -153,5 +225,26 @@ public class TeamService {
 
         return managerTeam;
     }
+
+    public Manager findManagerByid(Long id) {
+        return managerUserRepository.findById(id).orElse(null);
+    }
+
+
+    public ManagerTeam findCurrentlyContract(Long id) {
+
+        Team team = teamRepository.findById(id).orElse(null);
+        ManagerTeam contract = null;
+
+        for (ManagerTeam tmp : team.getManagerTeams()) {
+            if (tmp.getIsCurrently()) {
+                contract = tmp;
+            }
+        }
+
+
+        return contract;
+    }
+
 
 }

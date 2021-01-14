@@ -99,6 +99,11 @@
                         <p class="text-danger" th:text="${error.get('ManagerCurrently')}"></p>
                     </div>
 
+                    <div th:if="${error?.containsKey('Team2Much')}">
+                        <p class="text-danger" th:text="${error.get('Team2Much')}"></p>
+                    </div>
+
+
                 </td>
             </tr>
 
@@ -138,6 +143,7 @@
                     <input class="btn btn-primary" type="submit" value="Potwierdź"/>
                 </td>
             </tr>
+
         </table>
     </form>
 

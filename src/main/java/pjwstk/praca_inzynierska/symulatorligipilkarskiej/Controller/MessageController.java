@@ -44,7 +44,7 @@ public class MessageController {
 
         model.addAttribute("messages", getAllNoDeletedMessages);
         model.addAttribute("howMuchNotRead", managerService.getNotRead());
-        model.addAttribute("howMuchRead", managerService.getAllMessage());
+        model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
         System.out.println("co tu sie dzieje?");
 
@@ -64,14 +64,14 @@ public class MessageController {
                     .filter(p -> p.getRole().getDescription().equals("ROLE_ADMIN")).collect(Collectors.toList()));
             model.addAttribute("message", new Message());
             model.addAttribute("howMuchNotRead", managerService.getNotRead());
-            model.addAttribute("howMuchRead", managerService.getAllMessage());
+            model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
         } else {
             model.addAttribute("users", userUserRepository.findAll().stream().sorted(
                     Comparator.comparing(User::getUsername, String.CASE_INSENSITIVE_ORDER)).collect(Collectors.toList()));
             model.addAttribute("message", new Message());
             model.addAttribute("howMuchNotRead", managerService.getNotRead());
-            model.addAttribute("howMuchRead", managerService.getAllMessage());
+            model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
         }
 
@@ -94,9 +94,15 @@ public class MessageController {
                         .userSender(managerService.getCurrentUser())
                         .subject(message.getSubject()).build());
 
-        return "redirect:/wiadomosci/odebrane";
+        return "redirect:/wiadomosci/wyslane";
 
     }
+
+
+
+
+
+
 
     @PostMapping("/messages/deleteSentMessage")
     public String deleteSentMessage(Long id) {
@@ -157,7 +163,7 @@ public class MessageController {
                 sorted(Comparator.comparing(Message::getDateOfSend).reversed()).collect(Collectors.toList())
         );
         model.addAttribute("howMuchNotRead", managerService.getNotRead());
-        model.addAttribute("howMuchRead", managerService.getAllMessage());
+        model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
 
         return "message/messagesInTrash";
@@ -173,7 +179,7 @@ public class MessageController {
         if (message.isPresent()) {
             model.addAttribute("message", message.get());
             model.addAttribute("howMuchNotRead", managerService.getNotRead());
-            model.addAttribute("howMuchRead", managerService.getAllMessage());
+            model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
 
             message.get().setIsRead(true);
@@ -197,7 +203,7 @@ public class MessageController {
         }
 
         model.addAttribute("howMuchNotRead", managerService.getNotRead());
-        model.addAttribute("howMuchRead", managerService.getAllMessage());
+        model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
         return "message/messageDetail";
 
@@ -217,7 +223,7 @@ public class MessageController {
 
         model.addAttribute("messages", getAllNoDeletedMessages);
         model.addAttribute("howMuchNotRead", managerService.getNotRead());
-        model.addAttribute("howMuchRead", managerService.getAllMessage());
+        model.addAttribute("howMuchReadd", managerService.getAllMessage());
 
 
         return "message/messagesInSent";

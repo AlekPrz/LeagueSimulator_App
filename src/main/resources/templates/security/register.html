@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
+
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
@@ -20,12 +23,15 @@
 <div class="container">
     <div class="row">
         <div class="col-8 offset-2">
-            <h1>Zarejestruj się jako kibic </h1>
 
 
-            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/register'}" th:action="@{/register}"
-                  method="post" th:object="${user}" onsubmit="return validation();">
-                <div class="form-group">
+         <!--   <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/register'}" th:action="@{/register}"
+                  method="post" th:object="${user}" onsubmit="return validation();">-->
+
+                <form sec:authorize="isAnonymous()" th:action="@{/register}" method="post" th:object="${user}">
+                    <h1>Zarejestruj się jako kibic </h1>
+
+                    <div class="form-group">
                     <label for="username">Użytkownik</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control"/>
                 </div>
@@ -72,8 +78,11 @@
             </form>
 
 
-            <form th:if="${#httpServletRequest.requestURL=='http://localhost:8081/admin/dodajUzytkownika'}"
-                  th:action="@{/admin/register}" method="post" th:object="${user}" onsubmit="return validation();">
+       <!--     <form th:if=""
+                  th:action="@{/admin/register}" method="post" th:object="${user}" onsubmit="return validation();">-->
+            <form th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:action="@{/admin/register}" method="post" th:object="${user}">
+                <h1>Dodaj użytkownika </h1>
+
                 <div class="form-group">
                     <label for="username">Nazwa</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control"/>
@@ -114,24 +123,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
 
-
-    function validation() {
-
-
-        var age = document.getElementById("age").value;
-        ;
-
-
-        if (age < 18 || age > 50) {
-            document.getElementById('ageError').innerHTML = "Wiek musi byc  z przedziału 18-50";
-            return false;
-        }
-    }
-
-
-</script>
 
 
 </body>

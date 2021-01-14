@@ -45,6 +45,7 @@
             <th>Nazwa</th>
             <th>Skrócona nazwa</th>
             <th>Kolory</th>
+            <th>Nazwa Trenra</th>
             <th>Akcje</th>
 
 
@@ -53,6 +54,13 @@
             <td th:text="${w.name}"></td>
             <td th:text="${w.shortName}"></td>
             <td th:text="${w.colors}"></td>
+            <td>
+                <div th:each="tmp:${w.getManagerTeams()}">
+                    <div th:if="${tmp.isCurrently}">
+                        <span th:text="${tmp.getManager().getUsername()}"></span>
+                    </div>
+                </div>
+            </td>
 
 
             <td>

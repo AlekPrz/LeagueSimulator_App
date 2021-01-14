@@ -33,7 +33,7 @@ public class User {
 
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userSender")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userSender",fetch = FetchType.LAZY)
     private Set<Message> messagesSend = new LinkedHashSet<>();
 
     @EqualsAndHashCode.Exclude
