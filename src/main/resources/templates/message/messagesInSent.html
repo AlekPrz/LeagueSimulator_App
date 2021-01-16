@@ -36,6 +36,9 @@
 <span th:if="${#authorization.expression('hasRole(''FAN'')')}">
 <div th:insert="navigation/fanNavigation">Fan</div>
 </span>
+<span th:if="${#authorization.expression('hasRole(''PLAYER'')')}">
+<div th:insert="navigation/playerNavigation">Player</div>
+</span>
 
 <div class="container py-4">
     <div class="row">

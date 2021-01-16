@@ -54,10 +54,12 @@ public class ManagerControllerTeam {
     @PostMapping("/dodajPiłkarza")
     public String addPlayerPost(@Valid @ModelAttribute Player player, BindingResult bindingResult, Contract contract, Model model, Long teamId) {
 
+
         Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
 
-
+        contract.setTeam(teamRepository.findById(teamId).orElse(null));
         allErrorsFromMyValidate.putAll(playerService.checkErrors(player, contract, bindingResult));
+
 
 
         if (!allErrorsFromMyValidate.isEmpty()) {
@@ -70,8 +72,6 @@ public class ManagerControllerTeam {
             return "manager/myTeam/addPlayer";
         }
 
-        contract.setTeam(teamRepository.findById(teamId).orElse(null));
-
 
         String resultPassword = PasswordGenerator.stringGenerator();
         player.setPassword(passwordEncoder.encode(resultPassword));
@@ -80,7 +80,7 @@ public class ManagerControllerTeam {
         playerService.createPlayer(player, contract);
 
 
-        model.addAttribute("registerSuccess",true);
+        model.addAttribute("registerSuccess", true);
         model.addAttribute("haslo", resultPassword);
         model.addAttribute("login", player.getUsername());
 

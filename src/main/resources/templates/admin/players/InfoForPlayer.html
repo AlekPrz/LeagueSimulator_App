@@ -23,8 +23,13 @@
 </head>
 <body>
 
+<span th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+<div th:insert="navigation/managerNavigation">Manager</div>
+</span>
 
-<div th:insert="navigation/managerNavigation">Navigation</div>
+<span th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+<div th:insert="navigation/adminNavigation">Admin</div>
+</span>
 
 <div th:if="${registerSuccess}">
     <h4 class="text-center text-success"> Zawodnik został dodany prawidłowo, przekaż zawodnikowi dane !</h4>

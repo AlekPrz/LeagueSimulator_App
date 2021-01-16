@@ -7,14 +7,14 @@
    # username: root
     #password: root
 
-spring:
-  jpa:
-    database: POSTGRESQL
-    hibernate:
-      ddl-auto: update
-  datasource:
-    platform: postgres
-    url: jdbc:postgresql://localhost:5432/XD
-    username: postgres
-    password: root
-    driverClassName: org.postgresql.Driver
+#spring:
+ # jpa:
+  #  database: POSTGRESQL
+   # hibernate:
+    #  ddl-auto: update
+  #datasource:
+   # platform: postgres
+    #url: jdbc:postgresql://localhost:5432/XD
+    #username: postgres
+    #password: root
+    #driverClassName: org.postgresql.Driver

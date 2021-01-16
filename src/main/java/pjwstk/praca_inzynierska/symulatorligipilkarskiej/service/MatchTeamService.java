@@ -179,7 +179,7 @@ public class MatchTeamService {
             int i = teamRepository.findAll().size();
             int queue = 1;
             int count = 0;
-            LocalDate localDate = LocalDate.of(2020, 11, 06);
+            LocalDate localDate = LocalDate.now();
 
             Random random = new Random();
 

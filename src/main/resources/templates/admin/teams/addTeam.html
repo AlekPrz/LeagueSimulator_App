@@ -55,6 +55,9 @@
 
                 </td>
                 <td>
+                    <div th:if="${error?.containsKey('colors')}">
+                        <p class="text-danger" th:text="${error.get('colors')}"></p>
+                    </div>
                     <input type="text" class="form-control col-lg-4" th:field="${team.colors}"/>
                 </td>
             </tr>

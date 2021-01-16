@@ -41,15 +41,20 @@ public class PlayerValidator {
 
         }
 
-        //zrób metode która sprawdza ilu jest graczy w danej drużynie
+        int w = 0;
+        System.out.println("---");
+        System.out.println(contract);
+        System.out.println(contract.getTeam().getId());
+        System.out.println("-----------");
 
-
-        int w = teamService.getAllPlayersInThatTeam(contract.getTeam().getId()).size();
+   /*     if (teamService.getAllPlayersInThatTeam(contract.getTeam().getId()) != null) {
+            w = teamService.getAllPlayersInThatTeam(contract.getTeam().getId()).size();
+        }
 
         if (w == 2) {
             errorsPlayer.put("player2Much", "W drużynie jest za dużo graczy może być maksymalnie 2!");
 
-        }
+        }*/
         return errorsPlayer;
 
 
