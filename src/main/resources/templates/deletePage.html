@@ -39,12 +39,12 @@
 
     <div class="py-5 text-center" th:if="${removeAll}">
     <form action="/usuwaniePost" method="post">
-        <input class="btn btn-outline-danger btn-danger text-dark" type="submit" value="Usuń"/>
+        <input class="btn btn-outline-danger btn-info text-dark" type="submit" value="Usuń wszystkie dane"/>
     </form>
     </div>
     <div class="py-5 text-center" th:unless="${removeAll}">
         <form action="/dodawaniePost" method="post">
-            <input class="btn btn-outline-danger btn-danger text-dark" type="submit" value="Dodaj początkowe dane"/>
+            <input class="btn btn-outline-danger btn-info text-dark" type="submit" value="Dodaj początkowe dane"/>
         </form>
     </div>
 </div>

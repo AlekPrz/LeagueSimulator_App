@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.ManagerTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Message;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
@@ -84,12 +81,6 @@ public class ControllerTest {
     @PostMapping("/dodawaniePost")
     public String dodajDanePost() {
 
-        //dodać admina done
-        // dodać 2 managerów done
-        // dodać 3 drużyny z managerami done
-        // dodać ze 2/3 graczy
-        // dodać wybieranie składu
-        // dodać linki
 
         if (userUserRepository.findUserByUsername("admin").isEmpty()) {
             userUserRepository.save
@@ -99,7 +90,8 @@ public class ControllerTest {
                             .role(Role.ADMIN).build());
         }
 
-        if (teamRepository.findByShortName("JED").isEmpty() && userUserRepository.findUserByUsername("manager1").isEmpty()) {
+        if (teamRepository.findByShortName("JED").isEmpty() && userUserRepository.findUserByUsername("manager1").isEmpty()
+        && userUserRepository.findUserByUsername("gracz1").isEmpty() && userUserRepository.findUserByUsername("gracz2").isEmpty()) {
 
             Team team = Team.builder().name("Team Jeden").shortName("JED").colors("Czerwone").build();
 
@@ -118,13 +110,47 @@ public class ControllerTest {
                     .manager(manager)
                     .build();
 
-
             managerTeamRepository.save(managerTeam1);
-            manager.getManagerTeams().add(managerTeam1);
-            team.getManagerTeams().add(managerTeam1);
+
+            Player player1 = Player.builder().name("Alek").surname("Przybysz").role(Role.PLAYER)
+                    .password(passwordEncoder.encode("gracz1")).repeatPassword(passwordEncoder.encode("gracz1"))
+                    .username("gracz1").shirtName("gracz1").age(25).position(Position.OBRONCA).build();
+
+
+            Player player2 = Player.builder().name("Piotr").surname("Przybysz").role(Role.PLAYER)
+                    .password(passwordEncoder.encode("gracz2")).repeatPassword(passwordEncoder.encode("gracz2"))
+                    .username("gracz2").shirtName("gracz2").age(32).position(Position.NAPASTNIK).build();
+
+            Contract contract1 = Contract.builder()
+                    .startOfContract(LocalDate.now())
+                    .player(player1)
+                    .team(team)
+                    .goals(0L)
+                    .isCurrently(true)
+                    .build();
+
+            Contract contract2 = Contract.builder()
+                    .startOfContract(LocalDate.now())
+                    .player(player2)
+                    .team(team)
+                    .goals(0L)
+                    .isCurrently(true)
+                    .build();
+
+            userUserRepository.save(player1);
+            userUserRepository.save(player2);
+            contractRepository.save(contract1);
+            contractRepository.save(contract2);
+
+
+
+
+
+
         }
-        if (teamRepository.findByShortName("DWA").isEmpty()
-                && userUserRepository.findUserByUsername("manager2").isEmpty()) {
+        if (teamRepository.findByShortName("DWA").isEmpty() && userUserRepository.findUserByUsername("manager2").isEmpty()
+                && userUserRepository.findUserByUsername("gracz3").isEmpty() && userUserRepository.findUserByUsername("gracz4").isEmpty()) {
+
 
             Team team = Team.builder().name("Team Dwa").shortName("DWA").colors("Niebieskie").build();
 
@@ -145,11 +171,42 @@ public class ControllerTest {
 
 
             managerTeamRepository.save(managerTeam1);
-            manager.getManagerTeams().add(managerTeam1);
-            team.getManagerTeams().add(managerTeam1);
+
+            Player player1 = Player.builder().name("Krystian").surname("Wilczak").role(Role.PLAYER)
+                    .password(passwordEncoder.encode("gracz3")).repeatPassword(passwordEncoder.encode("gracz3"))
+                    .username("gracz3").shirtName("gracz3").age(25).position(Position.OBRONCA).build();
+
+
+            Player player2 = Player.builder().name("Zenon").surname("Kowalwski").role(Role.PLAYER)
+                    .password(passwordEncoder.encode("gracz4")).repeatPassword(passwordEncoder.encode("gracz4"))
+                    .username("gracz4").shirtName("gracz4").age(20).position(Position.POMOCNIK).build();
+
+            Contract contract1 = Contract.builder()
+                    .startOfContract(LocalDate.now())
+                    .player(player1)
+                    .team(team)
+                    .goals(0L)
+                    .isCurrently(true)
+                    .build();
+
+            Contract contract2 = Contract.builder()
+                    .startOfContract(LocalDate.now())
+                    .player(player2)
+                    .team(team)
+                    .goals(0L)
+                    .isCurrently(true)
+                    .build();
+
+            userUserRepository.save(player1);
+            userUserRepository.save(player2);
+            contractRepository.save(contract1);
+            contractRepository.save(contract2);
+
         }
         if (teamRepository.findByShortName("TRZY").isEmpty()
-                && userUserRepository.findUserByUsername("manager3").isEmpty()) {
+                && userUserRepository.findUserByUsername("manager3").isEmpty()
+                && userUserRepository.findUserByUsername("gracz5").isEmpty()
+                && userUserRepository.findUserByUsername("gracz6").isEmpty()) {
 
             Team team = Team.builder().name("Team Trzy").shortName("TRZY").colors("Białe").build();
 
@@ -170,8 +227,38 @@ public class ControllerTest {
 
 
             managerTeamRepository.save(managerTeam1);
-            manager.getManagerTeams().add(managerTeam1);
-            team.getManagerTeams().add(managerTeam1);
+
+
+            Player player1 = Player.builder().name("Krystian").surname("Wilczak").role(Role.PLAYER)
+                    .password(passwordEncoder.encode("gracz5")).repeatPassword(passwordEncoder.encode("gracz5"))
+                    .username("gracz5").age(40).shirtName("gracz5").position(Position.NAPASTNIK).build();
+
+
+            Player player2 = Player.builder().name("Zenon").surname("Kowalwski").role(Role.PLAYER)
+                    .password(passwordEncoder.encode("gracz6")).repeatPassword(passwordEncoder.encode("gracz6"))
+                    .username("gracz6").age(18).shirtName("gracz6").position(Position.BRAMKARZ).build();
+
+            Contract contract1 = Contract.builder()
+                    .startOfContract(LocalDate.now())
+                    .player(player1)
+                    .team(team)
+                    .goals(0L)
+                    .isCurrently(true)
+                    .build();
+
+            Contract contract2 = Contract.builder()
+                    .startOfContract(LocalDate.now())
+                    .player(player2)
+                    .team(team)
+                    .goals(0L)
+                    .isCurrently(true)
+                    .build();
+
+            userUserRepository.save(player1);
+            userUserRepository.save(player2);
+            contractRepository.save(contract1);
+            contractRepository.save(contract2);
+
         }
 
         return "redirect:/usuwanie";

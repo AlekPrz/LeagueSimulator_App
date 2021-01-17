@@ -28,7 +28,7 @@ public class TeamController {
 
 
 
-    @GetMapping("/drużyny")
+    @GetMapping("/druzyny")
     public String getTeamsForGuest(Model model) {
 
 

@@ -58,10 +58,10 @@ public class AdminControllerGameplay {
             model.addAttribute("size2big", true);
             model.addAttribute("sizeOfTeams", teamRepository.findAll().size());
         }
-      /*  if(!contractService.ifEnoughPlayersInTeam()){
+        if(!contractService.ifEnoughPlayersInTeam()){
             model.addAttribute("sizeOfPlayers2Low", true);
         }
-*/
+
 
         model.addAttribute("page", page);
 
@@ -118,7 +118,6 @@ public class AdminControllerGameplay {
 
     }
 
-    //Pobierz date natepnego meczu po prostu....
     @PostMapping("/zmienDateMeczu")
     public String postDate(@Valid @ModelAttribute MatchTeam matchTeam, BindingResult bindingResult, Model model, String newDate) {
 
