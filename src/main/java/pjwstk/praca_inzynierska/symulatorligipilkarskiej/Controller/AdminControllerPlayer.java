@@ -105,7 +105,7 @@ public class AdminControllerPlayer {
     }
 
 
-    @GetMapping("/dodajPiłkarza")
+    @GetMapping("/dodajPilkarza")
     public String addPlayerGet(Model model) {
 
 

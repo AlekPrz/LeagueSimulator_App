@@ -42,19 +42,16 @@ public class PlayerValidator {
         }
 
         int w = 0;
-        System.out.println("---");
-        System.out.println(contract);
-        System.out.println(contract.getTeam().getId());
-        System.out.println("-----------");
 
-   /*     if (teamService.getAllPlayersInThatTeam(contract.getTeam().getId()) != null) {
+
+        if (teamService.getAllPlayersInThatTeam(contract.getTeam().getId()) != null) {
             w = teamService.getAllPlayersInThatTeam(contract.getTeam().getId()).size();
         }
 
-        if (w == 2) {
-            errorsPlayer.put("player2Much", "W drużynie jest za dużo graczy może być maksymalnie 2!");
+        if (w == 3) {
+            errorsPlayer.put("player2Much", "W drużynie jest za dużo graczy może być maksymalnie 3!");
 
-        }*/
+        }
         return errorsPlayer;
 
 
@@ -67,8 +64,7 @@ public class PlayerValidator {
         errorsPlayer.clear();
 
 
-        if (!playerExist(player.getShirtName()) &&
-                !player.getShirtName().equals(playerUserRepository.findById(player.getId()).orElse(null).getShirtName())) {
+        if (!playerExist(player.getShirtName()) && !player.getShirtName().equals(playerUserRepository.findById(player.getId()).orElse(null).getShirtName())) {
             errorsPlayer.put("shirtName", "Gracz o takiej nazwie znajduje się już w bazie!");
         }
 
