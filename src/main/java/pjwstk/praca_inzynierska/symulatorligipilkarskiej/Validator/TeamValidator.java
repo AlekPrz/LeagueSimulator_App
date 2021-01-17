@@ -53,12 +53,8 @@ public class TeamValidator {
             errorsTeam.put("ManagerNull", "Drużyna musi mieć managera !");
         }
 
-        if (managerTeam.getEndOfContract() == null || managerTeam.getStartOfContract() == null) {
-            errorsTeam.put("Data", "Data nie może pozostać pusta");
 
-        }
-
-        if(teamRepository.findAll().size()>5){
+        if (teamRepository.findAll().size() > 5) {
             errorsTeam.put("Team2Much", "W bazie jest za dużo drużyn, maksymalnie może być 6 drużyn");
         }
 
@@ -83,34 +79,65 @@ public class TeamValidator {
 
         errorsTeam.clear();
 
-        Team currentlyTeam = teamService.findCurrentlyManagerTeam(team.getId()).getTeam();
-
-
-
-        if (!teamExistByName(team.getName()) && !team.getName().equals(currentlyTeam.getName())) {
-            errorsTeam.put("TeamName", "Drużyna o takiej nazwie znajduje się w bazie");
-        }
-        if (!teamExistByShortName(team.getShortName()) && !team.getShortName().equals(currentlyTeam.getShortName())) {
-            errorsTeam.put("TeamShortName", "Drużyna o takiej krótkiej nazwie znajduje się w bazie");
+        ManagerTeam managerHasTeam = null;
+        if (teamService.findCurrentlyManagerTeam(team.getId()) != null) {
+            managerHasTeam = teamService.findCurrentlyManagerTeam(team.getId());
         }
 
 
-        if (managerTeam.getEndOfContract() == null || managerTeam.getStartOfContract() == null) {
-            errorsTeam.put("Data", "Data nie może pozostać pusta");
+        Team currentlyTeam = null;
+
+        if (managerHasTeam != null) {
+            currentlyTeam = managerHasTeam.getTeam();
 
         }
 
 
-        Manager manager = managerService.findManagerById(managerTeam.getManager().getId());
+        if (currentlyTeam != null) {
 
 
-        for (ManagerTeam mt : manager.getManagerTeams()) {
-            if (mt.getIsCurrently() &&
-                    !teamService.findCurrentlyManagerTeam
-                            (team.getId()).getManager().getUsername()
-                            .equals(mt.getManager().getUsername())) {
-                errorsTeam.put("ManagerCurrently", "Ten manager ma już drużyne, nie może mieć 2 drużyn!");
+            if (!teamExistByName(team.getName()) && !team.getName().equals(currentlyTeam.getName())) {
+                errorsTeam.put("TeamName", "Drużyna o takiej nazwie znajduje się w bazie");
+            }
+            if (!teamExistByShortName(team.getShortName()) && !team.getShortName().equals(currentlyTeam.getShortName())) {
+                errorsTeam.put("TeamShortName", "Drużyna o takiej krótkiej nazwie znajduje się w bazie");
+            }
 
+
+            if (managerTeam.getStartOfContract() == null) {
+                errorsTeam.put("Data", "Data nie może pozostać pusta");
+
+            }
+
+            Manager manager = managerService.findManagerById(managerTeam.getManager().getId());
+
+
+            for (ManagerTeam mt : manager.getManagerTeams()) {
+                if (mt.getIsCurrently() &&
+                        !teamService.findCurrentlyManagerTeam
+                                (team.getId()).getManager().getUsername()
+                                .equals(mt.getManager().getUsername())) {
+                    errorsTeam.put("ManagerCurrently", "Ten manager ma już drużyne, nie może mieć 2 drużyn!");
+
+
+                }
+
+            }
+        } else {
+            System.out.println("ta walidacija");
+
+            System.out.println(teamIfIEditExistingName(team.getName()));
+
+            if (!teamExistByName(team.getName()) && !teamIfIEditExistingName(team.getName())) {
+                errorsTeam.put("TeamName", "Drużyna o takiej nazwie znajduje się w bazie");
+            }
+            if (!teamExistByShortName(team.getShortName()) && !teamIfIEditExistingShortName(team.getShortName())) {
+                errorsTeam.put("TeamShortName", "Drużyna o takiej krótkiej nazwie znajduje się w bazie");
+            }
+
+
+            if (managerTeam.getStartOfContract() == null) {
+                errorsTeam.put("Data", "Data nie może pozostać pusta");
 
             }
 
@@ -129,12 +156,29 @@ public class TeamValidator {
         return teamRepository.findByShortName(name).isEmpty();
     }
 
+    private boolean teamIfIEditExistingName(String name) {
 
-    public boolean hasErrors() {
-        return !errorsTeam.isEmpty();
+        Team team = teamRepository.findByName(name).orElse(null);
+
+        if (team == null || !team.getName().equals(name)) {
+            return false;
+        }
+
+
+        return true;
     }
 
-    public Map<String, String> getErrors() {
-        return errorsTeam;
+    private boolean teamIfIEditExistingShortName(String name) {
+        Team team = teamRepository.findByShortName(name).orElse(null);
+
+        if (team == null || !team.getShortName().equals(name)) {
+            return false;
+        }
+        return true;
+
+
     }
+
+
+
 }

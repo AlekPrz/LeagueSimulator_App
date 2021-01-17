@@ -110,8 +110,14 @@ public class AdminControllerTeam {
 
 
         model.addAttribute("manager", managers);
-        model.addAttribute("managerTeam", teamService.findCurrentlyManagerTeam(id));
         model.addAttribute("team", teamRepository.findById(id).orElse(null));
+
+        if(teamService.findCurrentlyManagerTeam(id) != null) {
+            model.addAttribute("managerTeam", teamService.findCurrentlyManagerTeam(id));
+        }else {
+            model.addAttribute("managerTeam", new ManagerTeam());
+
+        }
 
 
         return "admin/teams/modifyTeam";
@@ -120,6 +126,11 @@ public class AdminControllerTeam {
     @PostMapping("/edytujDruzyne")
     public String editTeamPost(@Valid @ModelAttribute Team team, BindingResult bindingResult, ManagerTeam managerTeam, Model model) {
 
+
+        System.out.println(managerTeam.getManager().getId());
+        System.out.println(managerTeam.getManager());
+
+        System.out.println("----------");
 
         Map<String, String> allErrorsFromMyValidate = new LinkedHashMap<>();
 

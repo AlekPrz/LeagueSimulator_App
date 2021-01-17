@@ -33,8 +33,6 @@ public class ManagerTeam {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startOfContract;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endOfContract;
 
     private Boolean isCurrently;
 }

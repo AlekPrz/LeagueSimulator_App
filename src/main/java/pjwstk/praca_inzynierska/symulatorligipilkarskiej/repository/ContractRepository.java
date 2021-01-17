@@ -12,4 +12,7 @@ import java.util.List;
 public interface ContractRepository extends JpaRepository<Contract,Long> {
     @Query("select distinct c.player from Contract c where c.team.id = :id")
     public List<Player> getAllPlayersIdsFromTeam(Long id);
+
+
+
 }

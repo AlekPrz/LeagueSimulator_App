@@ -63,6 +63,7 @@ public class TeamService {
 
         Map<String, String> errorsFromMyValidate = new LinkedHashMap<>();
         errorsFromMyValidate.putAll(teamValidator.validateModify(team, managerTeam));
+        System.out.println("jest walidacja");
         errorsFromBinding.forEach(errorsFromMyValidate::putIfAbsent);
 
         return errorsFromMyValidate;
@@ -76,7 +77,6 @@ public class TeamService {
         teamRepository.save(team);
         ManagerTeam managerTeam1 = ManagerTeam.builder()
                 .isCurrently(true)
-                .endOfContract(managerTeam.getEndOfContract())
                 .startOfContract(managerTeam.getStartOfContract())
                 .team(team)
                 .manager(manager)
@@ -92,15 +92,15 @@ public class TeamService {
 
     public Team modifyTeam(Team team, ManagerTeam managerTeam) {
 
-        Manager manager = managerTeam.getManager();
+        Manager manager = managerUserRepository.findById(managerTeam.getManager().getId()).orElse(null);
         ManagerTeam managerTeam1 = ManagerTeam.builder()
                 .isCurrently(true)
-                .endOfContract(managerTeam.getEndOfContract())
                 .startOfContract(managerTeam.getStartOfContract())
                 .team(team)
                 .manager(manager)
                 .build();
 
+        System.out.println(manager);
 
         if (teamChangedHisManager(manager.getId(), team.getId())) {
             System.out.println("zmienił?");
@@ -213,6 +213,7 @@ public class TeamService {
 
         Team team = teamRepository.findById(id).orElse(null);
 
+        System.out.println("yes1?");
 
         ManagerTeam managerTeam = null;
 
@@ -222,6 +223,10 @@ public class TeamService {
             }
         }
 
+
+        if (managerTeam == null) {
+            return null;
+        }
 
         return managerTeam;
     }

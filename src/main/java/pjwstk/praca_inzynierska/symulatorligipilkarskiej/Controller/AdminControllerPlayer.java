@@ -38,6 +38,7 @@ public class AdminControllerPlayer {
     private final PlayerService playerService;
     private final ContractRepository contractRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository<User> userRepository;
 
 
     @GetMapping("/")
@@ -67,14 +68,29 @@ public class AdminControllerPlayer {
         String password = user.getPassword();
         String repeatPassword = user.getRepeatPassword();
 
+        List<Role> roles = new ArrayList<>(Arrays.asList(Role.values()));
+        roles.removeIf(p -> p.equals(Role.PLAYER));
+        roles.removeIf(p -> p.equals(Role.FAN));
+
 
         if (!password.equals(repeatPassword)) {
+            model.addAttribute("user",user);
             model.addAttribute("errorPassword", true);
+            model.addAttribute("roles",roles);
+            model.addAttribute("rolesAdmin", true);
             return "security/register";
         }
 
+        if(userRepository.findUserByUsername(user.getUsername()).isPresent()){
+            model.addAttribute("user",user);
+            model.addAttribute("errorUsername", true);
+            model.addAttribute("roles",roles);
+            model.addAttribute("rolesAdmin", true);
+            return "security/register";
+        }
+        model.addAttribute("registerSuccess",true);
         userService.registerNewUser(user);
-        return "redirect:/login";
+        return "security/login";
     }
 
 

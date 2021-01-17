@@ -22,7 +22,6 @@ public class GuestController {
 
     private final UserRepository<User> userRepository;
     private final UserRegister userService;
-    private final TeamService teamService;
 
 
     @GetMapping("/")

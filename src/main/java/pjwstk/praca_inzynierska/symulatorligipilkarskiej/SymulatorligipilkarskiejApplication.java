@@ -24,11 +24,11 @@ public class SymulatorligipilkarskiejApplication implements CommandLineRunner {
 
 
     @Autowired
-    private  UserRepository<User> userUserRepository;
+    private UserRepository<User> userUserRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public SymulatorligipilkarskiejApplication(){
+    public SymulatorligipilkarskiejApplication() {
 
     }
 
@@ -39,24 +39,10 @@ public class SymulatorligipilkarskiejApplication implements CommandLineRunner {
         SpringApplication.run(SymulatorligipilkarskiejApplication.class, args);
 
 
-/*
-        matchTeamRepository.findById(2456L).orElse(null).getHomeTeamPlayers().forEach(p -> System.out.println(p.getName()));
-*/
-
-
-
-
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        if (userUserRepository.findUserByUsername("admin").isEmpty())
-            userUserRepository.save
-                    (User.builder().username("admin")
-                            .password(passwordEncoder.encode("admin"))
-                            .repeatPassword(passwordEncoder.encode("admin"))
-                            .role(Role.ADMIN).build());
     }
-    }
-
+}

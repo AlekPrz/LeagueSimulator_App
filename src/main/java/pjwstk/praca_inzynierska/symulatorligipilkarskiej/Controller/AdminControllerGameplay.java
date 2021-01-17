@@ -58,10 +58,10 @@ public class AdminControllerGameplay {
             model.addAttribute("size2big", true);
             model.addAttribute("sizeOfTeams", teamRepository.findAll().size());
         }
-        if(!contractService.ifEnoughPlayersInTeam()){
+      /*  if(!contractService.ifEnoughPlayersInTeam()){
             model.addAttribute("sizeOfPlayers2Low", true);
         }
-
+*/
 
         model.addAttribute("page", page);
 
@@ -153,7 +153,7 @@ public class AdminControllerGameplay {
                 errors.put("DateError", "Data nie może być wcześniejsza niż dzień dzisiejszy!");
                 System.out.println("2");
 
-            } else if (nextMatch != null && (newDateParse.compareTo(nextMatch.getDateOfGame()) > 0 || newDateParse.compareTo(currentlyDate.minusWeeks(2)) < 0)) {
+            } else if (nextMatch != null && (newDateParse.compareTo(nextMatch.getDateOfGame()) >= 0 || newDateParse.compareTo(currentlyDate.minusWeeks(2)) <= 0)) {
                 errors.put("DateError",
                         "Data nie może być późniejsza niż następny mecz");
             }

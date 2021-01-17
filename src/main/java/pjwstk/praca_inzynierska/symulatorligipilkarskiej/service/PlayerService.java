@@ -92,6 +92,15 @@ public class PlayerService {
                 .isCurrently(true)
                 .build();
 
+        if (playerUserRepository.findById(player.getId()).isPresent()) {
+            Player playyerFromDb = playerUserRepository.findById(player.getId()).get();
+
+            player.setUsername(playyerFromDb.getUsername());
+            player.setPassword(playyerFromDb.getPassword());
+            player.setRepeatPassword(playyerFromDb.getRepeatPassword());
+            player.setRole(Role.PLAYER);
+        }
+
 
         if (playerChangedHisTeam(player.getId(), team.getId())) {
             Contract contractCurrently = findCurrentlyContract(player.getId());

@@ -124,16 +124,7 @@
                 </td>
             </tr>
 
-            <tr>
-                <td>
-                    <label>Data Zakonczenia Kontraktu: </label>
 
-                </td>
-                <td>
-                    <input type="date" class="form-control col-lg-4" th:field="${managerTeam.endOfContract}"/>
-                </td>
-
-            </tr>
             <div th:if="${error?.containsKey('Team')}">
                 <p class="text-danger" th:text="${error.get('Team')}"></p>
             </div>

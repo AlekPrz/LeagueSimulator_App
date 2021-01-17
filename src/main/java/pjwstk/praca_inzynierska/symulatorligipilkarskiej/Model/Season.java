@@ -48,10 +48,6 @@ public class Season {
     private Set<SeasonTeam> seasonTeams = new LinkedHashSet<>();
 
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leagueOfFans_id")
-    private LeagueOfFans leagueOfFans;
+
 
 }

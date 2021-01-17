@@ -97,9 +97,7 @@
                 </td>
 
                 <td>
-                    <select class="form-control col-lg-4" th:field="*{contract.team.id}"
-                            oninvalid="this.setCustomValidity('Wybierz drużyne')"
-                            oninput="setCustomValidity('')" required>
+                    <select class="form-control col-lg-4" th:field="*{contract.team.id}" oninvalid="this.setCustomValidity('Wybierz drużyne')" oninput="setCustomValidity('')" required>
 
                         <option value=""> -- Wybierz drużyne -- </option>
                         <option th:each="t: ${team}" th:value="${t.id}"
