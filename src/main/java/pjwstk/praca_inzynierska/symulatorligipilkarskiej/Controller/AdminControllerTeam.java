@@ -58,7 +58,7 @@ public class AdminControllerTeam {
         return "redirect:/admin/panelDruzyn";
     }
 
-    @GetMapping("/dodajDrużyne")
+    @GetMapping("/dodajDruzyne")
     public String addTeam(Model model) {
         List<Manager> managers = managerService.findManagers();
 
