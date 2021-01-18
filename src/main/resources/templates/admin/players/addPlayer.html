@@ -68,6 +68,9 @@
                     <div th:if="${errors?.containsKey('shirtName')}">
                         <p class="text-danger" th:text="${errors.get('shirtName')}"></p>
                     </div>
+                    <div th:if="${errors?.containsKey('shirtNameEmpty')}">
+                        <p class="text-danger" th:text="${errors.get('shirtNameEmpty')}"></p>
+                    </div>s
                 </td>
             </tr>
 

@@ -31,6 +31,10 @@ public class PlayerValidator {
         if (!playerExist(player.getShirtName())) {
             errorsPlayer.put("shirtName", "Gracz o takiej nazwie znajduje się już w bazie!");
         }
+        if(player.getShirtName().isBlank() || player.getShirtName().isEmpty()){
+            errorsPlayer.put("shirtNameEmpty", "Pseudonim gracza nie może być pusty");
+
+        }
 
         if (contract.getStartOfContract() == null) {
             errorsPlayer.put("DataStart", "Data nie może pozostać pusta");

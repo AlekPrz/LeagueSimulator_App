@@ -70,6 +70,9 @@
                     <div th:if="${errors?.containsKey('shirtName')}">
                         <p class="text-danger" th:text="${errors.get('shirtName')}"></p>
                     </div>
+                    <div th:if="${errors?.containsKey('shirtNameEmpty')}">
+                        <p class="text-danger" th:text="${errors.get('shirtNameEmpty')}"></p>
+                    </div>
                 </td>
             </tr>
 
@@ -128,6 +131,12 @@
         <a href="/manager/mojaDruzyna" class="btn btn-secondary text-black"> Panel Drużyny </a>
 
         <input class="btn btn-primary float-left" type="submit" value="Potwierdź"/>
+
+        <div th:if="${errors?.containsKey('player2Much')}">
+            <h1 class="text-danger" th:text="${errors.get('player2Much')}"></h1>
+        </div>
+
+
 
     </form>
 

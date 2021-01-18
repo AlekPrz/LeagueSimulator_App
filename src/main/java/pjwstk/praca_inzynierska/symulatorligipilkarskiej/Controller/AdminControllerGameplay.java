@@ -49,12 +49,10 @@ public class AdminControllerGameplay {
             model.addAttribute("emptyMatch", true);
         }
         if (teamRepository.findAll().size() < 3) {
-            System.out.println("ja?");
-            model.addAttribute("size2low", true);
+           model.addAttribute("size2low", true);
             model.addAttribute("sizeOfTeams", teamRepository.findAll().size());
         }
         if (teamRepository.findAll().size() > 6) {
-            System.out.println("Jaa?");
             model.addAttribute("size2big", true);
             model.addAttribute("sizeOfTeams", teamRepository.findAll().size());
         }
