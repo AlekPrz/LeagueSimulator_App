@@ -47,7 +47,7 @@ public class TeamController {
 
         model.addAttribute("players", teamService.getAllPlayersInThatTeam(id));
 
-        return "/users/guest/playersInThatTeam";
+        return "users/guest/playersInThatTeam";
     }
 
 
