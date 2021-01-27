@@ -2,21 +2,17 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Enum.StatusOfMatch;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Season;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.SeasonTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Enum.StatusOfMatch;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.MatchTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Season;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.SeasonTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +31,7 @@ public class MatchTeamService {
         MatchTeam.oldMatch.clear();
         matchTeamRepository.deleteAll();
         seasonRepository.deleteAll();
+        seasonTeamRepository.deleteAll();;
 
 
         if (teamRepository.findAll().size() % 2 == 0) {
@@ -462,7 +459,7 @@ public class MatchTeamService {
 
 
 
-
+        seasonRepository.deleteAll();
         matchTeamRepository.deleteAll();
 
 

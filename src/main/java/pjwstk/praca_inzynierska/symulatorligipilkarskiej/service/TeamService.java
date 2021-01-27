@@ -2,15 +2,12 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.*;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.TeamValidator;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.*;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Manager;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.validator.TeamValidator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
 
 import java.util.*;

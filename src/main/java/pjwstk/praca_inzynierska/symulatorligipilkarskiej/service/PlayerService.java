@@ -2,20 +2,15 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.MatchTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.TeamException;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.PlayerValidator;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Validator.TeamValidator;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.helpingMethods.PasswordGenerator;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Contract;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.MatchTeam;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Role;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.validator.PlayerValidator;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ContractRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;

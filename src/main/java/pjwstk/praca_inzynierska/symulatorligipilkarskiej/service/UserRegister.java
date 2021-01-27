@@ -3,12 +3,10 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Fan;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Fan;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Manager;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.User;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.UserRepository;
-
-import static pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Role.FAN;
 
 @Service
 

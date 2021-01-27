@@ -4,9 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Team;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

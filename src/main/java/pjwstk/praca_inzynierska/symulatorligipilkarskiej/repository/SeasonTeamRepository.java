@@ -1,8 +1,7 @@
 package pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.SeasonTeam;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.SeasonTeam;
 
 import java.util.List;
 

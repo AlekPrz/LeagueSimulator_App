@@ -3,9 +3,9 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Contract;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.Team;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Contract;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Team;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Player;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.ContractRepository;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.TeamRepository;
 

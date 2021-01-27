@@ -2,12 +2,10 @@ package pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Manager;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.Player;
-import pjwstk.praca_inzynierska.symulatorligipilkarskiej.Model.User.User;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Manager;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.Player;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.User.User;
 
-import javax.persistence.Id;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
