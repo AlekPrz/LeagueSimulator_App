@@ -90,9 +90,9 @@
                     <td th:text="${p.homeTeam.name}"></td>
                     <td th:text="${p.score}"></td>
                     <td th:text="${p.visitTeam.name}"></td>
-                    <td th:text="${p.dateOfGame}"></td>
+                <td th:text="${p.getDateOfGame()}"></td>
 
-                    <td>
+                        <td>
 
 
                         <div class="btn-group" role="group" aria-label="Basic example">
@@ -115,6 +115,9 @@
 
 
                         </div>
+                            <div th:if="${p.getStatusOfMatch()?.name() == 'INCOME'}">
+                    <b th:text=" 'Managerowie zaproponowali nową date meczu: ' + ${p.getNewDateOfGame()}"></b>
+        </div>
 
 
                     </td>

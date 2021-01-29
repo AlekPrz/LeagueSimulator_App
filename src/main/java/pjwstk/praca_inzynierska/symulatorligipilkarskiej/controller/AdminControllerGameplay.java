@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.*;
+import pjwstk.praca_inzynierska.symulatorligipilkarskiej.model.Enum.StatusOfMatch;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.repository.*;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.ContractService;
 import pjwstk.praca_inzynierska.symulatorligipilkarskiej.service.MatchTeamService;
@@ -149,6 +150,7 @@ public class AdminControllerGameplay {
                         "Data nie może być późniejsza niż następny mecz");
             }
             matchTeamToSave.setDateOfGame(newDateParse);
+            matchTeamToSave.setStatusOfMatch(StatusOfMatch.ADMINCHANGED);
 
 
             if (!errors.isEmpty()) {

@@ -317,6 +317,9 @@ and ${p.getStatusOfMatch()?.name()=='INCOME'}">
     <div th:if="${p.getStatusOfMatch()?.name()=='DONE'}">
                       <b th:text="'Mecz już się odbył! '"> </b>
                     </div>
+                      <div th:if="${p.getStatusOfMatch()?.name()=='ADMINCHANGED'}">
+                      <b th:text="'Skontaktuj się z administratorem w celu zmiany terminu meczu'"> </b>
+                    </div>
 
 
 
@@ -326,7 +329,7 @@ and ${p.getStatusOfMatch()?.name()=='INCOME'}">
 
                     <div th:unless="${p.getStatusOfMatch()?.name() == 'INCOME'}
                     or ${p.getStatusOfMatch()?.name()=='DECLINE'} or ${p.getStatusOfMatch()?.name()=='ACCEPTED'} or ${
-                    p.getStatusOfMatch()?.name()=='DONE'}">
+                    p.getStatusOfMatch()?.name()=='DONE'} or ${p.getStatusOfMatch()?.name()=='ADMINCHANGED'}">
                         <a class="btn btn-light  text-dark btn-outline-danger"
                            th:href="@{/manager/terminarzDruzyny/zmienDateMeczu/{id}(id=${p.id})}"
                            role="button">
@@ -350,7 +353,7 @@ and ${p.getStatusOfMatch()?.name()=='INCOME'}">
                           <a class="btn btn-light  text-dark btn-outline-danger"
                              th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
                              role="button">
-                                        Edytuj skład na mecz HOME
+                                        Edytuj skład na mecz
                                     </a>
                                             </div>
                     </div>
@@ -367,7 +370,7 @@ and ${p.getStatusOfMatch()?.name()=='INCOME'}">
                           <a class="btn btn-light  text-dark btn-outline-danger"
                              th:href="@{/manager/terminarzDruzyny/ustalSklad/{id}(id=${p.id})}"
                              role="button">
-                                        Edytuj skład na mecz Visit
+                                        Edytuj skład na mecz
                                     </a>
 
                     </div>
